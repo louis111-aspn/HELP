@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>상각자산 전표 제출 — 사용자 도움말</title>
+<style>
+  :root {
+    --navy:#003366; --navy-mid:#004b99; --navy-light:#e8eef7; --navy-border:#c8d8ee;
+    --white:#fff; --text:#333; --text-light:#666; --text-muted:#999;
+    --bg:#f7f9fc; --sidebar-w:272px; --header-h:60px;
+    --green:#15803d; --green-bg:#e8f5e9; --green-border:#a7d7b4;
+    --amber:#b45309; --amber-bg:#fff8e1; --amber-border:#f59e0b;
+    --red:#922b21; --red-bg:#fdf2f2; --red-border:#e74c3c;
+    --blue:#1a56db; --blue-bg:#e8f0fe; --blue-border:#93b4f7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.7;}
+
+  /* HEADER */
+  header{position:fixed;top:0;left:0;right:0;height:var(--header-h);background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 28px;z-index:200;border-bottom:3px solid var(--navy-mid);}
+  .hl{display:flex;align-items:center;gap:14px;}
+  .logo{width:32px;height:32px;background:var(--white);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .htitle{color:var(--white);font-size:15px;font-weight:700;letter-spacing:-0.3px;}
+  .hsub{color:rgba(255,255,255,0.55);font-size:12px;margin-top:1px;}
+  .hbadge{background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.8);font-size:11px;padding:3px 9px;border-radius:20px;border:1px solid rgba(255,255,255,0.2);}
+
+  /* SIDEBAR */
+  aside{position:fixed;top:var(--header-h);left:0;bottom:0;width:var(--sidebar-w);background:var(--white);border-right:1px solid var(--navy-border);overflow-y:auto;z-index:100;padding:20px 0 40px;}
+  .nlabel{font-size:10px;font-weight:700;letter-spacing:1.2px;color:var(--text-muted);text-transform:uppercase;padding:14px 20px 6px;}
+  .nitem{display:flex;align-items:center;gap:10px;padding:8px 20px;cursor:pointer;color:var(--text-light);font-size:13px;transition:background 0.15s,color 0.15s;border-left:3px solid transparent;text-decoration:none;}
+  .nitem:hover{background:var(--navy-light);color:var(--navy);}
+  .nitem.active{background:var(--navy-light);color:var(--navy);font-weight:600;border-left-color:var(--navy);}
+  .nnum{width:20px;height:20px;background:var(--navy);color:#fff;font-size:10px;font-weight:700;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .nitem:not(.active) .nnum{background:#d0d8e8;color:#666;}
+  .role-tag{font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:2px;}
+  .role-s{background:var(--blue-bg);color:var(--blue);}
+  .role-a{background:var(--green-bg);color:var(--green);}
+  .role-m{background:#f3e8ff;color:#6b21a8;}
+  aside::-webkit-scrollbar{width:4px;}aside::-webkit-scrollbar-thumb{background:var(--navy-border);border-radius:4px;}
+
+  /* MAIN */
+  main{margin-left:var(--sidebar-w);margin-top:var(--header-h);padding:40px 48px 80px;max-width:1000px;}
+
+  /* OVERVIEW */
+  .ov{background:var(--navy);color:#fff;border-radius:6px;padding:32px 36px;margin-bottom:40px;position:relative;overflow:hidden;}
+  .ov::after{content:'';position:absolute;right:-20px;top:-20px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.04);}
+  .ovtag{display:inline-block;background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.85);font-size:11px;font-weight:600;letter-spacing:0.8px;padding:3px 10px;border-radius:3px;text-transform:uppercase;margin-bottom:14px;}
+  .ov h1{font-size:22px;font-weight:700;margin-bottom:12px;letter-spacing:-0.5px;}
+  .ov p{font-size:14px;color:rgba(255,255,255,0.78);line-height:1.75;max-width:660px;}
+  .ovmeta{margin-top:24px;display:flex;gap:32px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,0.15);padding-top:20px;}
+  .oml{font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:3px;}
+  .omv{font-size:13px;color:rgba(255,255,255,0.9);font-weight:600;}
+
+  /* MASTER FLOW */
+  .master-flow{background:#fff;border:1px solid var(--navy-border);border-radius:6px;padding:28px 32px;margin-bottom:40px;}
+  .master-flow h2{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--navy-border);}
+  .flow-track{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;margin-bottom:8px;}
+  .flow-lane{padding:0 12px;}
+  .flow-lane-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;padding:6px 12px;border-radius:4px;margin-bottom:12px;text-align:center;}
+  .lane-s .flow-lane-title{background:var(--blue-bg);color:var(--blue);}
+  .lane-a .flow-lane-title{background:var(--green-bg);color:var(--green);}
+  .lane-m .flow-lane-title{background:#f3e8ff;color:#6b21a8;}
+  .flow-node{border:1px solid var(--navy-border);border-radius:5px;padding:10px 12px;margin-bottom:8px;background:#fff;font-size:12.5px;position:relative;}
+  .lane-s .flow-node{border-left:4px solid var(--blue);}
+  .lane-a .flow-node{border-left:4px solid var(--green);}
+  .lane-m .flow-node{border-left:4px solid #7c3aed;}
+  .fn-num{font-size:10px;font-weight:700;color:var(--text-muted);margin-bottom:3px;}
+  .fn-title{font-weight:600;color:var(--text);}
+  .fn-desc{font-size:12px;color:var(--text-light);margin-top:2px;}
+  .flow-arrow{text-align:center;font-size:18px;color:var(--navy-border);line-height:1;margin:4px 0;}
+  .flow-cross{display:flex;align-items:center;gap:8px;margin:6px 0;}
+  .flow-cross-line{flex:1;height:1px;background:var(--navy-border);}
+  .flow-cross-label{font-size:11px;color:var(--text-muted);white-space:nowrap;}
+
+  /* SECTION */
+  .sec{background:#fff;border:1px solid var(--navy-border);border-radius:6px;padding:32px 36px;margin-bottom:28px;scroll-margin-top:calc(var(--header-h)+20px);}
+  .shead{display:flex;align-items:center;gap:14px;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid var(--navy-light);}
+  .snum{width:34px;height:34px;background:var(--navy);color:#fff;font-size:14px;font-weight:700;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .snum.blue{background:var(--blue);}
+  .snum.green{background:var(--green);}
+  .snum.purple{background:#6b21a8;}
+  .sec h2{font-size:18px;font-weight:700;color:var(--navy);}
+  .sdesc{font-size:13px;color:var(--text-light);margin-top:2px;}
+  .role-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-left:10px;vertical-align:middle;}
+  .rb-s{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border);}
+  .rb-a{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+  .rb-m{background:#f3e8ff;color:#6b21a8;border:1px solid #c4b5fd;}
+  h3.sub{font-size:14px;font-weight:700;color:var(--navy);margin:22px 0 10px;}
+
+  /* STEPS */
+  .steps{list-style:none;margin:16px 0;}
+  .si{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--navy-light);}
+  .si:last-child{border-bottom:none;}
+  .sdot{width:24px;height:24px;background:var(--navy-light);border:2px solid var(--navy-border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--navy);flex-shrink:0;margin-top:1px;}
+  .sc{flex:1;}
+  .stit{font-weight:600;color:var(--text);margin-bottom:3px;font-size:13.5px;}
+  .sbody{font-size:13px;color:var(--text-light);}
+
+  /* CALLOUTS */
+  .note{background:var(--navy-light);border-left:4px solid var(--navy);border-radius:0 4px 4px 0;padding:12px 16px;margin:14px 0;font-size:13px;color:var(--navy);}
+  .note strong{font-weight:700;}
+  .warn{background:var(--amber-bg);border-left:4px solid var(--amber-border);border-radius:0 4px 4px 0;padding:12px 16px;margin:14px 0;font-size:13px;color:var(--amber);}
+  .warn strong{font-weight:700;}
+  .danger{background:var(--red-bg);border-left:4px solid var(--red-border);border-radius:0 4px 4px 0;padding:12px 16px;margin:14px 0;font-size:13px;color:var(--red);}
+  .danger strong{font-weight:700;}
+  .success{background:var(--green-bg);border-left:4px solid var(--green-border);border-radius:0 4px 4px 0;padding:12px 16px;margin:14px 0;font-size:13px;color:var(--green);}
+  .success strong{font-weight:700;}
+
+  /* TABLES */
+  .dt{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px;}
+  .dt th{background:var(--navy);color:#fff;padding:10px 14px;text-align:left;font-weight:600;font-size:12px;}
+  .dt td{padding:9px 14px;border-bottom:1px solid var(--navy-border);vertical-align:top;}
+  .dt tr:nth-child(even) td{background:var(--navy-light);}
+  .dt tr:last-child td{border-bottom:none;}
+
+  /* BADGES */
+  .b{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;white-space:nowrap;}
+  .br{background:#fde8e8;color:#c0392b;}
+  .bo{background:var(--green-bg);color:var(--green);}
+  .ba{background:var(--navy-light);color:var(--navy);}
+  .bc{background:#f5f5f5;color:#555;font-family:'Courier New',monospace;font-size:11px;}
+  .bro{background:#f3f3f3;color:#777;}
+
+  /* STATUS PILL FLOW */
+  .status-flow{display:flex;align-items:stretch;gap:0;border:1px solid var(--navy-border);border-radius:6px;overflow:hidden;margin:16px 0;}
+  .sf-item{flex:1;padding:14px 12px;text-align:center;border-right:1px solid var(--navy-border);position:relative;}
+  .sf-item:last-child{border-right:none;}
+  .sf-code{font-size:22px;font-weight:800;margin-bottom:4px;}
+  .sf-label{font-size:12px;font-weight:700;margin-bottom:4px;}
+  .sf-desc{font-size:11.5px;color:var(--text-light);}
+  .sf-who{font-size:11px;padding:2px 7px;border-radius:10px;margin-top:6px;display:inline-block;font-weight:600;}
+  .sf-blank{background:#fafafa;} .sf-blank .sf-code{color:#aaa;}
+  .sf-s{background:#eff6ff;} .sf-s .sf-code{color:var(--blue);}
+  .sf-f{background:var(--green-bg);} .sf-f .sf-code{color:var(--green);}
+  .sf-x{background:var(--red-bg);} .sf-x .sf-code{color:var(--red);}
+  .sf-arrow{display:flex;align-items:center;padding:0 4px;font-size:16px;color:var(--navy-border);flex-shrink:0;border-right:1px solid var(--navy-border);}
+
+  /* GRID */
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;}
+  .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:14px 0;}
+  .card{border:1px solid var(--navy-border);border-radius:5px;padding:14px 16px;background:#fff;}
+  .ctit{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;color:var(--navy);margin-bottom:7px;}
+  .cico{font-size:15px;}
+  .card p{font-size:12.5px;color:var(--text-light);}
+  .card .cond{font-size:11.5px;color:#999;margin-top:5px;font-style:italic;}
+
+  /* TASK CARDS */
+  .task-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0;}
+  .task-card{border-radius:5px;padding:18px 18px;border:1px solid var(--navy-border);}
+  .task-card.z1{border-top:4px solid var(--blue);}
+  .task-card.z2{border-top:4px solid #d97706;}
+  .task-code{font-size:24px;font-weight:800;margin-bottom:3px;}
+  .task-card.z1 .task-code{color:var(--blue);}
+  .task-card.z2 .task-code{color:#d97706;}
+  .task-pill{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:3px;margin-bottom:8px;}
+  .task-card.z1 .task-pill{background:var(--blue-bg);color:var(--blue);}
+  .task-card.z2 .task-pill{background:#fef3e2;color:#b45309;}
+  .task-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px;}
+  .task-desc{font-size:12.5px;color:var(--text-light);line-height:1.65;}
+
+  /* TECH */
+  .tech-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;}
+  .tc{border:1px solid var(--navy-border);border-radius:5px;padding:14px 16px;background:#fff;}
+  .tct{font-size:11px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;}
+  .ti{font-size:12.5px;color:var(--text);padding:4px 0;border-bottom:1px solid var(--navy-light);display:flex;align-items:baseline;gap:8px;}
+  .ti:last-child{border-bottom:none;}
+  .ti code{font-family:'Courier New',monospace;font-size:12px;color:var(--navy);background:var(--navy-light);padding:1px 5px;border-radius:3px;flex-shrink:0;}
+  .td2{color:var(--text-light);font-size:12px;}
+
+  @media(max-width:900px){
+    :root{--sidebar-w:0px;}
+    aside{display:none;}
+    main{padding:24px 20px 60px;}
+    .g2,.g3,.tech-grid,.task-grid,.flow-track{grid-template-columns:1fr;}
+    .status-flow{flex-direction:column;}
+    .sf-item{border-right:none;border-bottom:1px solid var(--navy-border);}
+    .sf-item:last-child{border-bottom:none;}
+    .sf-arrow{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="hl">
+    <div class="logo">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <rect x="2" y="2" width="16" height="16" rx="2" fill="#003366"/>
+        <path d="M5 10h10M5 6.5h6M5 13.5h8" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.9"/>
+        <circle cx="15" cy="6.5" r="2.5" fill="#003366" stroke="white" stroke-width="1.2"/>
+        <path d="M14.2 6.5l.8.8 1.2-1.4" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div>
+      <div class="htitle">상각자산 전표 제출 및 승인</div>
+      <div class="hsub">GRRA Add-in — 사용자 도움말</div>
+    </div>
+  </div>
+  <span class="hbadge">V1.0</span>
+</header>
+
+<!-- SIDEBAR -->
+<aside>
+  <div>
+    <div class="nlabel">개요</div>
+    <a class="nitem active" href="#overview"><span class="nnum">·</span> 프로세스 개요 및 전체 흐름</a>
+    <a class="nitem" href="#s-status"><span class="nnum">·</span> 승인상태 코드 정의</a>
+  </div>
+  <div>
+    <div class="nlabel">제출자 (Submitter)</div>
+    <a class="nitem" href="#s1"><span class="nnum">1</span> 조회 화면 <span class="role-tag role-s">제출자</span></a>
+    <a class="nitem" href="#s2"><span class="nnum">2</span> 전표 조회 모드 <span class="role-tag role-s">제출자</span></a>
+    <a class="nitem" href="#s3"><span class="nnum">3</span> 승인요청 <span class="role-tag role-s">제출자</span></a>
+  </div>
+  <div>
+    <div class="nlabel">승인자 (Approver)</div>
+    <a class="nitem" href="#s4"><span class="nnum">4</span> 승인 목록 조회 <span class="role-tag role-a">승인자</span></a>
+    <a class="nitem" href="#s5"><span class="nnum">5</span> 결재내용 확인 <span class="role-tag role-a">승인자</span></a>
+    <a class="nitem" href="#s6"><span class="nnum">6</span> 승인 / 반려 처리 <span class="role-tag role-a">승인자</span></a>
+  </div>
+  <div>
+    <div class="nlabel">연결 모니터</div>
+    <a class="nitem" href="#s7"><span class="nnum">7</span> 태스크 실행 (전표 전기) <span class="role-tag role-m">모니터</span></a>
+    <a class="nitem" href="#s8"><span class="nnum">8</span> 전표 생성 결과 확인</a>
+  </div>
+  <div>
+    <div class="nlabel">참고</div>
+    <a class="nitem" href="#s9"><span class="nnum">·</span> 전표 생성 조건 및 제약</a>
+    <a class="nitem" href="#s10"><span class="nnum">·</span> 조회 조건 및 그리드 필드</a>
+    <a class="nitem" href="#s11"><span class="nnum">·</span> 테이블 구조</a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main>
+
+<!-- OVERVIEW -->
+<div class="ov" id="overview">
+  <div class="ovtag">상각자산 전표 제출 및 승인</div>
+  <h1>상각자산 전표 제출 및 승인</h1>
+  <p>상각자산 스케줄 관리에서 확정된 스케줄을 GR(Group Reporting) 시스템에 전표로 전기하는 프로세스입니다. <strong>제출자</strong>가 승인을 요청하고, <strong>승인자</strong>가 결재를 처리한 후, <strong>연결 모니터</strong>에서 태스크(Z3010 / Z3020)를 실행하여 최종 전표가 생성됩니다. 역할에 따라 화면 권한과 표시 버튼이 달라집니다.</p>
+  <div class="ovmeta">
+    <div><div class="oml">연계 프로그램</div><div class="omv">상각자산 스케줄 관리 (ZGRAT5210)</div></div>
+    <div><div class="oml">결재 테이블</div><div class="omv">ZGRAT7010 / ZGRAT7020</div></div>
+    <div><div class="oml">연결 태스크</div><div class="omv">Z3010 (고정자산 미실현) / Z3020 (공정가치 조정)</div></div>
+  </div>
+</div>
+
+<!-- MASTER FLOW -->
+<div class="master-flow">
+  <h2>📋 전체 프로세스 흐름 — 역할별 레인</h2>
+  <div class="flow-track">
+    <!-- 제출자 -->
+    <div class="flow-lane lane-s">
+      <div class="flow-lane-title">🧑‍💼 제출자 (Submitter)</div>
+      <div class="flow-node"><div class="fn-num">Step 1</div><div class="fn-title">조회 화면 실행</div><div class="fn-desc">스케줄 완료 자산코드 목록 확인 (전표 미생성 건)</div></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-node"><div class="fn-num">Step 2</div><div class="fn-title">승인요청</div><div class="fn-desc">승인자 선택 · 요청 내용 기입 · 승인상태 → S</div></div>
+      <div style="height:60px;"></div><!-- spacer -->
+      <div class="flow-node" style="opacity:0.4;"><div class="fn-num">대기</div><div class="fn-title">승인 결과 수신</div><div class="fn-desc">알람으로 결과 통보</div></div>
+    </div>
+    <!-- 승인자 -->
+    <div class="flow-lane lane-a">
+      <div class="flow-lane-title">✅ 승인자 (Approver)</div>
+      <div class="flow-node" style="opacity:0.4;"><div class="fn-num">대기</div><div class="fn-title">승인요청 수신</div><div class="fn-desc">Launchpad 카운터로 확인</div></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-node"><div class="fn-num">Step 3</div><div class="fn-title">결재문서 확인</div><div class="fn-desc">문서번호 클릭 → 상세 내역 검토</div></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-node"><div class="fn-num">Step 4</div><div class="fn-title">승인 / 반려</div><div class="fn-desc">승인 → F / 반려 → X (반려 시 재요청 가능)</div></div>
+    </div>
+    <!-- 연결모니터 -->
+    <div class="flow-lane lane-m">
+      <div class="flow-lane-title">🖥️ 연결 모니터</div>
+      <div style="height:228px;"></div><!-- spacer -->
+      <div class="flow-node"><div class="fn-num">Step 5</div><div class="fn-title">태스크 실행</div><div class="fn-desc">승인(F) 건 대상 Z3010 / Z3020 태스크 실행</div></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-node"><div class="fn-num">Step 6</div><div class="fn-title">전표 생성 확인</div><div class="fn-desc">전표번호 확인 · 오류 시 로그 확인</div></div>
+    </div>
+  </div>
+  <div class="note" style="margin-top:16px;">
+    <strong>역할별 화면 권한:</strong> 제출자는 <strong>승인요청</strong> 버튼만 표시됩니다. 승인자는 <strong>승인·반려</strong> 버튼만 표시되며 읽기 권한으로 조회합니다. 조회 화면에서 <strong>연결단위</strong>는 로그인한 사용자의 연결단위에 해당하는 정보만 조회됩니다.
+  </div>
+</div>
+
+<!-- 승인상태 코드 -->
+<div class="sec" id="s-status">
+  <div class="shead">
+    <div class="snum">·</div>
+    <div><h2>승인상태 코드 정의 (ZWSTATUS)</h2><div class="sdesc">자산코드별 승인 진행 상태를 나타내는 코드입니다. 전표 생성 가능 여부를 결정합니다.</div></div>
+  </div>
+  <div class="status-flow">
+    <div class="sf-item sf-blank">
+      <div class="sf-code">' '</div>
+      <div class="sf-label">미생성</div>
+      <div class="sf-desc">기본 상태<br>승인요청 전</div>
+      <div class="sf-who" style="background:#f3f3f3;color:#777;">초기값</div>
+    </div>
+    <div class="sf-arrow">→</div>
+    <div class="sf-item sf-s">
+      <div class="sf-code">S</div>
+      <div class="sf-label">승인요청 중</div>
+      <div class="sf-desc">제출자가 승인요청<br>승인자 처리 대기</div>
+      <div class="sf-who" style="background:var(--blue-bg);color:var(--blue);">제출자 액션</div>
+    </div>
+    <div class="sf-arrow">→</div>
+    <div class="sf-item sf-f">
+      <div class="sf-code">F</div>
+      <div class="sf-label">승인 완료</div>
+      <div class="sf-desc">승인자 승인 처리<br><strong>전표 생성 가능</strong></div>
+      <div class="sf-who" style="background:var(--green-bg);color:var(--green);">승인자 승인</div>
+    </div>
+    <div class="sf-arrow">→</div>
+    <div class="sf-item sf-x">
+      <div class="sf-code">X</div>
+      <div class="sf-label">반려</div>
+      <div class="sf-desc">승인자 반려 처리<br>재승인요청 가능</div>
+      <div class="sf-who" style="background:var(--red-bg);color:var(--red);">승인자 반려</div>
+    </div>
+  </div>
+  <div class="success">
+    <strong>✅ 전표 생성 조건:</strong> 승인상태가 <strong>F(승인 완료)</strong>인 자산코드에 한해 연결 모니터 태스크 실행을 통한 전표 생성이 가능합니다.
+  </div>
+</div>
+
+<!-- S1 조회 화면 -->
+<div class="sec" id="s1">
+  <div class="shead">
+    <div class="snum blue">1</div>
+    <div><h2>조회 화면 (초기 화면)<span class="role-badge rb-s">🧑‍💼 제출자</span></h2><div class="sdesc">스케줄이 확정된 자산코드 목록을 조회합니다. 글로벌 매개변수가 기본값으로 자동 세팅됩니다.</div></div>
+  </div>
+
+  <div class="note">
+    <strong>📌 조회 결과 제외 대상:</strong> 아래 두 가지는 리스트에서 자동 제외됩니다.<br>
+    ① 당월 전표가 이미 생성된 거래코드<br>
+    ② 상각스케줄 중 당월에 변동거래(상각·손상·처분 등)가 없는 거래코드
+  </div>
+
+  <h3 class="sub">조회 조건 (글로벌 매개변수 기본값 자동 적용)</h3>
+  <table class="dt">
+    <thead><tr><th>필드</th><th>UI 요소</th><th>필수</th><th>테이블/필드</th></tr></thead>
+    <tbody>
+      <tr><td>연결그룹</td><td>도움창</td><td><span class="b br">필수</span></td><td><span class="b bc">ZGRAT5200.CONGR</span></td></tr>
+      <tr><td>연결단위</td><td>숨김 (자동)</td><td>—</td><td>로그인 사용자 연결단위만 조회 가능</td></tr>
+      <tr><td>연결계정과목표</td><td>도움창</td><td><span class="b br">필수</span></td><td><span class="b bc">ZGRAT5200.RITCLG</span></td></tr>
+      <tr><td>버전</td><td>도움창</td><td><span class="b br">필수</span></td><td><span class="b bc">ZGRAT5200.RVERS</span></td></tr>
+      <tr><td>회계연도/기간</td><td>도움창</td><td><span class="b br">필수</span></td><td><span class="b bc">ZGRAT5211.RYEAR, POPER</span></td></tr>
+      <tr><td>상태</td><td>도움창</td><td><span class="b bo">선택</span></td><td>' ': 미생성 / C: 완료 / D: 삭제</td></tr>
+      <tr><td>역할</td><td>라디오버튼</td><td>—</td><td>로그인 역할 자동 기본값. 제출자: 전체 목록 / 승인자: 승인할·승인한 내역</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">메인 그리드 항목 (제출자 화면)</h3>
+  <div class="g2">
+    <table class="dt" style="font-size:12.5px;">
+      <thead><tr><th>컬럼명</th><th>필드</th></tr></thead>
+      <tbody>
+        <tr><td>자산코드</td><td><span class="b bc">ZGRAT5200.ZTRS</span></td></tr>
+        <tr><td>자산명</td><td><span class="b bc">ZGRAT5200.ZTRS_TXT</span></td></tr>
+        <tr><td>거래유형 / 거래유형명</td><td><span class="b bc">ZTRS_TYPE / DDTEXT</span></td></tr>
+        <tr><td>판매(투자)법인 / 법인명</td><td><span class="b bc">ZGRAT5200.RBUINT</span></td></tr>
+        <tr><td>매입(피투자)법인</td><td><span class="b bc">ZGRAT5200.RBUPTR</span></td></tr>
+        <tr><td>거래일자 / 상각일자</td><td><span class="b bc">ZDATE_TRS / ZDATE_CLO</span></td></tr>
+        <tr><td>통화키</td><td><span class="b bc">ZGRAT5200.RHCUR</span></td></tr>
+      </tbody>
+    </table>
+    <table class="dt" style="font-size:12.5px;">
+      <thead><tr><th>컬럼명</th><th>필드</th></tr></thead>
+      <tbody>
+        <tr><td>금액(LC) / 금액(GC)</td><td><span class="b bc">ZAMT_UNRLZ / ZAMT_UNRLZ_GC</span></td></tr>
+        <tr><td>상각기간(개월)</td><td><span class="b bc">ZGRAT5200.ZUSFL</span></td></tr>
+        <tr><td>실현금액</td><td>ZAMT_UNRLZ ÷ ZUSFL (계산값)</td></tr>
+        <tr><td>이연법인세 적용</td><td><span class="b bc">ZCK_DEFTAX</span></td></tr>
+        <tr><td>상태</td><td><span class="b bc">ZGRAT5200.ZSTATUS</span></td></tr>
+        <tr><td>상각스케줄 / 추가거래</td><td>아이콘 처리</td></tr>
+        <tr><td>전표번호 / <strong>승인상태</strong></td><td><span class="b bc">ZGRAT5211.DOCNR / ZWSTATUS</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- S2 전표 조회 모드 -->
+<div class="sec" id="s2">
+  <div class="shead">
+    <div class="snum blue">2</div>
+    <div><h2>전표 조회 모드<span class="role-badge rb-s">🧑‍💼 제출자</span></h2><div class="sdesc">이미 전표가 생성된 건을 확인할 때 사용합니다.</div></div>
+  </div>
+  <ul class="steps">
+    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">조회 조건에서 조회 모드 선택</div><div class="sbody">검색조건 중 <strong>조회 모드</strong>를 선택하면 이미 전표가 생성된 거래코드들이 조회됩니다.</div></div></li>
+    <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">라인 상세 클릭 → 전표 내역 확인</div><div class="sbody">메인 그리드에서 라인의 <strong>&gt; 버튼</strong>을 클릭하면 디테일 그리드에 전표 항목별 구체적인 내역(재무제표항목·그룹통화금액·장부통화금액·전표번호 등)이 표시됩니다.</div></div></li>
+  </ul>
+  <h3 class="sub">디테일 그리드 항목</h3>
+  <table class="dt" style="font-size:12.5px;">
+    <thead><tr><th>컬럼명</th><th>소스</th></tr></thead>
+    <tbody>
+      <tr><td>거래유형 / 거래유형명</td><td><span class="b bc">ZGRAT5200.ZTRS_TYPE / DDTEXT</span></td></tr>
+      <tr><td>자산코드 / 자산코드명</td><td><span class="b bc">ZGRAT5200.ZTRS / ZTRS_TXT</span></td></tr>
+      <tr><td>상세거래코드 / 상세거래명</td><td><span class="b bc">ZGRAT5211.ZNO</span></td></tr>
+      <tr><td>연결거래유형 (하위항목)</td><td><span class="b bc">ZGRAT5211.RMVCT</span></td></tr>
+      <tr><td>자기법인 (연결단위) / 법인명</td><td><span class="b bc">ZGRAT5200.RBUNIT</span></td></tr>
+      <tr><td>상대법인 (파트너단위) / 법인명</td><td><span class="b bc">ZGRAT5200.RBUPTR</span></td></tr>
+      <tr><td>연결계정 (재무제표항목) / 항목명</td><td><span class="b bc">ACDOCU.RITEM / SKAT.TXT50</span></td></tr>
+      <tr><td>그룹통화키 / 그룹통화누적금액</td><td><span class="b bc">ACDOCU.RKCUR / KSL</span></td></tr>
+      <tr><td>장부통화키 / 장부통화누적금액</td><td><span class="b bc">ACDOCU.RHCUR / HSL</span></td></tr>
+      <tr><td>적요</td><td><span class="b bc">ACDOCU.SGTXT</span></td></tr>
+      <tr><td>회계연도/기간</td><td><span class="b bc">ZGRAT5211.RYEAR, POPER</span></td></tr>
+      <tr><td>전표번호 / 개별항목</td><td><span class="b bc">ZGRAT5211.DOCNR / DOCLN</span></td></tr>
+    </tbody>
+  </table>
+  <div class="note" style="margin-top:4px;"><strong>📌 전표내역 CDS 뷰:</strong> <code style="font-family:monospace;background:rgba(0,51,102,0.1);padding:1px 5px;border-radius:3px;">ZGRVDEPDOC</code> — 전기된 전표 내역을 조회합니다.</div>
+</div>
+
+<!-- S3 승인요청 -->
+<div class="sec" id="s3">
+  <div class="shead">
+    <div class="snum blue">3</div>
+    <div><h2>승인요청<span class="role-badge rb-s">🧑‍💼 제출자</span></h2><div class="sdesc">전표 생성 대상 자산코드에 대해 승인자에게 결재를 요청합니다.</div></div>
+  </div>
+  <ul class="steps">
+    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">라인 선택 → 승인요청 버튼 활성화</div><div class="sbody">메인 그리드에서 승인요청할 자산코드 라인을 선택합니다. 승인요청 버튼이 활성화됩니다.</div></div></li>
+    <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">승인요청 버튼 클릭 → 확인 팝업</div><div class="sbody"><strong>"승인요청 하시겠습니까?"</strong> 확인 다이얼로그가 표시됩니다. 확인을 클릭하면 일괄처리가 진행됩니다.</div></div></li>
+    <li class="si"><div class="sdot">3</div><div class="sc"><div class="stit">승인자 선택 및 요청 내용 기입</div><div class="sbody">승인자를 선택합니다. <strong>자신은 승인자로 선택할 수 없습니다.</strong> 승인 요청 내용을 기입합니다.</div></div></li>
+    <li class="si"><div class="sdot">4</div><div class="sc"><div class="stit">승인요청 완료 → 승인상태 S 업데이트</div><div class="sbody">요청이 완료되면 해당 자산코드의 <strong>승인상태(ZWSTATUS)가 S</strong>로 업데이트됩니다. 승인자에게 알람이 자동 발송됩니다.</div></div></li>
+  </ul>
+  <div class="warn"><strong>⚠ 중복 요청 차단:</strong> 선택한 라인 중 이미 승인요청이 진행 중인(S 상태) 건이 포함되면 "이미 처리 중입니다" 메시지가 발생합니다.</div>
+</div>
+
+<!-- S4 승인 목록 -->
+<div class="sec" id="s4">
+  <div class="shead">
+    <div class="snum green">4</div>
+    <div><h2>승인 목록 조회<span class="role-badge rb-a">✅ 승인자</span></h2><div class="sdesc">Launchpad에서 자신 앞으로 올라온 상신 건을 확인합니다.</div></div>
+  </div>
+  <ul class="steps">
+    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">Launchpad 카운터 확인</div><div class="sbody">승인자의 Launchpad에서 상각자산 전표 제출(승인자용) 앱 타일에 상신 대기 건수가 카운터로 표시됩니다.</div></div></li>
+    <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">프로그램 실행 → 상신 목록 조회</div><div class="sbody">기본적으로 <strong>"나의 결재문서만"</strong>과 <strong>"미처리건"</strong>이 체크된 상태로 실행되면 본인 앞으로 온 미처리 상신 건이 표시됩니다.</div></div></li>
+  </ul>
+  <h3 class="sub">승인자 화면 조회 조건</h3>
+  <table class="dt">
+    <thead><tr><th>필드</th><th>UI 요소</th><th>설명</th><th>테이블/필드</th></tr></thead>
+    <tbody>
+      <tr><td>문서번호</td><td>텍스트</td><td>결재문서 번호 검색</td><td><span class="b bc">ZGRAT7020.DOC_NUM</span></td></tr>
+      <tr><td>기안일자</td><td>도움창</td><td>승인요청 기안 날짜 범위</td><td><span class="b bc">ZGRAT7020.DOC_DATE</span></td></tr>
+      <tr><td>기안자</td><td>텍스트</td><td>제출자 검색</td><td><span class="b bc">ZGRAT7020.DOC_USER</span></td></tr>
+      <tr><td>승인구분</td><td>라디오버튼</td><td>전체 / 미처리(01) / 처리완료(02·03)</td><td><span class="b bc">ZGRAT7020.APPR_STAT_CD</span></td></tr>
+      <tr><td>나의 결재문서만</td><td>체크박스</td><td>기본 체크. 본인 앞 문서만 조회</td><td><span class="b bc">ZGRAT7010.APPR_USER</span></td></tr>
+    </tbody>
+  </table>
+  <h3 class="sub">승인 목록 그리드 항목</h3>
+  <table class="dt" style="font-size:12.5px;">
+    <thead><tr><th>컬럼명</th><th>테이블/필드</th></tr></thead>
+    <tbody>
+      <tr><td>승인상태</td><td><span class="b bc">ZGRAT7020.APPR_STAT_CD</span> — 01: 미처리 / 02: 승인 / 03: 반려</td></tr>
+      <tr><td>문서번호</td><td><span class="b bc">ZGRAT7020.DOC_NUM</span> (클릭 시 상세로 이동)</td></tr>
+      <tr><td>요청구분</td><td><span class="b bc">ZGRAT7020.APPR_STATUS</span></td></tr>
+      <tr><td>승인요청서 제목</td><td><span class="b bc">ZGRAT7020.DOC_TITLE</span></td></tr>
+      <tr><td>기안자 / 기안자명</td><td><span class="b bc">ZGRAT7020.DOC_USER</span></td></tr>
+      <tr><td>기안일 / 승인일자 / 승인시간</td><td><span class="b bc">ZGRAT7020.DOC_DATE / ZGRAT7010.APPR_DATE</span></td></tr>
+      <tr><td>최종결재자</td><td><span class="b bc">ZGRAT7010.APPR_USER</span> (마지막 결재자 기준)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- S5 결재내용 확인 -->
+<div class="sec" id="s5">
+  <div class="shead">
+    <div class="snum green">5</div>
+    <div><h2>결재내용 확인<span class="role-badge rb-a">✅ 승인자</span></h2><div class="sdesc">문서번호를 클릭하여 승인관리 화면으로 이동하고 상세 내역을 검토합니다.</div></div>
+  </div>
+  <ul class="steps">
+    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">문서번호 클릭 → 승인관리 화면 이동</div><div class="sbody">목록에서 문서번호를 클릭하면 <strong>승인관리 화면</strong>으로 이동합니다. 선택한 문서번호의 승인 내역 정보가 표시됩니다.</div></div></li>
+    <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">상세 내역 검토</div><div class="sbody">제출자가 입력한 연결 계정과목표·버전·전기정보·기안자 정보와 Document Title이 표시됩니다. 승인요청 당시의 디테일 그리드(자산코드·재무제표항목·금액 등)를 확인합니다.</div></div></li>
+  </ul>
+  <div class="g2">
+    <div class="card"><div class="ctit"><span class="cico">📋</span> 미처리 문서 (APPR_STAT_CD = 01)</div><p>승인 또는 반려 처리가 가능합니다. 그리드를 통해 상세 내역을 확인하고 결재를 진행합니다.</p></div>
+    <div class="card"><div class="ctit"><span class="cico">🔒</span> 처리완료 문서 (APPR_STAT_CD = 02·03)</div><p>조회 기능만 지원합니다. 별도의 처리나 편집은 불가합니다.</p></div>
+  </div>
+</div>
+
+<!-- S6 승인/반려 -->
+<div class="sec" id="s6">
+  <div class="shead">
+    <div class="snum green">6</div>
+    <div><h2>승인 / 반려 처리<span class="role-badge rb-a">✅ 승인자</span></h2><div class="sdesc">검토 완료 후 승인 또는 반려를 처리합니다.</div></div>
+  </div>
+  <div class="g2">
+    <div>
+      <h3 class="sub" style="color:var(--green);">✅ 승인 처리</h3>
+      <ul class="steps">
+        <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">데이터 선택 → 승인 버튼</div><div class="sbody">내역을 선택하고 <strong>승인</strong> 버튼을 클릭합니다. "승인 하시겠습니까?" 다이얼로그가 표시됩니다.</div></div></li>
+        <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">승인 완료 → 승인상태 F</div><div class="sbody">승인 처리되면 해당 거래코드의 <strong>승인상태(ZWSTATUS)가 F</strong>로 업데이트됩니다. 제출자에게 승인 완료 알람이 발송됩니다. <br><strong>승인 상태 F인 건만 연결모니터에서 전표 생성이 가능합니다.</strong></div></div></li>
+      </ul>
+      <div class="success"><strong>✅ 승인 후:</strong> 연결모니터 프로그램(Z3010, Z3020)에서 상태를 확인하고 태스크를 실행할 수 있습니다.</div>
+    </div>
+    <div>
+      <h3 class="sub" style="color:var(--red);">❌ 반려 처리</h3>
+      <ul class="steps">
+        <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">데이터 선택 → 반려 버튼</div><div class="sbody">내역을 선택하고 <strong>반려</strong> 버튼을 클릭합니다. "반려 하시겠습니까?" 다이얼로그가 표시됩니다.</div></div></li>
+        <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">반려 완료 → 승인상태 X</div><div class="sbody">반려 처리되면 해당 거래코드의 <strong>승인상태(ZWSTATUS)가 X</strong>로 업데이트됩니다. 결재문서 상태가 <span style="color:var(--red);">빨간색</span>으로 표시됩니다.</div></div></li>
+      </ul>
+      <div class="warn"><strong>⚠ 반려 후 재요청:</strong> 반려된 건은 제출자가 다시 <strong>승인요청</strong>을 진행할 수 있습니다.</div>
+    </div>
+  </div>
+</div>
+
+<!-- S7 태스크 실행 -->
+<div class="sec" id="s7">
+  <div class="shead">
+    <div class="snum purple">7</div>
+    <div><h2>태스크 실행 (전표 전기)<span class="role-badge rb-m">🖥️ 연결 모니터</span></h2><div class="sdesc">승인(F)된 건에 대해 연결 모니터에서 태스크를 실행하여 GR 전표를 생성합니다.</div></div>
+  </div>
+
+  <div class="success"><strong>✅ 실행 조건:</strong> 승인상태가 <strong>F(승인 완료)</strong>인 자산코드에 한해 태스크 실행을 통한 전표 전기가 가능합니다.</div>
+
+  <ul class="steps">
+    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">연결 모니터 접속</div><div class="sbody">SAP Group Reporting의 연결 모니터(Data Monitor 또는 Consolidation Monitor)를 실행합니다.</div></div></li>
+    <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">자산유형에 맞는 태스크 선택</div><div class="sbody">아래 전표유형에 따라 해당 태스크를 선택합니다.</div></div></li>
+    <li class="si"><div class="sdot">3</div><div class="sc"><div class="stit">태스크 실행</div><div class="sbody">선택한 태스크를 실행합니다. 연결 계정과목표·버전·회계연도/기간·연결그룹·연결단위 정보가 태스크 파라미터로 전달됩니다.</div></div></li>
+    <li class="si"><div class="sdot">4</div><div class="sc"><div class="stit">태스크 로그 확인</div><div class="sbody">태스크 로그에서 <strong>성공</strong> 시 전표번호를 확인합니다. <strong>실패</strong> 시 관련 오류 메시지를 확인하고 원인을 조치합니다.</div></div></li>
+  </ul>
+
+  <h3 class="sub">전표유형 → 태스크 매핑</h3>
+  <div class="task-grid">
+    <div class="task-card z1">
+      <div class="task-code">Z3010</div>
+      <div class="task-pill">전표유형 Z1 / Z2</div>
+      <div class="task-name">고정자산 미실현 태스크</div>
+      <div class="task-desc">거래유형 <strong>A (고정자산 미실현)</strong>에 해당하는 자산코드의 전표를 생성합니다.<br>전표유형 Z1(연결조정-공정가치조정), Z2(공정가치 상각종료).</div>
+    </div>
+    <div class="task-card z2">
+      <div class="task-code">Z3020</div>
+      <div class="task-pill">전표유형 Z3 / Z4</div>
+      <div class="task-name">공정가치 조정 태스크</div>
+      <div class="task-desc">거래유형 <strong>B (공정가치 조정)</strong>에 해당하는 자산코드의 전표를 생성합니다.<br>전표유형 Z3(연결조정-고정자산미실현), Z4(고정자산미실현 상각종료).</div>
+    </div>
+  </div>
+
+  <div class="note"><strong>📌 연결정보 파라미터 전달:</strong> 선택한 데이터의 연결계정과목표·버전·회계연도/기간·연결그룹·연결단위는 전표 생성 시 연결모니터 태스크의 파라미터로 동일하게 전달됩니다.</div>
+</div>
+
+<!-- S8 결과 확인 -->
+<div class="sec" id="s8">
+  <div class="shead">
+    <div class="snum">8</div>
+    <div><h2>전표 생성 결과 확인</h2><div class="sdesc">태스크 실행 후 전표 생성 결과를 확인하는 방법입니다.</div></div>
+  </div>
+  <div class="g3">
+    <div class="card"><div class="ctit"><span class="cico">📄</span> 전표 제출 프로그램 (조회 모드)</div><p>전표 제출 프로그램에서 <strong>조회 모드</strong>로 실행하면 생성된 전표번호를 확인할 수 있습니다. 디테일 그리드에서 전표번호·회계연도/기간 등을 확인합니다.</p></div>
+    <div class="card"><div class="ctit"><span class="cico">📅</span> 스케줄 관리 상세 화면</div><p>상각자산 스케줄 관리의 상세 화면에서 전표 생성 월에 <strong>전표번호가 표시</strong>됩니다. 해당 라인은 <strong>편집 불가</strong> 상태로 잠깁니다.</p></div>
+    <div class="card"><div class="ctit"><span class="cico">🔒</span> 기준정보 편집 잠금</div><p>기준정보관리에서 해당 자산코드의 편집 화면으로 들어가면 <strong>편집 불가</strong> 상태로 표시됩니다. 전표 취소 후에야 다시 편집이 가능합니다.</p></div>
+  </div>
+</div>
+
+<!-- S9 전표 생성 조건 -->
+<div class="sec" id="s9">
+  <div class="shead">
+    <div class="snum">·</div>
+    <div><h2>전표 생성 조건 및 제약</h2><div class="sdesc">전표 생성 전 시스템이 검증하는 조건 목록입니다.</div></div>
+  </div>
+  <table class="dt">
+    <thead><tr><th>검증 항목</th><th>내용</th><th>실패 시 메시지</th></tr></thead>
+    <tbody>
+      <tr><td><strong>전표번호 중복</strong></td><td>DOCNR이 이미 존재하면 생성 차단. 동일 ZTRS에 대한 전표 중복 생성 방지</td><td>"이미 생성된 전표입니다"</td></tr>
+      <tr><td><strong>상태 검증</strong></td><td>ZSTATUS가 미생성 상태인지 확인</td><td>알림창 표시</td></tr>
+      <tr><td><strong>전기기간 개방 여부</strong></td><td>RBUNIT·RYEAR·POPER·RDIMEN 기준 전기기간이 열려 있는지 API 확인</td><td>"전기기간이 닫혀 있습니다"</td></tr>
+      <tr><td><strong>승인상태</strong></td><td>ZWSTATUS = F인 건만 전표 생성 가능</td><td>ZWSTATUS ≠ F이면 태스크 실행 불가</td></tr>
+      <tr><td><strong>차대 잔액 검증</strong></td><td>장부통화/그룹통화 금액 합(ZAMT_LC, ZAMT_GC)이 0이어야 함</td><td>"차대의 합이 0이 아닙니다" — 생성 중단</td></tr>
+    </tbody>
+  </table>
+  <div class="note" style="margin-top:4px;"><strong>📌 전표 취소 후 재생성:</strong> 연결 모니터 전표 취소 처리 → ZGRAT5210.DOCNR 삭제 → 스케줄 편집 가능 → 상각자산 전표생성에서 재생성 가능. 전표 생성은 증분 내역 방식으로 처리됩니다.</div>
+</div>
+
+<!-- S10 조회 조건 -->
+<div class="sec" id="s10">
+  <div class="shead">
+    <div class="snum">·</div>
+    <div><h2>조회 조건 및 그리드 필드 상세</h2><div class="sdesc">승인상태 코드 및 승인구분 상세 정의입니다.</div></div>
+  </div>
+  <h3 class="sub">승인구분 (APPR_STAT_CD) — 결재문서 상태</h3>
+  <table class="dt">
+    <thead><tr><th>코드</th><th>명칭</th><th>설명</th><th>설정 시점</th></tr></thead>
+    <tbody>
+      <tr><td><span class="b bc">01</span></td><td>미처리</td><td>제출자가 승인요청 기안 시 기본값으로 설정</td><td>제출자 승인요청 시</td></tr>
+      <tr><td><span class="b bc">02</span></td><td>승인 완료</td><td>승인자가 승인 처리 시 변경</td><td>승인자 승인 시</td></tr>
+      <tr><td><span class="b bc">03</span></td><td>반려</td><td>승인자가 반려 처리 시 변경</td><td>승인자 반려 시</td></tr>
+    </tbody>
+  </table>
+  <h3 class="sub">역할별 화면 권한 정리</h3>
+  <table class="dt">
+    <thead><tr><th>역할</th><th>표시 버튼</th><th>권한</th><th>조회 범위</th></tr></thead>
+    <tbody>
+      <tr><td><span class="b" style="background:var(--blue-bg);color:var(--blue);">제출자</span></td><td>승인요청</td><td>쓰기 권한</td><td>전체 목록 조회 가능</td></tr>
+      <tr><td><span class="b" style="background:var(--green-bg);color:var(--green);">승인자</span></td><td>승인, 반려</td><td>읽기 권한</td><td>본인 앞으로 온 승인요청 건 및 승인 완료 건</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- S11 테이블 -->
+<div class="sec" id="s11">
+  <div class="shead">
+    <div class="snum">·</div>
+    <div><h2>테이블 구조</h2><div class="sdesc">전표 제출 프로세스에서 사용하는 커스텀 테이블 목록입니다.</div></div>
+  </div>
+  <div class="tech-grid">
+    <div class="tc">
+      <div class="tct">ZGRAT5211 — 전표 관리</div>
+      <div class="ti"><code>ZTRS</code><span class="td2">거래코드 (ZGRAT5200 참조)</span></div>
+      <div class="ti"><code>RYEAR / POPER</code><span class="td2">회계연도 / 전기기간</span></div>
+      <div class="ti"><code>ZNO</code><span class="td2">상세거래코드</span></div>
+      <div class="ti"><code>RMVCT</code><span class="td2">거래유형 (연결거래유형)</span></div>
+      <div class="ti"><code>DOCNR</code><span class="td2">회계 전표번호</span></div>
+      <div class="ti"><code>DOCLN</code><span class="td2">총계정원장 개별 항목</span></div>
+      <div class="ti"><code>CRE/UPD</code><span class="td2">생성·변경 이력</span></div>
+    </div>
+    <div class="tc">
+      <div class="tct">ZGRAT7020 — 결재문서 관리 (Head)</div>
+      <div class="ti"><code>DOC_NUM</code><span class="td2">결재문서번호 (PK)</span></div>
+      <div class="ti"><code>DOC_DATE / DOC_USER</code><span class="td2">기안일 / 기안자</span></div>
+      <div class="ti"><code>APPR_STAT_CD</code><span class="td2">승인구분 (01·02·03)</span></div>
+      <div class="ti"><code>APPR_STATUS</code><span class="td2">요청구분</span></div>
+      <div class="ti"><code>DOC_TITLE / DOC_CONTENT</code><span class="td2">문서제목 / 문서내역</span></div>
+      <div class="ti"><code>DC_KEY</code><span class="td2">중복상신 키 체크</span></div>
+      <div class="ti"><code>APPR_DATE / CAN_DATE</code><span class="td2">완료일 / 취소일</span></div>
+    </div>
+    <div class="tc">
+      <div class="tct">ZGRAT7010 — 결재 관리</div>
+      <div class="ti"><code>DOC_NUM</code><span class="td2">결재문서번호 (FK)</span></div>
+      <div class="ti"><code>APPR_SEQ</code><span class="td2">결재순서 (001 = 기안자 제외)</span></div>
+      <div class="ti"><code>APPR_USER</code><span class="td2">결재자 (승인자)</span></div>
+      <div class="ti"><code>APPR_TYPE_CD</code><span class="td2">승인유형</span></div>
+      <div class="ti"><code>APPR_NOTE</code><span class="td2">결재의견</span></div>
+      <div class="ti"><code>APPR_DATE</code><span class="td2">결재 완료일</span></div>
+    </div>
+    <div class="tc">
+      <div class="tct">참조 테이블</div>
+      <div class="ti"><code>ZGRAT5200</code><span class="td2">기준정보 (일반) — 자산코드 정보</span></div>
+      <div class="ti"><code>ZGRAT5210</code><span class="td2">스케줄 관리 — 월별 상각 스케줄</span></div>
+      <div class="ti"><code>ZGRAT5200A/B</code><span class="td2">변경후/변경전 기준정보 이력</span></div>
+      <div class="ti"><code>ZGRAT7040</code><span class="td2">중복키 검증 관리 테이블</span></div>
+      <div style="margin-top:12px;padding:10px;background:var(--navy-light);border-radius:4px;font-size:12px;color:var(--navy);">
+        <strong>승인 시 연결:</strong> 승인 처리 완료 후 연결모니터 프로그램(Z3010, Z3020)에서 상태 확인 가능하도록 연계됩니다.
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+  const ids=['overview','s-status','s1','s2','s3','s4','s5','s6','s7','s8','s9','s10','s11'];
+  const navItems=document.querySelectorAll('.nitem');
+  function setActive(id){navItems.forEach(el=>el.classList.toggle('active',el.getAttribute('href')==='#'+id));}
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)setActive(e.target.id);});},{rootMargin:'-60px 0px -60% 0px'});
+  ids.forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el);});
+  navItems.forEach(link=>{link.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(link.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});});});
+</script>
+</body>
+</html>
