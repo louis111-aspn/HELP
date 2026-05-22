@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>상각자산 기준정보관리 — 사용자 도움말</title>
+<style>
+  :root {
+    --navy: #003366;
+    --navy-mid: #004b99;
+    --navy-light: #e8eef7;
+    --navy-border: #c8d8ee;
+    --white: #ffffff;
+    --text: #333333;
+    --text-light: #666666;
+    --text-muted: #999999;
+    --bg: #f7f9fc;
+    --sidebar-w: 272px;
+    --header-h: 60px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR','Malgun Gothic',sans-serif; background:var(--bg); color:var(--text); font-size:14px; line-height:1.7; }
+
+  /* HEADER */
+  header { position:fixed; top:0; left:0; right:0; height:var(--header-h); background:var(--navy); display:flex; align-items:center; justify-content:space-between; padding:0 28px; z-index:200; border-bottom:3px solid var(--navy-mid); }
+  .header-left { display:flex; align-items:center; gap:14px; }
+  .header-logo { width:32px; height:32px; background:var(--white); border-radius:4px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .header-title { color:var(--white); font-size:15px; font-weight:700; letter-spacing:-0.3px; }
+  .header-sub { color:rgba(255,255,255,0.55); font-size:12px; margin-top:1px; }
+  .header-badge { background:rgba(255,255,255,0.12); color:rgba(255,255,255,0.8); font-size:11px; padding:3px 9px; border-radius:20px; border:1px solid rgba(255,255,255,0.2); letter-spacing:0.5px; }
+
+  /* SIDEBAR */
+  aside { position:fixed; top:var(--header-h); left:0; bottom:0; width:var(--sidebar-w); background:var(--white); border-right:1px solid var(--navy-border); overflow-y:auto; z-index:100; padding:20px 0 40px; }
+  .nav-section-label { font-size:10px; font-weight:700; letter-spacing:1.2px; color:var(--text-muted); text-transform:uppercase; padding:14px 20px 6px; }
+  .nav-item { display:flex; align-items:center; gap:10px; padding:8px 20px; cursor:pointer; color:var(--text-light); font-size:13px; transition:background 0.15s,color 0.15s; border-left:3px solid transparent; text-decoration:none; }
+  .nav-item:hover { background:var(--navy-light); color:var(--navy); }
+  .nav-item.active { background:var(--navy-light); color:var(--navy); font-weight:600; border-left-color:var(--navy); }
+  .nav-num { width:20px; height:20px; background:var(--navy); color:white; font-size:10px; font-weight:700; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .nav-item:not(.active) .nav-num { background:#d0d8e8; color:#666; }
+  aside::-webkit-scrollbar { width:4px; } aside::-webkit-scrollbar-thumb { background:var(--navy-border); border-radius:4px; }
+
+  /* MAIN */
+  main { margin-left:var(--sidebar-w); margin-top:var(--header-h); padding:40px 48px 80px; max-width:980px; }
+
+  /* OVERVIEW */
+  .overview { background:var(--navy); color:white; border-radius:6px; padding:32px 36px; margin-bottom:40px; position:relative; overflow:hidden; }
+  .overview::after { content:''; position:absolute; right:-20px; top:-20px; width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,0.04); }
+  .overview-tag { display:inline-block; background:rgba(255,255,255,0.15); color:rgba(255,255,255,0.85); font-size:11px; font-weight:600; letter-spacing:0.8px; padding:3px 10px; border-radius:3px; text-transform:uppercase; margin-bottom:14px; }
+  .overview h1 { font-size:22px; font-weight:700; margin-bottom:12px; letter-spacing:-0.5px; }
+  .overview p { font-size:14px; color:rgba(255,255,255,0.78); line-height:1.75; max-width:640px; }
+  .overview-meta { margin-top:24px; display:flex; gap:32px; flex-wrap:wrap; border-top:1px solid rgba(255,255,255,0.15); padding-top:20px; }
+  .overview-meta-label { font-size:11px; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:3px; }
+  .overview-meta-val { font-size:13px; color:rgba(255,255,255,0.9); font-weight:600; }
+
+  /* FLOW BOX */
+  .flow-box { background:white; border:1px solid var(--navy-border); border-radius:6px; padding:28px 32px; margin-bottom:40px; }
+  .flow-box h2 { font-size:16px; font-weight:700; color:var(--navy); margin-bottom:20px; padding-bottom:12px; border-bottom:2px solid var(--navy-border); }
+  .flow-steps { display:flex; align-items:flex-start; overflow-x:auto; padding-bottom:4px; }
+  .flow-step { flex:1; min-width:105px; text-align:center; position:relative; padding:0 4px 8px; }
+  .flow-step:not(:last-child)::after { content:'→'; position:absolute; right:-9px; top:20px; color:var(--navy-border); font-size:18px; }
+  .flow-icon { width:44px; height:44px; background:var(--navy-light); border:2px solid var(--navy-border); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 8px; font-size:18px; }
+  .flow-step-n { font-size:10px; font-weight:700; color:var(--navy); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px; }
+  .flow-step-label { font-size:12px; color:var(--text); font-weight:500; }
+
+  /* SECTION */
+  .section { background:white; border:1px solid var(--navy-border); border-radius:6px; padding:32px 36px; margin-bottom:28px; scroll-margin-top:calc(var(--header-h) + 20px); }
+  .section-header { display:flex; align-items:center; gap:14px; margin-bottom:24px; padding-bottom:16px; border-bottom:2px solid var(--navy-light); }
+  .section-num { width:34px; height:34px; background:var(--navy); color:white; font-size:14px; font-weight:700; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .section h2 { font-size:18px; font-weight:700; color:var(--navy); }
+  .section-desc { font-size:13px; color:var(--text-light); margin-top:2px; }
+  h3.sub { font-size:14px; font-weight:700; color:var(--navy); margin:22px 0 10px; }
+
+  /* STEPS */
+  .steps { list-style:none; margin:16px 0; }
+  .step-item { display:flex; gap:14px; padding:12px 0; border-bottom:1px solid var(--navy-light); }
+  .step-item:last-child { border-bottom:none; }
+  .step-dot { width:24px; height:24px; background:var(--navy-light); border:2px solid var(--navy-border); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:var(--navy); flex-shrink:0; margin-top:1px; }
+  .step-content { flex:1; }
+  .step-title { font-weight:600; color:var(--text); margin-bottom:3px; font-size:13.5px; }
+  .step-body { font-size:13px; color:var(--text-light); }
+
+  /* CALLOUTS */
+  .note { background:var(--navy-light); border-left:4px solid var(--navy); border-radius:0 4px 4px 0; padding:12px 16px; margin:14px 0; font-size:13px; color:var(--navy); }
+  .note strong { font-weight:700; }
+  .warn { background:#fff8e1; border-left:4px solid #f59e0b; border-radius:0 4px 4px 0; padding:12px 16px; margin:14px 0; font-size:13px; color:#7c5800; }
+  .warn strong { font-weight:700; }
+  .danger { background:#fdf2f2; border-left:4px solid #e74c3c; border-radius:0 4px 4px 0; padding:12px 16px; margin:14px 0; font-size:13px; color:#922b21; }
+  .danger strong { font-weight:700; }
+
+  /* TABLES */
+  .data-table { width:100%; border-collapse:collapse; margin:14px 0; font-size:13px; }
+  .data-table th { background:var(--navy); color:white; padding:10px 14px; text-align:left; font-weight:600; font-size:12px; }
+  .data-table td { padding:9px 14px; border-bottom:1px solid var(--navy-border); vertical-align:top; }
+  .data-table tr:nth-child(even) td { background:var(--navy-light); }
+  .data-table tr:last-child td { border-bottom:none; }
+
+  .field-table { width:100%; border-collapse:collapse; margin:12px 0; font-size:12.5px; }
+  .field-table th { background:var(--navy); color:white; padding:8px 12px; font-size:12px; font-weight:600; text-align:left; }
+  .field-table td { padding:8px 12px; border-bottom:1px solid var(--navy-border); vertical-align:top; }
+  .field-table tr:nth-child(even) td { background:var(--navy-light); }
+  .field-table tr:last-child td { border-bottom:none; }
+  .field-table td code { font-family:'Courier New',monospace; font-size:11px; color:var(--navy); background:var(--navy-light); padding:1px 4px; border-radius:3px; }
+
+  /* BADGES */
+  .badge { display:inline-block; padding:2px 8px; border-radius:3px; font-size:11px; font-weight:600; letter-spacing:0.3px; white-space:nowrap; }
+  .badge-req  { background:#fde8e8; color:#c0392b; }
+  .badge-opt  { background:#e8f5e9; color:#27ae60; }
+  .badge-ro   { background:#f3f3f3; color:#777; }
+  .badge-auto { background:var(--navy-light); color:var(--navy); }
+  .badge-code { background:#f5f5f5; color:#555; font-family:'Courier New',monospace; font-size:11px; }
+  .badge-a    { background:#e8f0fe; color:#1a56db; }
+  .badge-b    { background:#fef3e2; color:#b45309; }
+
+  /* GRID */
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:14px 0; }
+  .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin:14px 0; }
+
+  /* CARDS */
+  .card { border:1px solid var(--navy-border); border-radius:5px; padding:14px 16px; background:white; }
+  .card-title { display:flex; align-items:center; gap:8px; font-weight:700; font-size:13px; color:var(--navy); margin-bottom:7px; }
+  .card-icon { font-size:15px; }
+  .card p { font-size:12.5px; color:var(--text-light); }
+  .card .cond { font-size:11.5px; color:#999; margin-top:5px; font-style:italic; }
+
+  /* TRANSACTION TYPE CARDS */
+  .type-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0; }
+  .type-card { border-radius:5px; padding:20px 18px; border:1px solid var(--navy-border); }
+  .type-card.type-a { border-top:4px solid #1a56db; }
+  .type-card.type-b { border-top:4px solid #d97706; }
+  .type-badge-lbl { font-size:26px; font-weight:800; margin-bottom:3px; }
+  .type-card.type-a .type-badge-lbl { color:#1a56db; }
+  .type-card.type-b .type-badge-lbl { color:#d97706; }
+  .type-pill { display:inline-block; font-size:11px; font-weight:700; padding:2px 9px; border-radius:3px; margin-bottom:10px; }
+  .type-card.type-a .type-pill { background:#e8f0fe; color:#1a56db; }
+  .type-card.type-b .type-pill { background:#fef3e2; color:#b45309; }
+  .type-name { font-size:14px; font-weight:700; color:var(--text); margin-bottom:10px; }
+  .type-desc { font-size:12.5px; color:var(--text-light); line-height:1.65; }
+  .type-docty { margin-top:10px; font-size:12px; background:var(--navy-light); border-radius:4px; padding:8px 10px; color:var(--navy); }
+
+  /* ACCOUNT BOXES */
+  .acct-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:14px 0; }
+  .acct-item { border:1px solid var(--navy-border); border-radius:4px; padding:10px 12px; background:white; border-left:3px solid var(--navy); }
+  .acct-label { font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; }
+  .acct-field { font-size:12px; font-family:'Courier New',monospace; color:var(--navy); }
+  .acct-desc { font-size:12px; color:var(--text-light); margin-top:3px; }
+
+  /* VALIDATION */
+  .val-list { list-style:none; border:1px solid var(--navy-border); border-radius:5px; overflow:hidden; margin:14px 0; }
+  .val-item { display:flex; align-items:flex-start; gap:12px; padding:11px 16px; border-bottom:1px solid var(--navy-light); font-size:13px; background:white; }
+  .val-item:last-child { border-bottom:none; }
+  .val-item:nth-child(even) { background:var(--navy-light); }
+  .val-icon { font-size:15px; flex-shrink:0; margin-top:2px; }
+  .val-text { color:var(--text); line-height:1.6; }
+  .val-text strong { font-weight:600; color:var(--text); }
+
+  /* TECH TABLE */
+  .tech-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:14px 0; }
+  .tech-card { border:1px solid var(--navy-border); border-radius:5px; padding:14px 16px; background:white; }
+  .tech-card-title { font-size:11px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:var(--text-muted); margin-bottom:10px; }
+  .tech-item { font-size:12.5px; color:var(--text); padding:4px 0; border-bottom:1px solid var(--navy-light); display:flex; align-items:baseline; gap:8px; }
+  .tech-item:last-child { border-bottom:none; }
+  .tech-item code { font-family:'Courier New',monospace; font-size:12px; color:var(--navy); background:var(--navy-light); padding:1px 5px; border-radius:3px; flex-shrink:0; }
+  .tech-desc { color:var(--text-light); font-size:12px; }
+
+  @media(max-width:900px){
+    :root{--sidebar-w:0px;}
+    aside{display:none;}
+    main{padding:24px 20px 60px;}
+    .grid-2,.grid-3,.type-grid,.tech-grid{grid-template-columns:1fr;}
+    .acct-grid{grid-template-columns:1fr 1fr;}
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-left">
+    <div class="header-logo">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <rect x="2" y="2" width="16" height="16" rx="2" fill="#003366"/>
+        <rect x="5" y="5" width="4" height="4" rx="0.5" fill="white" opacity="0.9"/>
+        <rect x="11" y="5" width="4" height="4" rx="0.5" fill="white" opacity="0.5"/>
+        <rect x="5" y="11" width="4" height="4" rx="0.5" fill="white" opacity="0.5"/>
+        <rect x="11" y="11" width="4" height="4" rx="0.5" fill="white" opacity="0.9"/>
+      </svg>
+    </div>
+    <div>
+      <div class="header-title">상각자산 기준정보관리</div>
+      <div class="header-sub">GRRA Add-in — 사용자 도움말</div>
+    </div>
+  </div>
+  <span class="header-badge">V1.0</span>
+</header>
+
+<!-- SIDEBAR -->
+<aside>
+  <div>
+    <div class="nav-section-label">개요</div>
+    <a class="nav-item active" href="#overview"><span class="nav-num">·</span> 프로그램 개요 및 흐름</a>
+  </div>
+  <div>
+    <div class="nav-section-label">주요 기능</div>
+    <a class="nav-item" href="#s1"><span class="nav-num">1</span> 조회 화면 (초기 화면)</a>
+    <a class="nav-item" href="#s2"><span class="nav-num">2</span> 기준정보 생성 (개별)</a>
+    <a class="nav-item" href="#s3"><span class="nav-num">3</span> 일괄 업로드</a>
+    <a class="nav-item" href="#s4"><span class="nav-num">4</span> 편집</a>
+    <a class="nav-item" href="#s5"><span class="nav-num">5</span> 추가거래 등록</a>
+    <a class="nav-item" href="#s6"><span class="nav-num">6</span> 삭제</a>
+    <a class="nav-item" href="#s7"><span class="nav-num">7</span> 다운로드</a>
+  </div>
+  <div>
+    <div class="nav-section-label">참고</div>
+    <a class="nav-item" href="#s8"><span class="nav-num">·</span> 생성 유효성 검증 규칙</a>
+    <a class="nav-item" href="#s9"><span class="nav-num">·</span> 거래유형 및 계정 구조</a>
+    <a class="nav-item" href="#s10"><span class="nav-num">·</span> 조회 조건 필드 상세</a>
+    <a class="nav-item" href="#s11"><span class="nav-num">·</span> 테이블 구조</a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main>
+
+<!-- OVERVIEW -->
+<div class="overview" id="overview">
+  <div class="overview-tag">상각자산 기준정보관리</div>
+  <h1>상각자산 기준정보관리</h1>
+  <p>그룹 내 법인 간 상각자산 내부거래(고정자산 미실현 · 공정가치 조정)에 대한 기준정보를 등록·관리하는 프로그램입니다. 거래자산 선택 시 상각자산 마스터관리에서 사전 정의된 계정정보가 자동 적용되며, 개별 생성·일괄 업로드·추가거래 등록·편집·삭제 기능을 제공합니다. 글로벌 매개변수(I_CnsldtnGlobalParameter)와 연동하여 연결 기준정보를 자동 초기화합니다.</p>
+  <div class="overview-meta">
+    <div><div class="overview-meta-label">거래유형</div><div class="overview-meta-val">A: 고정자산 미실현 / B: 공정가치 조정</div></div>
+    <div><div class="overview-meta-label">UI 기술</div><div class="overview-meta-val">SAP Fiori / SAPUI5 (RAP)</div></div>
+    <div><div class="overview-meta-label">주요 테이블</div><div class="overview-meta-val">ZGRAT5200 / ZGRAT5201</div></div>
+  </div>
+</div>
+
+<!-- FLOW -->
+<div class="flow-box">
+  <h2>📋 주요 프로세스 흐름</h2>
+  <div class="flow-steps">
+    <div class="flow-step"><div class="flow-icon">🔍</div><div class="flow-step-n">Step 1</div><div class="flow-step-label">조회 화면 진입</div></div>
+    <div class="flow-step"><div class="flow-icon">➕</div><div class="flow-step-n">Step 2</div><div class="flow-step-label">기준정보 생성</div></div>
+    <div class="flow-step"><div class="flow-icon">🏷️</div><div class="flow-step-n">Step 3</div><div class="flow-step-label">거래자산 &amp; 계정 세팅</div></div>
+    <div class="flow-step"><div class="flow-icon">✅</div><div class="flow-step-n">Step 4</div><div class="flow-step-label">유효성 점검 &amp; 저장</div></div>
+    <div class="flow-step"><div class="flow-icon">📅</div><div class="flow-step-n">Step 5</div><div class="flow-step-label">스케쥴 등록</div></div>
+    <div class="flow-step"><div class="flow-icon">📝</div><div class="flow-step-n">Step 6</div><div class="flow-step-label">추가거래 등록</div></div>
+  </div>
+  <div class="note" style="margin-top:20px;">
+    <strong>선행 조건:</strong> 거래자산을 선택하면 <strong>상각자산 마스터관리 프로그램</strong>에서 사전 정의된 계정정보(고정자산계정·상각계정·소거계정 등)가 자동 세팅됩니다. 추가거래 등록은 <strong>스케쥴 등록이 완료된 자산코드에 한해</strong> 가능합니다.
+  </div>
+</div>
+
+<!-- S1 조회 -->
+<div class="section" id="s1">
+  <div class="section-header">
+    <div class="section-num">1</div>
+    <div>
+      <h2>조회 화면 (초기 화면)</h2>
+      <div class="section-desc">프로그램 실행 시 글로벌 매개변수 기반으로 조회 조건이 자동 세팅되고, 실행 버튼으로 기준정보 목록을 조회합니다.</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>📌 글로벌 매개변수 자동 초기화:</strong> 프로그램 실행 시 <strong>연결단위(매입법인)</strong>와 <strong>연결버전</strong>은 <code style="background:rgba(0,51,102,0.12);padding:1px 5px;border-radius:3px;font-family:monospace;">I_CnsldtnGlobalParameter</code>에 설정된 값으로 자동 초기화됩니다. 이 값을 기본값으로 하되, 다른 법인 선택도 가능합니다.
+  </div>
+
+  <h3 class="sub">조회 조건</h3>
+  <table class="data-table">
+    <thead><tr><th>필드</th><th>UI 요소</th><th>기본값 / 비고</th><th>테이블/필드</th></tr></thead>
+    <tbody>
+      <tr><td>연결단위 (매입법인)</td><td>도움창</td><td><span class="badge badge-req">필수</span> · 글로벌 매개변수 기본값</td><td><span class="badge badge-code">ZGRAT5200.RBUNIT</span></td></tr>
+      <tr><td>연결버전</td><td>도움창</td><td><span class="badge badge-req">필수</span> · 글로벌 매개변수 기본값</td><td><span class="badge badge-code">ZGRAT5201.RVERS</span></td></tr>
+      <tr><td>연결계정과목표</td><td>도움창</td><td><span class="badge badge-req">필수</span></td><td><span class="badge badge-code">ZGRAT5202.RITCLG</span></td></tr>
+      <tr><td>거래유형</td><td>도움창</td><td><span class="badge badge-req">필수</span></td><td><span class="badge badge-code">ZGRAT5203.ZTRS_TYPE</span></td></tr>
+      <tr><td>기간</td><td>도움창</td><td><span class="badge badge-opt">선택</span></td><td>—</td></tr>
+      <tr><td>완료 제외</td><td>체크박스</td><td>기본값: <strong>체크</strong> (상태 필드 기준 필터)</td><td>—</td></tr>
+      <tr><td>삭제표시 제외</td><td>체크박스</td><td>기본값: <strong>체크</strong> (상태 필드 기준 필터)</td><td>—</td></tr>
+      <tr><td>추가거래</td><td>체크박스</td><td>기본값: <strong>체크해제</strong> (손상·처분 발생 기준 필터)</td><td>—</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">그리드 표시 항목 (편집불가)</h3>
+  <div class="grid-2">
+    <table class="data-table" style="font-size:12.5px;">
+      <thead><tr><th>컬럼명</th><th>필드</th></tr></thead>
+      <tbody>
+        <tr><td>파트너단위 (매출법인)</td><td><span class="badge badge-code">RBUPTR</span></td></tr>
+        <tr><td>통화키</td><td><span class="badge badge-code">RKCUR</span></td></tr>
+        <tr><td>자산코드 (거래코드)</td><td><span class="badge badge-code">ZTRS</span></td></tr>
+        <tr><td>자산명 (거래명)</td><td><span class="badge badge-code">ZTRS_TXT</span></td></tr>
+        <tr><td>고정자산계정</td><td><span class="badge badge-code">ZRITEM_FA</span></td></tr>
+        <tr><td>상각기간</td><td><span class="badge badge-code">ZUSFL</span></td></tr>
+        <tr><td>거래일</td><td><span class="badge badge-code">ZDATE_TRS</span></td></tr>
+        <tr><td>상각시작일</td><td><span class="badge badge-code">ZDATE_CLO</span></td></tr>
+        <tr><td>상각계정</td><td><span class="badge badge-code">ZRITEM_DEP</span></td></tr>
+      </tbody>
+    </table>
+    <table class="data-table" style="font-size:12.5px;">
+      <thead><tr><th>컬럼명</th><th>필드</th></tr></thead>
+      <tbody>
+        <tr><td>소거계정</td><td><span class="badge badge-code">ZRITEM_ELI</span></td></tr>
+        <tr><td>상각누계계정</td><td><span class="badge badge-code">ZRITEM_ACCUM</span></td></tr>
+        <tr><td>손상차손</td><td><span class="badge badge-code">ZRITEM_IMP_DEP</span></td></tr>
+        <tr><td>이연법인세</td><td><span class="badge badge-code">ZRITEM_DEF</span></td></tr>
+        <tr><td>취득금액 (GC)</td><td><span class="badge badge-code">ZAMT_UNRLZ_GC</span></td></tr>
+        <tr><td>취득금액 (LC)</td><td><span class="badge badge-code">ZAMT_UNRLZ</span></td></tr>
+        <tr><td>전표유형</td><td><span class="badge badge-code">DOCTY</span></td></tr>
+        <tr><td>상태</td><td><span class="badge badge-code">ZSTATUS</span></td></tr>
+        <tr><td>작업상태</td><td>작성 / 제출 / 승인</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sub">버튼 구성</h3>
+  <div class="grid-2">
+    <div class="card"><div class="card-title"><span class="card-icon">➕</span> 생성</div><p>팝업창을 통해 새로운 기준정보를 생성합니다.</p></div>
+    <div class="card"><div class="card-title"><span class="card-icon">📤</span> 일괄업로드</div><p>엑셀 파일을 통해 기준정보를 일괄 등록합니다.</p></div>
+    <div class="card"><div class="card-title"><span class="card-icon">✏️</span> 편집</div><p>체크박스 선택 후 팝업창에서 데이터를 편집합니다.</p></div>
+    <div class="card"><div class="card-title"><span class="card-icon">📝</span> 추가거래등록</div><p>손상·처분 등 변동 거래를 등록합니다.<br><span class="cond">편집 중인 데이터가 있으면 완료 후 사용 가능</span></p></div>
+    <div class="card"><div class="card-title"><span class="card-icon">🗑</span> 삭제</div><p>체크박스 선택한 데이터를 삭제합니다.</p></div>
+    <div class="card"><div class="card-title"><span class="card-icon">📥</span> 다운로드</div><p>조회된 리스트를 엑셀 파일로 다운로드합니다.</p></div>
+  </div>
+</div>
+
+<!-- S2 생성 -->
+<div class="section" id="s2">
+  <div class="section-header">
+    <div class="section-num">2</div>
+    <div>
+      <h2>기준정보 생성 (개별)</h2>
+      <div class="section-desc">생성 팝업창을 통해 상각자산 기준정보를 한 건씩 등록합니다.</div>
+    </div>
+  </div>
+
+  <ul class="steps">
+    <li class="step-item">
+      <div class="step-dot">1</div>
+      <div class="step-content">
+        <div class="step-title">생성 버튼 클릭 → 팝업 열림</div>
+        <div class="step-body"><strong>생성</strong> 버튼을 클릭하면 팝업이 열립니다. 팝업 상단의 <strong>연결 계정과목표, 연결버전, 회계연도, 회계기간</strong>은 글로벌 매개변수 값으로 자동 세팅됩니다.</div>
+      </div>
+    </li>
+    <li class="step-item">
+      <div class="step-dot">2</div>
+      <div class="step-content">
+        <div class="step-title">거래유형 선택</div>
+        <div class="step-body">거래유형 <span class="badge badge-a">A 고정자산 미실현</span> 또는 <span class="badge badge-b">B 공정가치 조정</span>을 선택합니다. 유형에 따라 이후 입력 필드 및 전표유형 기본값이 달라집니다.</div>
+      </div>
+    </li>
+    <li class="step-item">
+      <div class="step-dot">3</div>
+      <div class="step-content">
+        <div class="step-title">거래자산 선택 → 계정정보 자동 세팅</div>
+        <div class="step-body">거래자산(예: <em>건물_상각</em>, <em>건물_공정가치</em>)을 선택하면 <strong>상각자산 마스터관리 프로그램</strong>에 등록된 7개 계정(고정자산계정·상각계정·소거계정·상각누계계정·손상누계계정·손상차손계정·이연법인세계정)과 전표유형이 자동으로 채워집니다.</div>
+      </div>
+    </li>
+    <li class="step-item">
+      <div class="step-dot">4</div>
+      <div class="step-content">
+        <div class="step-title">법인 정보 및 금액 입력</div>
+        <div class="step-body">판매(투자)법인과 매입(피투자)법인을 설정합니다. 매입법인은 글로벌 매개변수 기본값으로 편집이 불가합니다. 통화키도 매입법인에 맞춰 자동 세팅됩니다.<br>금액(LC) 입력 후 <strong>원화환산</strong> 버튼을 눌러 그룹통화금액(GC)을 산출합니다. <em>원화환산은 거래유형 A에서만 사용 가능합니다.</em></div>
+      </div>
+    </li>
+    <li class="step-item">
+      <div class="step-dot">5</div>
+      <div class="step-content">
+        <div class="step-title">자산코드 자동채번 후 저장</div>
+        <div class="step-body">자산코드는 사용자가 직접 입력할 수 없으며, 저장 시 <strong>거래유형 코드 + 거래일자(YYMM)</strong> 조합으로 순번이 자동채번됩니다.</div>
+      </div>
+    </li>
+  </ul>
+
+  <h3 class="sub">생성 팝업 주요 입력 필드</h3>
+  <table class="field-table">
+    <thead><tr><th>필드명</th><th>입력 방식</th><th>필수</th><th>비고</th></tr></thead>
+    <tbody>
+      <tr><td>자산코드 (거래코드)</td><td>편집불가</td><td><span class="badge badge-auto">자동채번</span></td><td>거래유형 + 거래일자(YYMM)</td></tr>
+      <tr><td>자산명 (거래명)</td><td>텍스트</td><td><span class="badge badge-req">필수</span></td><td></td></tr>
+      <tr><td>거래유형</td><td>도움창</td><td><span class="badge badge-req">필수</span></td><td>A: 고정자산 미실현 / B: 공정가치 조정</td></tr>
+      <tr><td>판매(투자)법인</td><td>도움창</td><td><span class="badge badge-req">필수</span></td><td>거래유형 A: 매입법인과 달라야 함</td></tr>
+      <tr><td>매입(피투자)법인</td><td>자동(글로벌 매개변수)</td><td><span class="badge badge-req">필수</span></td><td>글로벌 매개변수 기본값, 편집 불가</td></tr>
+      <tr><td>거래일자</td><td>날짜 (YYYYMMDD)</td><td><span class="badge badge-req">필수</span></td><td>글로벌 매개변수 기간과 일치해야 함</td></tr>
+      <tr><td>상각일자 (상각시작일)</td><td>날짜 (YYYYMMDD)</td><td><span class="badge badge-req">필수</span></td><td><strong>말일자만</strong> 입력 가능 / 기간 일치 필요</td></tr>
+      <tr><td>통화키</td><td>자동 세팅</td><td>—</td><td>매입법인 통화키에 맞춰 자동, 편집 불가</td></tr>
+      <tr><td>금액 (LC)</td><td>숫자</td><td><span class="badge badge-req">필수</span></td><td>로컬통화 금액</td></tr>
+      <tr><td>금액 (GC)</td><td>원화환산 버튼</td><td><span class="badge badge-req">필수</span></td><td>LC 입력 후 원화환산 실행 필수 (A 유형). LC 변경 시 재환산 필요</td></tr>
+      <tr><td>상각기간 (개월)</td><td>숫자</td><td><span class="badge badge-req">필수</span></td><td></td></tr>
+      <tr><td>이연법인세 적용여부</td><td>체크박스</td><td><span class="badge badge-req">필수</span></td><td></td></tr>
+      <tr><td>고정자산계정</td><td>자동 (마스터)</td><td><span class="badge badge-req">필수</span></td><td>거래자산 선택 시 마스터에서 자동 세팅</td></tr>
+      <tr><td>상각계정</td><td>자동 (마스터)</td><td><span class="badge badge-req">필수</span></td><td>거래자산 선택 시 마스터에서 자동 세팅</td></tr>
+      <tr><td>소거계정</td><td>자동 (마스터)</td><td><span class="badge badge-req">필수</span></td><td>거래자산 선택 시 마스터에서 자동 세팅</td></tr>
+      <tr><td>상각누계계정</td><td>자동 (마스터)</td><td><span class="badge badge-req">필수</span></td><td>거래자산 선택 시 마스터에서 자동 세팅</td></tr>
+      <tr><td>손상누계계정</td><td>자동 (마스터)</td><td><span class="badge badge-opt">선택</span></td><td>거래자산 선택 시 마스터에서 자동 세팅</td></tr>
+      <tr><td>손상차손계정</td><td>자동 (마스터)</td><td><span class="badge badge-opt">선택</span></td><td>거래자산 선택 시 마스터에서 자동 세팅</td></tr>
+      <tr><td>이연법인세계정</td><td>자동 (마스터)</td><td><span class="badge badge-opt">선택</span></td><td>거래자산 선택 시 마스터에서 자동 세팅</td></tr>
+      <tr><td>전표유형</td><td>자동 (마스터)</td><td><span class="badge badge-req">필수</span></td><td>거래유형 B(공정가치): 자동 지정 후 편집 불가</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- S3 일괄업로드 -->
+<div class="section" id="s3">
+  <div class="section-header">
+    <div class="section-num">3</div>
+    <div>
+      <h2>일괄 업로드</h2>
+      <div class="section-desc">엑셀 템플릿을 활용하여 여러 건의 기준정보를 한 번에 등록합니다.</div>
+    </div>
+  </div>
+
+  <ul class="steps">
+    <li class="step-item">
+      <div class="step-dot">1</div>
+      <div class="step-content">
+        <div class="step-title">템플릿 다운로드</div>
+        <div class="step-body">일괄업로드 화면에서 <strong>템플릿 다운로드</strong> 버튼을 클릭하여 표준 엑셀 파일을 내려받습니다.</div>
+      </div>
+    </li>
+    <li class="step-item">
+      <div class="step-dot">2</div>
+      <div class="step-content">
+        <div class="step-title">데이터 입력</div>
+        <div class="step-body">날짜 필드(거래일자, 상각일자)는 <strong>YYYYMMDD</strong> 형식으로 입력합니다. 거래유형, 계정 등 유효성 검사 규칙을 준수해야 합니다.</div>
+      </div>
+    </li>
+    <li class="step-item">
+      <div class="step-dot">3</div>
+      <div class="step-content">
+        <div class="step-title">파일 업로드</div>
+        <div class="step-body">파일 탐색기에서 작성한 엑셀 파일을 선택하여 업로드합니다.</div>
+      </div>
+    </li>
+    <li class="step-item">
+      <div class="step-dot">4</div>
+      <div class="step-content">
+        <div class="step-title">유효성 점검 → 저장 및 리스트 출력</div>
+        <div class="step-body">개별 생성과 <strong>동일한 유효성 점검</strong>이 실행됩니다. 오류 없이 저장되면 자산코드가 자동채번되고 조회 리스트에 즉시 출력됩니다. 오류가 있으면 해당 항목의 오류 내용을 확인하고 수정 후 재시도합니다.</div>
+      </div>
+    </li>
+  </ul>
+
+  <h3 class="sub">업로드 템플릿 컬럼 목록</h3>
+  <table class="data-table" style="font-size:12.5px;">
+    <thead><tr><th>컬럼명</th><th>필수</th><th>형식 / 비고</th></tr></thead>
+    <tbody>
+      <tr><td>거래명</td><td><span class="badge badge-req">필수</span></td><td>자산명</td></tr>
+      <tr><td>거래유형</td><td><span class="badge badge-req">필수</span></td><td>A: 고정자산 미실현 / B: 공정가치 조정</td></tr>
+      <tr><td>매출법인-투자 (판매법인)</td><td><span class="badge badge-req">필수</span></td><td>법인코드</td></tr>
+      <tr><td>매입법인-피투자</td><td><span class="badge badge-req">필수</span></td><td>법인코드</td></tr>
+      <tr><td>거래일자</td><td><span class="badge badge-req">필수</span></td><td>YYYYMMDD</td></tr>
+      <tr><td>상각일자</td><td><span class="badge badge-req">필수</span></td><td>YYYYMMDD · 말일자만 허용</td></tr>
+      <tr><td>통화키</td><td><span class="badge badge-req">필수</span></td><td>예: KRW, USD</td></tr>
+      <tr><td>금액(GC)</td><td><span class="badge badge-req">필수</span></td><td>그룹통화 금액</td></tr>
+      <tr><td>금액(LC)</td><td><span class="badge badge-req">필수</span></td><td>로컬통화 금액</td></tr>
+      <tr><td>상각기간(개월)</td><td><span class="badge badge-req">필수</span></td><td>숫자</td></tr>
+      <tr><td>이연법인세 적용여부</td><td><span class="badge badge-opt">선택</span></td><td>X: 적용</td></tr>
+      <tr><td>고정자산계정</td><td><span class="badge badge-req">필수</span></td><td>연결계정 코드</td></tr>
+      <tr><td>상각계정</td><td><span class="badge badge-req">필수</span></td><td>연결계정 코드</td></tr>
+      <tr><td>소거계정</td><td><span class="badge badge-req">필수</span></td><td>연결계정 코드</td></tr>
+      <tr><td>상각누계액계정</td><td><span class="badge badge-req">필수</span></td><td>연결계정 코드</td></tr>
+      <tr><td>손상누계계정</td><td><span class="badge badge-opt">선택</span></td><td>연결계정 코드</td></tr>
+      <tr><td>손상차손계정</td><td><span class="badge badge-opt">선택</span></td><td>연결계정 코드</td></tr>
+      <tr><td>이연법인세계정</td><td><span class="badge badge-opt">선택</span></td><td>연결계정 코드</td></tr>
+      <tr><td>전표유형</td><td><span class="badge badge-req">필수</span></td><td>예: Z1, Z3</td></tr>
+      <tr><td>상태</td><td><span class="badge badge-opt">선택</span></td><td></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- S4 편집 -->
+<div class="section" id="s4">
+  <div class="section-header">
+    <div class="section-num">4</div>
+    <div>
+      <h2>편집</h2>
+      <div class="section-desc">기존 기준정보의 내용을 수정합니다. 전표 생성 여부에 따라 편집 가능 범위가 달라집니다.</div>
+    </div>
+  </div>
+
+  <ul class="steps">
+    <li class="step-item">
+      <div class="step-dot">1</div>
+      <div class="step-content">
+        <div class="step-title">체크박스 선택 → 편집 버튼 클릭</div>
+        <div class="step-body">수정할 항목의 체크박스를 선택한 후 <strong>편집</strong> 버튼을 클릭합니다. 편집 팝업이 열리며 선택한 데이터의 값이 자동으로 불러와집니다.</div>
+      </div>
+    </li>
+    <li class="step-item">
+      <div class="step-dot">2</div>
+      <div class="step-content">
+        <div class="step-title">편집 가능 범위 확인</div>
+        <div class="step-body"><strong>자산코드(거래코드), 거래유형, 그룹통화키</strong>는 항상 편집이 불가합니다. 계정·기간·연결단위는 전표 생성 여부에 따라 변경 가능 여부가 결정됩니다. 상태 필드는 활성화되어 편집이 가능합니다.</div>
+      </div>
+    </li>
+    <li class="step-item">
+      <div class="step-dot">3</div>
+      <div class="step-content">
+        <div class="step-title">수정 후 저장</div>
+        <div class="step-body">수정 완료 후 저장하면 생성 시와 동일한 유효성 점검이 적용됩니다.</div>
+      </div>
+    </li>
+  </ul>
+
+  <div class="warn">
+    <strong>⚠ 편집 제한:</strong> 이미 전표가 생성된 경우 계정·기간·연결단위 등 핵심 필드의 변경이 제한될 수 있습니다. 전표 생성 여부를 반드시 확인한 후 편집을 진행하세요.
+  </div>
+</div>
+
+<!-- S5 추가거래 -->
+<div class="section" id="s5">
+  <div class="section-header">
+    <div class="section-num">5</div>
+    <div>
+      <h2>추가거래 등록</h2>
+      <div class="section-desc">자산코드별로 손상(C) 또는 처분(D) 등의 변동 거래를 추가 등록합니다.</div>
+    </div>
+  </div>
+
+  <div class="danger">
+    <strong>🚫 필수 선행 조건:</strong> <strong>스케쥴 등록이 완료된 자산코드에 한해</strong> 추가거래 등록이 가능합니다. 스케쥴이 등록되지 않은 자산코드는 추가거래등록 버튼이 비활성화됩니다.
+  </div>
+
+  <ul class="steps">
+    <li class="step-item">
+      <div class="step-dot">1</div>
+      <div class="step-content">
+        <div class="step-title">라인 선택 → 추가거래등록 클릭</div>
+        <div class="step-body">조회 그리드에서 대상 라인의 체크박스를 선택한 후 <strong>추가거래등록</strong> 버튼을 클릭합니다. 편집 중인 데이터가 있으면 먼저 편집을 완료해야 합니다.</div>
+      </div>
+    </li>
+    <li class="step-item">
+      <div class="step-dot">2</div>
+      <div class="step-content">
+        <div class="step-title">라인추가 → 필수 항목 입력</div>
+        <div class="step-body">추가거래 화면에서 <strong>라인추가</strong>를 클릭합니다. <strong>변동유형 ~ 거래적요</strong>까지 모든 항목을 입력해야 다음 라인 추가가 가능합니다.</div>
+      </div>
+    </li>
+    <li class="step-item">
+      <div class="step-dot">3</div>
+      <div class="step-content">
+        <div class="step-title">저장</div>
+        <div class="step-body">저장 버튼을 클릭하면 PK 유효성 검증 후 <strong>ZGRAT5201</strong> 테이블에 저장됩니다. 메시지 필드에 검증 결과가 표시됩니다.</div>
+      </div>
+    </li>
+  </ul>
+
+  <h3 class="sub">추가거래 입력 필드</h3>
+  <table class="field-table">
+    <thead><tr><th>필드명</th><th>입력 방식</th><th>필수</th><th>테이블/필드</th></tr></thead>
+    <tbody>
+      <tr><td>자산코드 (거래코드)</td><td>편집불가 (조회조건에서 전달)</td><td>—</td><td><code>ZGRAT5201.ZTRS</code></td></tr>
+      <tr><td>자산명 (거래명)</td><td>편집불가</td><td>—</td><td><code>ZGRAT5201.ZTRS_TXT</code></td></tr>
+      <tr><td>변동유형</td><td>드롭다운</td><td><span class="badge badge-req">필수</span></td><td><code>ZGRAT5201.ZTYPE_EVE</code> — C: 손상, D: 처분</td></tr>
+      <tr><td>변동일자</td><td>날짜형식</td><td><span class="badge badge-req">필수</span></td><td><code>ZGRAT5201.ZDATE_EVE</code> — 유효성 점검 적용</td></tr>
+      <tr><td>당월 상각포함</td><td>체크박스</td><td>—</td><td><code>ZGRAT5201.ZCK_INCLU</code> — 기본값: 체크해제</td></tr>
+      <tr><td>통화키</td><td>편집불가</td><td>—</td><td><code>ZGRAT5201.RHCUR</code></td></tr>
+      <tr><td>장부금액</td><td>숫자형식</td><td><span class="badge badge-req">필수</span></td><td><code>ZGRAT5201.ZAMT_EVE</code></td></tr>
+      <tr><td>거래 적요</td><td>텍스트</td><td><span class="badge badge-req">필수</span></td><td><code>ZGRAT5201.ZEVE_TXT</code></td></tr>
+      <tr><td>전표번호</td><td>편집불가</td><td>—</td><td><code>ZGRAT5201.DOCNR</code></td></tr>
+      <tr><td>메시지</td><td>편집불가</td><td>—</td><td>저장 후 PK 유효성 검증 결과 표시</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <strong>⚠ 추가거래 삭제 제한:</strong> 이미 전표가 생성된 추가거래 건은 삭제할 수 없습니다.
+  </div>
+</div>
+
+<!-- S6 삭제 -->
+<div class="section" id="s6">
+  <div class="section-header">
+    <div class="section-num">6</div>
+    <div>
+      <h2>삭제</h2>
+      <div class="section-desc">기준정보를 삭제합니다. 특정 상태에서는 삭제가 제한됩니다.</div>
+    </div>
+  </div>
+
+  <ul class="steps">
+    <li class="step-item">
+      <div class="step-dot">1</div>
+      <div class="step-content">
+        <div class="step-title">라인 선택 → 삭제 버튼 클릭</div>
+        <div class="step-body">삭제할 항목의 체크박스를 선택한 후 <strong>삭제</strong> 버튼을 클릭합니다.</div>
+      </div>
+    </li>
+  </ul>
+
+  <div class="danger">
+    <strong>🚫 삭제 불가 조건 — 아래 중 하나라도 해당되면 삭제할 수 없습니다.</strong>
+    <ul style="margin-top:8px;padding-left:18px;font-size:13px;line-height:2;">
+      <li>스케쥴이 이미 등록된 자산코드</li>
+      <li>전표가 생성된 자산코드</li>
+    </ul>
+  </div>
+</div>
+
+<!-- S7 다운로드 -->
+<div class="section" id="s7">
+  <div class="section-header">
+    <div class="section-num">7</div>
+    <div>
+      <h2>다운로드</h2>
+      <div class="section-desc">조회된 기준정보 리스트를 엑셀 파일로 내려받습니다.</div>
+    </div>
+  </div>
+  <p style="font-size:13px;color:var(--text-light);">조회 화면에서 <strong>다운로드</strong> 버튼을 클릭하면 현재 그리드에 표시된 전체 데이터가 엑셀 파일로 다운로드됩니다. 데이터 백업, 오프라인 검토, 일괄업로드 재가공 등에 활용할 수 있습니다.</p>
+</div>
+
+<!-- S8 유효성 -->
+<div class="section" id="s8">
+  <div class="section-header">
+    <div class="section-num">·</div>
+    <div>
+      <h2>생성 유효성 검증 규칙</h2>
+      <div class="section-desc">개별 생성 및 일괄업로드 저장 시 공통 적용되는 점검 항목입니다.</div>
+    </div>
+  </div>
+
+  <ul class="val-list">
+    <li class="val-item"><span class="val-icon">🔴</span><div class="val-text"><strong>모든 필드 필수 입력:</strong> 생성 팝업의 모든 필드는 필수입니다. 빈 값이 있으면 저장되지 않습니다.</div></li>
+    <li class="val-item"><span class="val-icon">📅</span><div class="val-text"><strong>상각일자 말일자 제한:</strong> 상각일자는 해당 월의 <strong>말일자만</strong> 허용합니다. 중간 일자 입력 시 오류가 발생합니다.</div></li>
+    <li class="val-item"><span class="val-icon">💱</span><div class="val-text"><strong>통화환산 필수 (A 유형):</strong> 금액(LC) 입력 후 반드시 <strong>원화환산</strong> 버튼을 실행해야 저장됩니다. 원화환산 후 LC를 변경하면 <strong>반드시 재환산</strong>해야 합니다. LC와 GC 금액이 불일치하면 저장이 차단됩니다.</div></li>
+    <li class="val-item"><span class="val-icon">📆</span><div class="val-text"><strong>기간 일치 검증:</strong> 글로벌 매개변수의 회계연도/기간과 입력한 <strong>거래일자·상각일자가 동일한 기간</strong>이어야 합니다. 미래 시점의 자산 등록은 불가합니다.</div></li>
+    <li class="val-item"><span class="val-icon">🏢</span><div class="val-text"><strong>법인 동일 불가 (A 유형):</strong> 거래유형 A에서 <strong>판매(투자)법인과 매입(피투자)법인이 동일</strong>하면 오류가 발생합니다. 거래유형 B(공정가치 조정)는 동일 법인 입력이 가능합니다.</div></li>
+    <li class="val-item"><span class="val-icon">🔑</span><div class="val-text"><strong>통화키 단일 선택 &amp; 편집불가:</strong> 통화키는 매입법인의 통화에 맞춰 자동 세팅되며 편집이 불가합니다.</div></li>
+    <li class="val-item"><span class="val-icon">📋</span><div class="val-text"><strong>공정가치 조정 전표유형 고정 (B 유형):</strong> 거래유형 B 선택 시 전표유형이 기본값으로 자동 지정되고 편집이 불가 상태로 전환됩니다.</div></li>
+  </ul>
+</div>
+
+<!-- S9 거래유형 -->
+<div class="section" id="s9">
+  <div class="section-header">
+    <div class="section-num">·</div>
+    <div>
+      <h2>거래유형 및 계정 구조</h2>
+      <div class="section-desc">거래유형별 특성과 상각자산 마스터관리에서 자동 세팅되는 계정 구조입니다.</div>
+    </div>
+  </div>
+
+  <div class="type-grid">
+    <div class="type-card type-a">
+      <div class="type-badge-lbl">A</div>
+      <div class="type-pill">고정자산 미실현</div>
+      <div class="type-name">상각자산 미실현 거래</div>
+      <div class="type-desc">그룹 내 법인 간 유·무형 고정자산 매각에서 발생하는 미실현손익을 소거하고 상각 처리하는 유형입니다.<br><br>원화환산(LC→GC) 기능을 지원하며, <strong>판매법인 ≠ 매입법인</strong>이어야 합니다.<br><br>거래자산은 자산 종류 × 거래유형 조합으로 관리합니다 (예: 건물_상각).</div>
+      <div class="type-docty">
+        <strong>전표유형:</strong><br>
+        Z3 — 연결조정 · 고정자산 미실현<br>
+        Z4 — 고정자산 미실현 상각종료
+      </div>
+    </div>
+    <div class="type-card type-b">
+      <div class="type-badge-lbl">B</div>
+      <div class="type-pill">공정가치 조정</div>
+      <div class="type-name">PPA 공정가치 조정 거래</div>
+      <div class="type-desc">사업결합(PPA) 시 식별 자산의 공정가치 조정분을 인식하고 이후 상각 처리하는 유형입니다.<br><br>판매법인과 매입법인이 동일해도 등록 가능합니다. 전표유형은 자동 지정 후 <strong>편집 불가</strong>입니다.<br><br>거래자산은 자산 종류 × 거래유형 조합으로 관리합니다 (예: 건물_공정가치).</div>
+      <div class="type-docty">
+        <strong>전표유형:</strong><br>
+        Z1 — 연결조정 · 공정가치 조정<br>
+        Z2 — 공정가치 상각종료
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sub">자동 세팅 계정 구조 (마스터관리 → 기준정보)</h3>
+  <p style="font-size:13px;color:var(--text-light);margin-bottom:12px;">거래자산 선택 시 아래 7개 계정이 상각자산 마스터관리에서 자동 적용됩니다.</p>
+  <div class="acct-grid">
+    <div class="acct-item"><div class="acct-label">고정자산계정</div><div class="acct-field">ZRITEM_FA</div><div class="acct-desc">자산 원가 계정</div></div>
+    <div class="acct-item"><div class="acct-label">상각계정</div><div class="acct-field">ZRITEM_DEP</div><div class="acct-desc">감가상각비 계정</div></div>
+    <div class="acct-item"><div class="acct-label">소거계정</div><div class="acct-field">ZRITEM_ELI</div><div class="acct-desc">내부거래 소거 계정</div></div>
+    <div class="acct-item"><div class="acct-label">상각누계계정</div><div class="acct-field">ZRITEM_ACCUM</div><div class="acct-desc">감가상각누계 계정</div></div>
+    <div class="acct-item"><div class="acct-label">손상누계계정</div><div class="acct-field">ZRITEM_IMP_ACC</div><div class="acct-desc">손상차손누계 계정</div></div>
+    <div class="acct-item"><div class="acct-label">손상차손계정</div><div class="acct-field">ZRITEM_IMP_DEP</div><div class="acct-desc">손상차손 계정</div></div>
+    <div class="acct-item"><div class="acct-label">이연법인세계정</div><div class="acct-field">ZRITEM_DEF</div><div class="acct-desc">이연법인세 자산/부채</div></div>
+    <div class="acct-item"><div class="acct-label">전표유형</div><div class="acct-field">DOCTY</div><div class="acct-desc">GR 전표 유형</div></div>
+  </div>
+</div>
+
+<!-- S10 조회조건 -->
+<div class="section" id="s10">
+  <div class="section-header">
+    <div class="section-num">·</div>
+    <div>
+      <h2>조회 조건 필드 상세</h2>
+      <div class="section-desc">초기 화면 조회 조건의 필드 정의 및 필터 동작 방식입니다.</div>
+    </div>
+  </div>
+
+  <table class="data-table">
+    <thead><tr><th>필드</th><th>필드명 (DB)</th><th>타입</th><th>필터 동작</th></tr></thead>
+    <tbody>
+      <tr><td>연결단위 (매입법인)</td><td><span class="badge badge-code">ZGRAT5200.RBUNIT</span></td><td>도움창 · 필수</td><td>글로벌 매개변수 기본값. 다른 법인 선택 가능</td></tr>
+      <tr><td>연결버전</td><td><span class="badge badge-code">ZGRAT5201.RVERS</span></td><td>도움창 · 필수</td><td>글로벌 매개변수 기본값</td></tr>
+      <tr><td>연결계정과목표</td><td><span class="badge badge-code">ZGRAT5202.RITCLG</span></td><td>도움창 · 필수</td><td></td></tr>
+      <tr><td>거래유형</td><td><span class="badge badge-code">ZGRAT5203.ZTRS_TYPE</span></td><td>도움창 · 필수</td><td>A / B 선택</td></tr>
+      <tr><td>기간</td><td>—</td><td>도움창 · 선택</td><td></td></tr>
+      <tr><td>완료 제외</td><td><span class="badge badge-code">ZGRAT5200.ZSTATUS</span></td><td>체크박스 · 기본 ON</td><td>상태 = '완료'인 레코드를 조회 결과에서 제외</td></tr>
+      <tr><td>삭제표시 제외</td><td><span class="badge badge-code">ZGRAT5200.ZSTATUS</span></td><td>체크박스 · 기본 ON</td><td>상태 = '삭제'인 레코드를 조회 결과에서 제외</td></tr>
+      <tr><td>추가거래</td><td><span class="badge badge-code">ZGRAT5200.ZTRS</span></td><td>체크박스 · 기본 OFF</td><td>거래코드에 손상(C) 또는 처분(D)이 발생한 건만 표시</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    <strong>📌 필터링 원칙:</strong> 상각자산 기준정보관리에서는 필터 설정 여부와 무관하게 항상 글로벌 매개변수를 기준으로 데이터를 조회합니다. 계정 필터에서 명칭(키워드) 검색 시 일부 키워드만 입력해도 검색이 가능합니다.
+  </div>
+</div>
+
+<!-- S11 테이블 -->
+<div class="section" id="s11">
+  <div class="section-header">
+    <div class="section-num">·</div>
+    <div>
+      <h2>테이블 구조</h2>
+      <div class="section-desc">프로그램에서 사용하는 커스텀 테이블 목록 및 주요 필드입니다.</div>
+    </div>
+  </div>
+
+  <div class="tech-grid">
+    <div class="tech-card">
+      <div class="tech-card-title">ZGRAT5200 — 기준정보 (일반)</div>
+      <div class="tech-item"><code>ZTRS</code><span class="tech-desc">거래코드 (PK) — 자동채번</span></div>
+      <div class="tech-item"><code>ZTRS_TXT</code><span class="tech-desc">거래명 (자산명)</span></div>
+      <div class="tech-item"><code>ZTRS_TYPE</code><span class="tech-desc">거래유형 (A/B)</span></div>
+      <div class="tech-item"><code>RBUNIT</code><span class="tech-desc">연결단위 (매입법인)</span></div>
+      <div class="tech-item"><code>RBUPTR</code><span class="tech-desc">파트너단위 (매출법인)</span></div>
+      <div class="tech-item"><code>ZDATE_TRS</code><span class="tech-desc">거래일자</span></div>
+      <div class="tech-item"><code>ZDATE_CLO</code><span class="tech-desc">상각일자 (상각시작일)</span></div>
+      <div class="tech-item"><code>RHCUR / RKCUR</code><span class="tech-desc">로컬/그룹 통화키</span></div>
+      <div class="tech-item"><code>ZAMT_UNRLZ</code><span class="tech-desc">미실현손익 (LC)</span></div>
+      <div class="tech-item"><code>ZAMT_UNRLZ_GC</code><span class="tech-desc">미실현손익 (GC)</span></div>
+      <div class="tech-item"><code>ZUSFL</code><span class="tech-desc">상각기간 (개월)</span></div>
+      <div class="tech-item"><code>ZCK_DEFTAX</code><span class="tech-desc">이연법인세 적용여부</span></div>
+      <div class="tech-item"><code>ZRITEM_FA</code><span class="tech-desc">고정자산계정</span></div>
+      <div class="tech-item"><code>ZRITEM_DEP</code><span class="tech-desc">상각계정</span></div>
+      <div class="tech-item"><code>ZRITEM_ELI</code><span class="tech-desc">소거계정</span></div>
+      <div class="tech-item"><code>ZRITEM_ACCUM</code><span class="tech-desc">상각누계계정</span></div>
+      <div class="tech-item"><code>ZRITEM_IMP_ACC</code><span class="tech-desc">손상계정</span></div>
+      <div class="tech-item"><code>ZRITEM_IMP_DEP</code><span class="tech-desc">손상차손계정</span></div>
+      <div class="tech-item"><code>ZRITEM_DEF</code><span class="tech-desc">이연법인세계정</span></div>
+      <div class="tech-item"><code>DOCTY</code><span class="tech-desc">전표유형</span></div>
+      <div class="tech-item"><code>ZSTATUS</code><span class="tech-desc">상태 (완료/삭제)</span></div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-card-title">ZGRAT5201 — 기준정보 (추가거래)</div>
+      <div class="tech-item"><code>ZTRS</code><span class="tech-desc">거래코드 (PK — ZGRAT5200 참조)</span></div>
+      <div class="tech-item"><code>ZTYPE_EVE</code><span class="tech-desc">변동유형 (C: 손상, D: 처분)</span></div>
+      <div class="tech-item"><code>ZDATE_EVE</code><span class="tech-desc">변동일자</span></div>
+      <div class="tech-item"><code>ZCK_INCLU</code><span class="tech-desc">당월 상각포함 여부</span></div>
+      <div class="tech-item"><code>RHCUR</code><span class="tech-desc">통화키</span></div>
+      <div class="tech-item"><code>ZAMT_EVE</code><span class="tech-desc">변동금액 (장부금액)</span></div>
+      <div class="tech-item"><code>ZEVE_TXT</code><span class="tech-desc">거래 적요</span></div>
+      <div class="tech-item"><code>DOCNR</code><span class="tech-desc">전표번호 (전표 생성 후 자동)</span></div>
+      <div class="tech-item"><code>CRE_DATE/BY</code><span class="tech-desc">생성일/생성자</span></div>
+      <div class="tech-item"><code>UPD_DATE/BY</code><span class="tech-desc">최종변경일/변경자</span></div>
+      <div style="margin-top:16px;padding:12px;background:var(--navy-light);border-radius:4px;font-size:12.5px;color:var(--navy);">
+        <strong>공통 PK 구성:</strong><br>
+        MANDT + CONGR + RITCLG + RLDNR + RDIMEN + RVERS + ZTRS
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+  const ids = ['overview','s1','s2','s3','s4','s5','s6','s7','s8','s9','s10','s11'];
+  const navItems = document.querySelectorAll('.nav-item');
+  function setActive(id){ navItems.forEach(el => el.classList.toggle('active', el.getAttribute('href')==='#'+id)); }
+  const obs = new IntersectionObserver(entries => { entries.forEach(e=>{ if(e.isIntersecting) setActive(e.target.id); }); }, {rootMargin:'-60px 0px -60% 0px'});
+  ids.forEach(id=>{ const el=document.getElementById(id); if(el) obs.observe(el); });
+  navItems.forEach(link=>{ link.addEventListener('click', e=>{ e.preventDefault(); const t=document.querySelector(link.getAttribute('href')); if(t) t.scrollIntoView({behavior:'smooth',block:'start'}); }); });
+</script>
+</body>
+</html>
