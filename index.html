@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Group Reporting Add-in — 웹 도움말</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --navy: #003366;
+    --navy-mid: #004b99;
+    --navy-light: #e8eef7;
+    --navy-border: #c8d8ee;
+    --white: #ffffff;
+    --text: #1a1a2e;
+    --text-light: #555577;
+    --text-muted: #8890a8;
+    --bg: #f4f7fc;
+
+    /* Module colors */
+    --m1: #0055b3;
+    --m1-light: #e6f0ff;
+    --m1-border: #99c0ff;
+    --m2: #00664d;
+    --m2-light: #e6f5f0;
+    --m2-border: #80ccb3;
+    --m3: #6b21a8;
+    --m3-light: #f3e8ff;
+    --m3-border: #c4b5fd;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--navy);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 3px solid var(--navy-mid);
+  }
+  .header-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .header-logo-box {
+    width: 34px; height: 34px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .header-text-title {
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+  }
+  .header-text-sub {
+    color: rgba(255,255,255,0.45);
+    font-size: 11px;
+    margin-top: 1px;
+    letter-spacing: 0.2px;
+  }
+  .header-badge {
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy);
+    position: relative;
+    overflow: hidden;
+    padding: 64px 0 56px;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 600px 400px at 80% 50%, rgba(0,100,200,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 400px 300px at 10% 80%, rgba(0,50,120,0.25) 0%, transparent 60%);
+  }
+  /* geometric grid lines */
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .hero-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 20px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 24px; height: 2px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 2px;
+  }
+  .hero h1 {
+    font-size: 36px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: -1px;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .hero h1 span {
+    color: rgba(255,255,255,0.45);
+    font-weight: 300;
+    display: block;
+    font-size: 28px;
+    letter-spacing: -0.5px;
+    margin-top: 4px;
+  }
+  .hero-desc {
+    font-size: 15px;
+    color: rgba(255,255,255,0.62);
+    max-width: 560px;
+    line-height: 1.8;
+    margin-bottom: 32px;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .hero-stat {
+    border-left: 2px solid rgba(255,255,255,0.15);
+    padding-left: 16px;
+  }
+  .hero-stat-num {
+    font-size: 22px;
+    font-weight: 700;
+    color: white;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .hero-stat-label {
+    font-size: 11.5px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.3px;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .content {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 48px 40px 80px;
+  }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--navy-border);
+  }
+
+  /* ── MODULE BLOCK ── */
+  .module-block {
+    margin-bottom: 40px;
+  }
+
+  /* Module header bar */
+  .module-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 20px 24px;
+    border-radius: 8px 8px 0 0;
+    border: 1px solid transparent;
+    position: relative;
+  }
+  .module-header.m1 { background: var(--m1); border-color: var(--m1); }
+  .module-header.m2 { background: var(--m2); border-color: var(--m2); }
+  .module-header.m3 { background: var(--m3); border-color: var(--m3); }
+
+  .module-icon {
+    width: 42px; height: 42px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.18);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .module-meta { flex: 1; }
+  .module-num {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 4px;
+  }
+  .module-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: -0.3px;
+    line-height: 1.3;
+  }
+  .module-desc {
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.6);
+    margin-top: 5px;
+  }
+  .module-count {
+    background: rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.8);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    align-self: center;
+  }
+
+  /* Items container */
+  .module-items {
+    border: 1px solid var(--navy-border);
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    overflow: hidden;
+    background: white;
+  }
+
+  /* Group (for sub-sections like 3.1, 3.2 ...) */
+  .item-group {
+    border-bottom: 1px solid var(--navy-border);
+  }
+  .item-group:last-child { border-bottom: none; }
+
+  .item-group-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    background: var(--navy-light);
+    border-bottom: 1px solid var(--navy-border);
+  }
+  .item-group-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--navy);
+    background: white;
+    border: 1px solid var(--navy-border);
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.3px;
+  }
+  .item-group-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+
+  /* Single doc link item */
+  .doc-item {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border-bottom: 1px solid var(--navy-border);
+    text-decoration: none;
+    transition: background 0.12s;
+    position: relative;
+  }
+  .doc-item:last-child { border-bottom: none; }
+  .doc-item:hover { background: #f8faff; }
+  .doc-item:hover .doc-arrow { opacity: 1; transform: translateX(3px); }
+
+  .doc-item-inner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 24px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Number badge */
+  .doc-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    min-width: 32px;
+    letter-spacing: 0.2px;
+    flex-shrink: 0;
+  }
+
+  /* Icon area */
+  .doc-icon {
+    width: 34px; height: 34px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .m1 .doc-icon, .gi-m1 { background: var(--m1-light); border: 1px solid var(--m1-border); }
+  .m2 .doc-icon, .gi-m2 { background: var(--m2-light); border: 1px solid var(--m2-border); }
+  .m3 .doc-icon, .gi-m3 { background: var(--m3-light); border: 1px solid var(--m3-border); }
+
+  /* Text */
+  .doc-text { flex: 1; min-width: 0; }
+  .doc-title {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .doc-subtitle {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* Tags */
+  .doc-tags {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    padding-right: 8px;
+  }
+  .tag {
+    font-size: 10.5px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+  }
+  .tag-available { background: #e8f5e9; color: #15803d; border: 1px solid #a7d7b4; }
+  .tag-pending   { background: #fff8e1; color: #b45309; border: 1px solid #f9cc6e; }
+
+  /* Arrow */
+  .doc-arrow {
+    font-size: 14px;
+    color: var(--navy);
+    padding: 14px 20px 14px 8px;
+    opacity: 0;
+    transition: opacity 0.15s, transform 0.15s;
+    flex-shrink: 0;
+  }
+
+  /* Pending items (no link) */
+  .doc-item.pending {
+    cursor: default;
+    opacity: 0.65;
+  }
+  .doc-item.pending:hover { background: white; }
+  .doc-item.pending:hover .doc-arrow { opacity: 0; transform: none; }
+
+  /* ── QUICK LINKS ── */
+  .quick-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 40px;
+  }
+  .quick-card {
+    background: white;
+    border: 1px solid var(--navy-border);
+    border-radius: 8px;
+    padding: 20px;
+    text-decoration: none;
+    display: block;
+    transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .quick-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--navy);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s;
+  }
+  .quick-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,51,102,0.1); border-color: var(--navy-border); }
+  .quick-card:hover::after { transform: scaleX(1); }
+  .qc-icon { font-size: 22px; margin-bottom: 10px; }
+  .qc-title { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .qc-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy);
+    padding: 28px 40px;
+    text-align: center;
+  }
+  .footer-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-brand {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .footer-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+  }
+  .footer-copy {
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-inner { animation: fadeInUp 0.5s ease both; }
+  .module-block:nth-child(1) { animation: fadeInUp 0.4s 0.1s ease both; }
+  .module-block:nth-child(2) { animation: fadeInUp 0.4s 0.18s ease both; }
+  .module-block:nth-child(3) { animation: fadeInUp 0.4s 0.26s ease both; }
+  .quick-grid { animation: fadeInUp 0.4s 0.05s ease both; }
+
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 26px; }
+    .hero h1 span { font-size: 20px; }
+    .content { padding: 32px 20px 60px; }
+    .header-inner { padding: 0 20px; }
+    .hero-inner { padding: 0 20px; }
+    .quick-grid { grid-template-columns: 1fr; }
+    .module-header { flex-wrap: wrap; }
+    .doc-item-inner { padding: 12px 16px; }
+    .doc-tags { display: none; }
+    footer { padding: 20px; }
+    .footer-inner { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="header-brand">
+      <div class="header-logo-box">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <rect x="1" y="1" width="7" height="7" rx="1.5" fill="white" opacity="0.9"/>
+          <rect x="10" y="1" width="7" height="7" rx="1.5" fill="white" opacity="0.5"/>
+          <rect x="1" y="10" width="7" height="7" rx="1.5" fill="white" opacity="0.5"/>
+          <rect x="10" y="10" width="7" height="7" rx="1.5" fill="white" opacity="0.9"/>
+        </svg>
+      </div>
+      <div>
+        <div class="header-text-title">Advanced Group Reporting Add-in</div>
+        <div class="header-text-sub">ASPN — 웹 도움말 포털</div>
+      </div>
+    </div>
+    <span class="header-badge">문서 v1.0</span>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">User Documentation</div>
+    <h1>
+      웹 도움말
+      <span>Advanced Group Reporting Add-in</span>
+    </h1>
+    <p class="hero-desc">
+      SAP S/4HANA Public Cloud 기반의 연결결산 자동화 솔루션입니다.
+      Non-SAP 법인 재무제표 수취, 상각자산 미실현손익 처리,
+      연결주석 통합관리 기능을 제공합니다.
+    </p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">3</div>
+        <div class="hero-stat-label">모듈</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">5</div>
+        <div class="hero-stat-label">도움말 문서 (게시됨)</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">8</div>
+        <div class="hero-stat-label">도움말 문서 (예정)</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">SAP</div>
+        <div class="hero-stat-label">S/4HANA Public Cloud</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN CONTENT -->
+<div class="content">
+
+  <!-- QUICK LINKS -->
+  <div class="section-label">빠른 이동</div>
+  <div class="quick-grid">
+    <a class="quick-card" href="grra_mapping_help.html" target="_blank" rel="noopener noreferrer">
+      <div class="qc-icon">🗂️</div>
+      <div class="qc-title">G/L 계정 매핑</div>
+      <div class="qc-desc">Non-SAP 법인의 G/L 계정을 SAP 재무제표 항목과 연결합니다</div>
+    </a>
+    <a class="quick-card" href="grra_tb_upload_help.html" target="_blank" rel="noopener noreferrer">
+      <div class="qc-icon">📤</div>
+      <div class="qc-title">시산표 업로드 및 전송</div>
+      <div class="qc-desc">Non-SAP 법인 TB 데이터를 엑셀로 업로드하고 GR에 전송합니다</div>
+    </a>
+    <a class="quick-card" href="grra_asset_master_help.html" target="_blank" rel="noopener noreferrer">
+      <div class="qc-icon">🏗️</div>
+      <div class="qc-title">상각자산 기준정보</div>
+      <div class="qc-desc">내부거래 자산의 기준정보를 등록하고 관리합니다</div>
+    </a>
+    <a class="quick-card" href="grra_schedule_help.html" target="_blank" rel="noopener noreferrer">
+      <div class="qc-icon">📅</div>
+      <div class="qc-title">상각자산 스케줄</div>
+      <div class="qc-desc">월별 감가상각 스케줄을 생성하고 이연법인세를 계산합니다</div>
+    </a>
+    <a class="quick-card" href="grra_docsubmit_help.html" target="_blank" rel="noopener noreferrer">
+      <div class="qc-icon">✅</div>
+      <div class="qc-title">전표 제출 및 승인</div>
+      <div class="qc-desc">스케줄 확정 후 승인 워크플로우를 통해 GR 전표를 생성합니다</div>
+    </a>
+    <div class="quick-card" style="opacity:0.5;cursor:default;pointer-events:none;">
+      <div class="qc-icon">📝</div>
+      <div class="qc-title">연결주석 통합관리</div>
+      <div class="qc-desc">연결주석 작성·검토·취합 기능 (도움말 준비 중)</div>
+    </div>
+  </div>
+
+  <!-- MODULE DOCS -->
+  <div class="section-label">전체 문서 목록</div>
+
+  <!-- ── MODULE 1 ── -->
+  <div class="module-block">
+    <div class="module-header m1">
+      <div class="module-icon">📥</div>
+      <div class="module-meta">
+        <div class="module-num">Module 1</div>
+        <div class="module-title">Non-SAP 법인 재무제표 자동 수취</div>
+        <div class="module-desc">Non-SAP 법인의 G/L 계정을 SAP 재무제표 항목과 매핑하고, 시산표(TB) 데이터를 업로드하여 SAP Group Reporting으로 자동 전송합니다.</div>
+      </div>
+      <div class="module-count">2개 문서</div>
+    </div>
+    <div class="module-items">
+
+      <a class="doc-item" href="grra_mapping_help.html" target="_blank" rel="noopener noreferrer">
+        <div class="doc-item-inner">
+          <span class="doc-num">1.1</span>
+          <div class="doc-icon gi-m1">🗂️</div>
+          <div class="doc-text">
+            <div class="doc-title">재무제표 항목과 Non-SAP G/L 계정 매핑</div>
+            <div class="doc-subtitle">PG-DC-0010 · G/L 계정 코드를 SAP FS Item과 연결·버전 관리</div>
+          </div>
+          <div class="doc-tags">
+            <span class="tag tag-available">게시됨</span>
+          </div>
+        </div>
+        <div class="doc-arrow">›</div>
+      </a>
+
+      <a class="doc-item" href="grra_tb_upload_help.html" target="_blank" rel="noopener noreferrer">
+        <div class="doc-item-inner">
+          <span class="doc-num">1.2</span>
+          <div class="doc-icon gi-m1">📤</div>
+          <div class="doc-text">
+            <div class="doc-title">Non-SAP 시산표 업로드 및 전송</div>
+            <div class="doc-subtitle">PG-DC-0020 · 엑셀 TB 데이터 업로드 · 잔액 검증 · GR 전표 생성</div>
+          </div>
+          <div class="doc-tags">
+            <span class="tag tag-available">게시됨</span>
+          </div>
+        </div>
+        <div class="doc-arrow">›</div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ── MODULE 2 ── -->
+  <div class="module-block">
+    <div class="module-header m2">
+      <div class="module-icon">⚙️</div>
+      <div class="module-meta">
+        <div class="module-num">Module 2</div>
+        <div class="module-title">상각자산 미실현손익 자동화</div>
+        <div class="module-desc">그룹 내 법인 간 자산 거래의 미실현손익을 소거하고 상각 스케줄을 자동 생성합니다. 승인 워크플로우를 통해 GR 전표를 전기합니다.</div>
+      </div>
+      <div class="module-count">3개 문서</div>
+    </div>
+    <div class="module-items">
+
+      <a class="doc-item" href="grra_asset_master_help.html" target="_blank" rel="noopener noreferrer">
+        <div class="doc-item-inner">
+          <span class="doc-num">2.1</span>
+          <div class="doc-icon gi-m2">🏗️</div>
+          <div class="doc-text">
+            <div class="doc-title">상각자산 기준정보 관리</div>
+            <div class="doc-subtitle">ZGRAT5200/5201 · 고정자산 미실현 · 공정가치 조정 기준정보 등록</div>
+          </div>
+          <div class="doc-tags">
+            <span class="tag tag-available">게시됨</span>
+          </div>
+        </div>
+        <div class="doc-arrow">›</div>
+      </a>
+
+      <a class="doc-item" href="grra_schedule_help.html" target="_blank" rel="noopener noreferrer">
+        <div class="doc-item-inner">
+          <span class="doc-num">2.2</span>
+          <div class="doc-icon gi-m2">📅</div>
+          <div class="doc-text">
+            <div class="doc-title">상각자산 스케줄 관리</div>
+            <div class="doc-subtitle">ZGRAT5210 · 월별 상각 스케줄 생성 · 이연법인세 계산 · 일괄계산</div>
+          </div>
+          <div class="doc-tags">
+            <span class="tag tag-available">게시됨</span>
+          </div>
+        </div>
+        <div class="doc-arrow">›</div>
+      </a>
+
+      <a class="doc-item" href="grra_docsubmit_help.html" target="_blank" rel="noopener noreferrer">
+        <div class="doc-item-inner">
+          <span class="doc-num">2.3</span>
+          <div class="doc-icon gi-m2">✅</div>
+          <div class="doc-text">
+            <div class="doc-title">상각자산 전표 제출</div>
+            <div class="doc-subtitle">ZGRAT7010/7020 · 승인 워크플로우 · 연결모니터 Z3010/Z3020 태스크</div>
+          </div>
+          <div class="doc-tags">
+            <span class="tag tag-available">게시됨</span>
+          </div>
+        </div>
+        <div class="doc-arrow">›</div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ── MODULE 3 ── -->
+  <div class="module-block">
+    <div class="module-header m3">
+      <div class="module-icon">📝</div>
+      <div class="module-meta">
+        <div class="module-num">Module 3</div>
+        <div class="module-title">연결주석 통합 관리</div>
+        <div class="module-desc">개별 법인의 주석 데이터를 수집하고 연결 주석을 통합·관리합니다. 양식 관리, 개별주석 작성, 연결주석 취합 기능을 제공합니다.</div>
+      </div>
+      <div class="module-count" style="background:rgba(255,255,255,0.1);">8개 문서 예정</div>
+    </div>
+    <div class="module-items">
+
+      <!-- GROUP 3.1 -->
+      <div class="item-group">
+        <div class="item-group-header">
+          <span class="item-group-num">3.1</span>
+          <span class="item-group-title">양식 및 메뉴관리</span>
+        </div>
+        <div class="doc-item pending">
+          <div class="doc-item-inner">
+            <span class="doc-num">3.1.1</span>
+            <div class="doc-icon gi-m3">📋</div>
+            <div class="doc-text">
+              <div class="doc-title">양식 및 메뉴관리</div>
+              <div class="doc-subtitle">주석 양식 정의 및 메뉴 구성 관리</div>
+            </div>
+            <div class="doc-tags"><span class="tag tag-pending">준비 중</span></div>
+          </div>
+        </div>
+        <div class="doc-item pending">
+          <div class="doc-item-inner">
+            <span class="doc-num">3.1.2</span>
+            <div class="doc-icon gi-m3">🗃️</div>
+            <div class="doc-text">
+              <div class="doc-title">주석 레이아웃관리</div>
+              <div class="doc-subtitle">주석 출력 레이아웃 및 서식 설정</div>
+            </div>
+            <div class="doc-tags"><span class="tag tag-pending">준비 중</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GROUP 3.2 -->
+      <div class="item-group">
+        <div class="item-group-header">
+          <span class="item-group-num">3.2</span>
+          <span class="item-group-title">개별주석 관리</span>
+        </div>
+        <div class="doc-item pending">
+          <div class="doc-item-inner">
+            <span class="doc-num">3.2.1</span>
+            <div class="doc-icon gi-m3">📝</div>
+            <div class="doc-text">
+              <div class="doc-title">개별주석작성리스트</div>
+              <div class="doc-subtitle">법인별 주석 작성 현황 목록 및 진행상태 관리</div>
+            </div>
+            <div class="doc-tags"><span class="tag tag-pending">준비 중</span></div>
+          </div>
+        </div>
+        <div class="doc-item pending">
+          <div class="doc-item-inner">
+            <span class="doc-num">3.2.2</span>
+            <div class="doc-icon gi-m3">🖥️</div>
+            <div class="doc-text">
+              <div class="doc-title">주석작성 모니터</div>
+              <div class="doc-subtitle">개별 법인 주석 작성 현황 모니터링</div>
+            </div>
+            <div class="doc-tags"><span class="tag tag-pending">준비 중</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GROUP 3.3 -->
+      <div class="item-group">
+        <div class="item-group-header">
+          <span class="item-group-num">3.3</span>
+          <span class="item-group-title">연결주석 관리</span>
+        </div>
+        <div class="doc-item pending">
+          <div class="doc-item-inner">
+            <span class="doc-num">3.3.1</span>
+            <div class="doc-icon gi-m3">🔗</div>
+            <div class="doc-text">
+              <div class="doc-title">연결주석모니터</div>
+              <div class="doc-subtitle">전체 연결주석 작성 현황 및 취합 상태 모니터링</div>
+            </div>
+            <div class="doc-tags"><span class="tag tag-pending">준비 중</span></div>
+          </div>
+        </div>
+        <div class="doc-item pending">
+          <div class="doc-item-inner">
+            <span class="doc-num">3.3.2</span>
+            <div class="doc-icon gi-m3">🔍</div>
+            <div class="doc-text">
+              <div class="doc-title">연결주석조회</div>
+              <div class="doc-subtitle">취합된 연결주석 내역 조회 및 출력</div>
+            </div>
+            <div class="doc-tags"><span class="tag tag-pending">준비 중</span></div>
+          </div>
+        </div>
+        <div class="doc-item pending">
+          <div class="doc-item-inner">
+            <span class="doc-num">3.3.3</span>
+            <div class="doc-icon gi-m3">💱</div>
+            <div class="doc-text">
+              <div class="doc-title">환산수식관리</div>
+              <div class="doc-subtitle">외화 주석 데이터의 환율 환산 수식 정의 및 관리</div>
+            </div>
+            <div class="doc-tags"><span class="tag tag-pending">준비 중</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /content -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <rect x="1" y="1" width="6" height="6" rx="1" fill="white" opacity="0.6"/>
+        <rect x="9" y="1" width="6" height="6" rx="1" fill="white" opacity="0.3"/>
+        <rect x="1" y="9" width="6" height="6" rx="1" fill="white" opacity="0.3"/>
+        <rect x="9" y="9" width="6" height="6" rx="1" fill="white" opacity="0.6"/>
+      </svg>
+      <span class="footer-name">Advanced Group Reporting Add-in &mdash; 사용자 도움말</span>
+    </div>
+    <span class="footer-copy">ASPN (주식회사 에이에스피엔) · SAP Korea 공식 파트너</span>
+  </div>
+</footer>
+
+</body>
+</html>
