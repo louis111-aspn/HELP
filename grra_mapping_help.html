@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>재무제표 항목과 Non-SAP G/L 계정 매핑 — 사용자 도움말</title>
+<style>
+  :root {
+    --navy: #003366;
+    --navy-mid: #004b99;
+    --navy-light: #e8eef7;
+    --navy-border: #c8d8ee;
+    --white: #ffffff;
+    --text: #333333;
+    --text-light: #666666;
+    --text-muted: #999999;
+    --accent: #003366;
+    --bg: #f7f9fc;
+    --sidebar-w: 260px;
+    --header-h: 60px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: var(--header-h);
+    background: var(--navy);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 28px;
+    z-index: 200;
+    border-bottom: 3px solid var(--navy-mid);
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .header-logo {
+    width: 32px; height: 32px;
+    background: var(--white);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .header-logo svg { width: 20px; height: 20px; }
+  .header-title { color: var(--white); font-size: 15px; font-weight: 700; letter-spacing: -0.3px; }
+  .header-sub { color: rgba(255,255,255,0.55); font-size: 12px; margin-top: 1px; }
+  .header-badge {
+    background: rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.8);
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.2);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── SIDEBAR ── */
+  aside {
+    position: fixed; top: var(--header-h); left: 0; bottom: 0;
+    width: var(--sidebar-w);
+    background: var(--white);
+    border-right: 1px solid var(--navy-border);
+    overflow-y: auto;
+    z-index: 100;
+    padding: 20px 0 40px;
+  }
+  .nav-section { margin-bottom: 6px; }
+  .nav-section-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    padding: 14px 20px 6px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 20px;
+    cursor: pointer;
+    color: var(--text-light);
+    font-size: 13px;
+    transition: background 0.15s, color 0.15s;
+    border-left: 3px solid transparent;
+    text-decoration: none;
+  }
+  .nav-item:hover { background: var(--navy-light); color: var(--navy); }
+  .nav-item.active {
+    background: var(--navy-light);
+    color: var(--navy);
+    font-weight: 600;
+    border-left-color: var(--navy);
+  }
+  .nav-num {
+    width: 20px; height: 20px;
+    background: var(--navy);
+    color: white; font-size: 10px; font-weight: 700;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .nav-item:not(.active) .nav-num { background: #d0d8e8; color: #666; }
+
+  /* ── MAIN ── */
+  main {
+    margin-left: var(--sidebar-w);
+    margin-top: var(--header-h);
+    padding: 40px 48px 80px;
+    max-width: 960px;
+  }
+
+  /* ── OVERVIEW CARD ── */
+  .overview {
+    background: var(--navy);
+    color: white;
+    border-radius: 6px;
+    padding: 32px 36px;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .overview::after {
+    content: '';
+    position: absolute; right: -20px; top: -20px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .overview-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.85);
+    font-size: 11px; font-weight: 600; letter-spacing: 0.8px;
+    padding: 3px 10px; border-radius: 3px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .overview h1 { font-size: 22px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.5px; }
+  .overview p { font-size: 14px; color: rgba(255,255,255,0.78); line-height: 1.75; max-width: 620px; }
+  .overview-meta {
+    margin-top: 24px;
+    display: flex; gap: 32px;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 20px;
+  }
+  .overview-meta-item { }
+  .overview-meta-label { font-size: 11px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 3px; }
+  .overview-meta-val { font-size: 13px; color: rgba(255,255,255,0.9); font-weight: 600; }
+
+  /* ── PROCESS FLOW ── */
+  .flow-box {
+    background: white;
+    border: 1px solid var(--navy-border);
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin-bottom: 40px;
+  }
+  .flow-box h2 { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid var(--navy-border); }
+  .flow-steps {
+    display: flex; align-items: flex-start; gap: 0;
+    overflow-x: auto; padding-bottom: 4px;
+  }
+  .flow-step {
+    flex: 1; min-width: 110px;
+    text-align: center;
+    position: relative;
+  }
+  .flow-step:not(:last-child)::after {
+    content: '→';
+    position: absolute; right: -10px; top: 20px;
+    color: var(--navy-border);
+    font-size: 18px;
+    font-weight: 300;
+  }
+  .flow-icon {
+    width: 44px; height: 44px;
+    background: var(--navy-light);
+    border: 2px solid var(--navy-border);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 8px;
+    font-size: 18px;
+  }
+  .flow-step-n { font-size: 10px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+  .flow-step-label { font-size: 12px; color: var(--text); font-weight: 500; }
+
+  /* ── SECTION ── */
+  .section {
+    background: white;
+    border: 1px solid var(--navy-border);
+    border-radius: 6px;
+    padding: 32px 36px;
+    margin-bottom: 28px;
+    scroll-margin-top: calc(var(--header-h) + 20px);
+  }
+  .section-header {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--navy-light);
+  }
+  .section-num {
+    width: 34px; height: 34px;
+    background: var(--navy);
+    color: white; font-size: 14px; font-weight: 700;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .section h2 { font-size: 18px; font-weight: 700; color: var(--navy); }
+  .section-desc { font-size: 13px; color: var(--text-light); margin-top: 2px; }
+
+  /* STEPS */
+  .steps { list-style: none; margin: 16px 0; }
+  .step-item {
+    display: flex; gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--navy-light);
+  }
+  .step-item:last-child { border-bottom: none; }
+  .step-dot {
+    width: 24px; height: 24px;
+    background: var(--navy-light);
+    border: 2px solid var(--navy-border);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: var(--navy);
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .step-content { flex: 1; }
+  .step-title { font-weight: 600; color: var(--text); margin-bottom: 3px; font-size: 13.5px; }
+  .step-body { font-size: 13px; color: var(--text-light); }
+
+  /* NOTE / WARNING */
+  .note {
+    background: var(--navy-light);
+    border-left: 4px solid var(--navy);
+    border-radius: 0 4px 4px 0;
+    padding: 12px 16px;
+    margin: 14px 0;
+    font-size: 13px; color: var(--navy);
+  }
+  .note strong { font-weight: 700; }
+  .warn {
+    background: #fff8e1;
+    border-left: 4px solid #f59e0b;
+    border-radius: 0 4px 4px 0;
+    padding: 12px 16px;
+    margin: 14px 0;
+    font-size: 13px; color: #7c5800;
+  }
+
+  /* TABLE */
+  .data-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  .data-table th {
+    background: var(--navy);
+    color: white;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.3px;
+  }
+  .data-table td { padding: 9px 14px; border-bottom: 1px solid var(--navy-border); vertical-align: top; }
+  .data-table tr:nth-child(even) td { background: var(--navy-light); }
+  .data-table tr:last-child td { border-bottom: none; }
+
+  /* BADGE */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px; border-radius: 3px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.3px;
+  }
+  .badge-req { background: #fde8e8; color: #c0392b; }
+  .badge-opt { background: #e8f5e9; color: #27ae60; }
+  .badge-auto { background: var(--navy-light); color: var(--navy); }
+  .badge-code { background: #f5f5f5; color: #555; font-family: monospace; }
+
+  /* BUTTON GUIDE */
+  .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+  .btn-card {
+    border: 1px solid var(--navy-border);
+    border-radius: 5px;
+    padding: 14px 16px;
+    background: var(--white);
+  }
+  .btn-card-name {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-weight: 700; font-size: 13px; color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .btn-icon { font-size: 15px; }
+  .btn-card p { font-size: 12.5px; color: var(--text-light); }
+  .btn-card .cond { font-size: 11.5px; color: #999; margin-top: 5px; font-style: italic; }
+
+  /* LOGIC TABLE */
+  .logic-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 14px 0; }
+  .logic-table th {
+    background: var(--navy);
+    color: white;
+    padding: 9px 12px;
+    font-size: 12px; font-weight: 600; text-align: center;
+  }
+  .logic-table td { padding: 9px 12px; border: 1px solid var(--navy-border); text-align: center; vertical-align: middle; }
+  .logic-table td:first-child { text-align: left; font-weight: 600; }
+  .logic-table tr:nth-child(even) td { background: var(--navy-light); }
+
+  /* STATUS BAR */
+  .status-flow {
+    display: flex; align-items: center; gap: 0;
+    margin: 16px 0; background: var(--navy-light);
+    border: 1px solid var(--navy-border);
+    border-radius: 5px; overflow: hidden;
+  }
+  .status-item {
+    flex: 1; padding: 12px 10px; text-align: center;
+    position: relative;
+    font-size: 12px;
+  }
+  .status-item:not(:last-child)::after {
+    content: '';
+    position: absolute; right: -10px; top: 50%;
+    transform: translateY(-50%);
+    width: 0; height: 0;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-left: 10px solid var(--navy-border);
+    z-index: 1;
+  }
+  .status-item.draft { background: #fff8e1; }
+  .status-item.active { background: #e8f5e9; }
+  .status-label { font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+  .status-item.draft .status-label { color: #b45309; }
+  .status-item.active .status-label { color: #15803d; }
+  .status-desc { font-size: 11.5px; color: var(--text-light); }
+
+  /* TECH SECTION */
+  .tech-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+  .tech-card {
+    border: 1px solid var(--navy-border);
+    border-radius: 5px; padding: 14px 16px;
+    background: white;
+  }
+  .tech-card-title { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+  .tech-item { font-size: 12.5px; color: var(--text); padding: 3px 0; border-bottom: 1px solid var(--navy-light); }
+  .tech-item:last-child { border-bottom: none; }
+  .tech-item code { font-family: 'Courier New', monospace; font-size: 12px; color: var(--navy); background: var(--navy-light); padding: 1px 5px; border-radius: 3px; }
+
+  /* SCROLLBAR */
+  aside::-webkit-scrollbar { width: 4px; }
+  aside::-webkit-scrollbar-track { background: transparent; }
+  aside::-webkit-scrollbar-thumb { background: var(--navy-border); border-radius: 4px; }
+
+  @media (max-width: 900px) {
+    :root { --sidebar-w: 0px; }
+    aside { display: none; }
+    main { padding: 24px 20px 60px; }
+    .btn-grid, .tech-grid { grid-template-columns: 1fr; }
+    .flow-steps { gap: 4px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+  <div class="header-left">
+    <div class="header-logo">
+      <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="3" width="16" height="12" rx="1.5" fill="#003366"/>
+        <rect x="4" y="5" width="5" height="1.5" rx="0.5" fill="white"/>
+        <rect x="4" y="8" width="12" height="1.5" rx="0.5" fill="white" opacity="0.6"/>
+        <rect x="4" y="11" width="8" height="1.5" rx="0.5" fill="white" opacity="0.4"/>
+        <circle cx="15" cy="15" r="4" fill="#003366" stroke="white" stroke-width="1.5"/>
+        <path d="M14 15h2M15 14v2" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div>
+      <div class="header-title">재무제표 항목과 Non-SAP G/L 계정 매핑</div>
+      <div class="header-sub">GRRA Add-in — 사용자 도움말 (PG-DC-0010)</div>
+    </div>
+  </div>
+  <span class="header-badge">V1.0</span>
+</header>
+
+<!-- ── SIDEBAR ── -->
+<aside>
+  <div class="nav-section">
+    <div class="nav-section-label">개요</div>
+    <a class="nav-item active" href="#overview">
+      <span class="nav-num">·</span> 프로그램 개요 및 주요 흐름
+    </a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">주요 기능</div>
+    <a class="nav-item" href="#s1">
+      <span class="nav-num">1</span> 조회 화면 (초기 화면)
+    </a>
+    <a class="nav-item" href="#s2">
+      <span class="nav-num">2</span> 매핑 생성
+    </a>
+    <a class="nav-item" href="#s3">
+      <span class="nav-num">3</span> 개정 생성
+    </a>
+    <a class="nav-item" href="#s4">
+      <span class="nav-num">4</span> 지정 (효력기간 관리)
+    </a>
+    <a class="nav-item" href="#s5">
+      <span class="nav-num">5</span> 임포트 (계정 업로드)
+    </a>
+    <a class="nav-item" href="#s6">
+      <span class="nav-num">6</span> 매핑 내역 편집
+    </a>
+    <a class="nav-item" href="#s7">
+      <span class="nav-num">7</span> 기타 버튼 안내
+    </a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">참고</div>
+    <a class="nav-item" href="#s8">
+      <span class="nav-num">·</span> 드래프트 / 액티브 데이터
+    </a>
+    <a class="nav-item" href="#s9">
+      <span class="nav-num">·</span> 테이블 및 CDS View
+    </a>
+    <a class="nav-item" href="#s10">
+      <span class="nav-num">·</span> 조회 조건 필드 상세
+    </a>
+  </div>
+</aside>
+
+<!-- ── MAIN CONTENT ── -->
+<main>
+
+  <!-- OVERVIEW -->
+  <div class="overview" id="overview">
+    <div class="overview-tag">PG-DC-0010</div>
+    <h1>재무제표 항목과 Non-SAP G/L 계정 매핑</h1>
+    <p>Non-SAP 법인(연결 단위)의 G/L 계정 코드를 SAP Group Reporting의 재무제표 항목(FS Item)과 연결·관리하는 프로그램입니다. 엑셀 업로드 기반의 임포트, 버전 관리(개정), 효력기간(지정) 설정을 통해 연결결산 데이터의 무결성을 확보합니다.</p>
+    <div class="overview-meta">
+      <div class="overview-meta-item">
+        <div class="overview-meta-label">개발 ID</div>
+        <div class="overview-meta-val">PG-DC-0010</div>
+      </div>
+      <div class="overview-meta-item">
+        <div class="overview-meta-label">UI 기술</div>
+        <div class="overview-meta-val">SAP Fiori / SAPUI5</div>
+      </div>
+      <div class="overview-meta-item">
+        <div class="overview-meta-label">개발 모델</div>
+        <div class="overview-meta-val">RAP (RESTful ABAP)</div>
+      </div>
+      <div class="overview-meta-item">
+        <div class="overview-meta-label">대상 법인</div>
+        <div class="overview-meta-val">Non-SAP 연결 단위</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROCESS FLOW -->
+  <div class="flow-box">
+    <h2>📋 주요 프로세스 흐름</h2>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="flow-icon">➕</div>
+        <div class="flow-step-n">Step 1</div>
+        <div class="flow-step-label">매핑 생성</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">🔢</div>
+        <div class="flow-step-n">Step 2</div>
+        <div class="flow-step-label">개정 생성</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">📅</div>
+        <div class="flow-step-n">Step 3</div>
+        <div class="flow-step-label">지정 (효력기간)</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">📤</div>
+        <div class="flow-step-n">Step 4</div>
+        <div class="flow-step-label">임포트 (엑셀 업로드)</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">🔍</div>
+        <div class="flow-step-n">Step 5</div>
+        <div class="flow-step-label">조회 및 확인</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">✏️</div>
+        <div class="flow-step-n">Step 6</div>
+        <div class="flow-step-label">편집 및 저장</div>
+      </div>
+    </div>
+    <div class="note" style="margin-top:20px;">
+      <strong>선행 조건:</strong> 임포트(엑셀 업로드)를 진행하기 전에 반드시 <strong>매핑 생성 → 개정 생성</strong>이 선행되어야 합니다. 매핑 ID와 개정이 존재하지 않으면 업로드 내역을 작성할 수 없습니다.
+    </div>
+  </div>
+
+  <!-- S1: 조회 화면 -->
+  <div class="section" id="s1">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div>
+        <h2>조회 화면 (초기 화면)</h2>
+        <div class="section-desc">프로그램 실행 시 표시되는 기본 화면으로, 조회 조건 입력 후 매핑 목록을 조회합니다.</div>
+      </div>
+    </div>
+
+    <ul class="steps">
+      <li class="step-item">
+        <div class="step-dot">1</div>
+        <div class="step-content">
+          <div class="step-title">프로그램 실행</div>
+          <div class="step-body">프로그램을 실행하면 조회 조건 입력 영역과 결과 그리드가 표시됩니다. 초기에는 업로드된 데이터가 없으면 "사용 가능한 데이터가 없음" 메시지가 반환됩니다.</div>
+        </div>
+      </li>
+      <li class="step-item">
+        <div class="step-dot">2</div>
+        <div class="step-content">
+          <div class="step-title">조회 조건 입력 후 실행</div>
+          <div class="step-body">조회 조건(연결단위, 연결 계정과목표, 매핑ID, 개정)을 입력하고 <strong>실행</strong> 버튼을 클릭하면 해당 조건에 맞는 데이터가 그리드에 표시됩니다.</div>
+        </div>
+      </li>
+      <li class="step-item">
+        <div class="step-dot">3</div>
+        <div class="step-content">
+          <div class="step-title">상세 내역 이동</div>
+          <div class="step-body">그리드 각 행 오른쪽의 <strong>&gt;</strong> 버튼을 클릭하면 해당 매핑의 G/L 계정 상세 내역(편집 화면)으로 이동합니다.</div>
+        </div>
+      </li>
+    </ul>
+
+    <h3 style="font-size:14px;font-weight:700;color:var(--navy);margin:20px 0 10px;">그리드 표시 항목</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>컬럼명</th><th>필드명</th><th>설명</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>연결단위</td><td><span class="badge badge-code">Rbunit</span></td><td>Non-SAP 법인(연결 단위) 코드</td></tr>
+        <tr><td>연결 계정과목표</td><td><span class="badge badge-code">Ritclg</span></td><td>연결 계정과목표 (기본값: Y1)</td></tr>
+        <tr><td>매핑 ID</td><td><span class="badge badge-code">MappingId</span></td><td>매핑 식별자</td></tr>
+        <tr><td>개정</td><td><span class="badge badge-code">Revision</span></td><td>매핑 개정 번호 (숫자만 허용)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- S2: 매핑 생성 -->
+  <div class="section" id="s2">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div>
+        <h2>매핑 생성</h2>
+        <div class="section-desc">새로운 매핑 ID를 생성합니다. 임포트 전 반드시 선행되어야 합니다.</div>
+      </div>
+    </div>
+
+    <ul class="steps">
+      <li class="step-item">
+        <div class="step-dot">1</div>
+        <div class="step-content">
+          <div class="step-title">매핑 생성 버튼 클릭</div>
+          <div class="step-body">조회 화면 상단의 <strong>매핑 생성</strong> 버튼을 클릭하면 팝업 창이 표시됩니다.</div>
+        </div>
+      </li>
+      <li class="step-item">
+        <div class="step-dot">2</div>
+        <div class="step-content">
+          <div class="step-title">필수 정보 입력</div>
+          <div class="step-body">아래 필드를 입력합니다.</div>
+        </div>
+      </li>
+    </ul>
+
+    <table class="data-table">
+      <thead>
+        <tr><th>필드</th><th>필수여부</th><th>설명</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>매핑 ID (MappingId)</td><td><span class="badge badge-req">필수</span></td><td>단일값(Single Value). 법인당 하나의 매핑 ID만 존재 가능</td></tr>
+        <tr><td>매핑 텍스트(로컬) (MappingTextLo)</td><td><span class="badge badge-req">필수</span></td><td>매핑명 (로컬 언어)</td></tr>
+        <tr><td>매핑 텍스트(그룹) (MappingTextGr)</td><td><span class="badge badge-req">필수</span></td><td>매핑명 (그룹 언어)</td></tr>
+        <tr><td>UUID / 생성일시 / 생성자</td><td><span class="badge badge-auto">자동</span></td><td>시스템이 자동 생성</td></tr>
+      </tbody>
+    </table>
+
+    <div class="warn">
+      <strong>⚠ 주의:</strong> 한 개의 연결단위에는 하나의 매핑 ID만 존재할 수 있습니다. 계정은 중복 생성할 수 없습니다.
+    </div>
+
+    <ul class="steps" style="margin-top:12px;">
+      <li class="step-item">
+        <div class="step-dot">3</div>
+        <div class="step-content">
+          <div class="step-title">생성 버튼 클릭 → 저장</div>
+          <div class="step-body">입력 완료 후 <strong>생성</strong> 버튼을 클릭하면 ZGRTCOA01 테이블에 저장됩니다.</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- S3: 개정 생성 -->
+  <div class="section" id="s3">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div>
+        <h2>개정 생성</h2>
+        <div class="section-desc">기존 매핑 ID에 새로운 버전(개정)을 추가합니다. 매핑 생성 이후 선행되어야 임포트가 가능합니다.</div>
+      </div>
+    </div>
+
+    <ul class="steps">
+      <li class="step-item">
+        <div class="step-dot">1</div>
+        <div class="step-content">
+          <div class="step-title">개정 생성 버튼 클릭</div>
+          <div class="step-body">조회 화면 상단의 <strong>개정 생성</strong> 버튼을 클릭하면 팝업 창이 표시됩니다.</div>
+        </div>
+      </li>
+      <li class="step-item">
+        <div class="step-dot">2</div>
+        <div class="step-content">
+          <div class="step-title">필수 정보 입력</div>
+          <div class="step-body">매핑 ID 선택 후 개정 번호(숫자만 허용)를 입력합니다. UUID, 생성일시, 생성자는 시스템이 자동 처리합니다.</div>
+        </div>
+      </li>
+      <li class="step-item">
+        <div class="step-dot">3</div>
+        <div class="step-content">
+          <div class="step-title">저장</div>
+          <div class="step-body">ZGRTCOA02 테이블에 저장됩니다. 개정 추가 후 팝업은 자동 닫힙니다.</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="note">
+      <strong>📌 개정 번호 규칙:</strong> 개정 필드에는 숫자만 입력 가능합니다. 텍스트 입력 시 "입력 형식 오류: 숫자만 기입할 수 있습니다" 메시지가 반환됩니다.
+    </div>
+  </div>
+
+  <!-- S4: 지정 -->
+  <div class="section" id="s4">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div>
+        <h2>지정 (효력기간 관리)</h2>
+        <div class="section-desc">연결단위 / 매핑 ID / 연결 버전별로 효력 기간을 설정하고 관리합니다.</div>
+      </div>
+    </div>
+
+    <ul class="steps">
+      <li class="step-item">
+        <div class="step-dot">1</div>
+        <div class="step-content">
+          <div class="step-title">라인 선택 후 지정 버튼 클릭</div>
+          <div class="step-body">조회 그리드에서 대상 라인을 선택한 후 <strong>지정</strong> 버튼을 클릭합니다. 해당 연결단위/매핑 ID에 등록된 효력기간 리스트를 확인할 수 있습니다.</div>
+        </div>
+      </li>
+      <li class="step-item">
+        <div class="step-dot">2</div>
+        <div class="step-content">
+          <div class="step-title">신규 지정: 효력 시작일 입력</div>
+          <div class="step-body">효력 시작일(FyearperiodTo)을 입력하면 시스템이 자동으로 효력 종료일(FyearperiodFr)을 계산합니다.</div>
+        </div>
+      </li>
+    </ul>
+
+    <h3 style="font-size:14px;font-weight:700;color:var(--navy);margin:20px 0 10px;">효력기간 자동 계산 로직</h3>
+    <table class="logic-table">
+      <thead>
+        <tr>
+          <th>구분</th><th>효력 시작일 (입력)</th><th>효력 종료일 (자동계산)</th><th>개정</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>최초 생성 (데이터 없음)</td>
+          <td>2023/012 입력</td>
+          <td>9999/012 (자동)</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td>2번째 지정 추가</td>
+          <td>2024/006 입력</td>
+          <td>기존 1번: 2023/012~2024/005<br>신규 2번: 2024/006~9999/012</td>
+          <td>1 / 2</td>
+        </tr>
+        <tr>
+          <td>중간 날짜로 3번째 추가</td>
+          <td>2024/003 입력</td>
+          <td>1번: 2023/012~2024/002<br>3번: 2024/003~2024/005<br>2번: 2024/006~9999/012</td>
+          <td>1 / 3 / 2</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="note">
+      <strong>📌 규칙:</strong> 시작일 기준 오름차순 정렬 → 이전 데이터의 종료일 = 새 시작일 − 1일 → 마지막 데이터 종료일 = 9999/012
+    </div>
+
+    <h3 style="font-size:14px;font-weight:700;color:var(--navy);margin:20px 0 10px;">지정 내 가능 작업</h3>
+    <div class="btn-grid">
+      <div class="btn-card">
+        <div class="btn-card-name"><span class="btn-icon">➕</span> 신규 (지정 추가)</div>
+        <p>효력 시작일을 입력하여 새로운 효력기간 라인을 추가합니다.</p>
+      </div>
+      <div class="btn-card">
+        <div class="btn-card-name"><span class="btn-icon">🗑</span> 삭제</div>
+        <p>선택한 지정 라인을 삭제합니다.</p>
+        <p class="cond">해당 기간 내 전표가 생성된 경우 삭제 불가</p>
+      </div>
+      <div class="btn-card">
+        <div class="btn-card-name"><span class="btn-icon">✏️</span> 편집</div>
+        <p>선택한 지정 라인의 내용을 수정합니다.</p>
+      </div>
+    </div>
+    <div class="warn">
+      <strong>⚠ 삭제 제한:</strong> 해당 기간에 전표가 생성되어 있으면 지정 삭제가 불가합니다.
+    </div>
+  </div>
+
+  <!-- S5: 임포트 -->
+  <div class="section" id="s5">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <div>
+        <h2>임포트 (계정 업로드)</h2>
+        <div class="section-desc">Non-SAP 법인의 G/L 계정 내역이 담긴 엑셀 파일을 업로드합니다.</div>
+      </div>
+    </div>
+
+    <div class="note" style="margin-bottom:16px;">
+      <strong>📌 선행 조건:</strong> 임포트 전에 반드시 <strong>① 매핑 생성 → ② 개정 생성</strong>이 완료되어 있어야 합니다.
+    </div>
+
+    <ul class="steps">
+      <li class="step-item">
+        <div class="step-dot">1</div>
+        <div class="step-content">
+          <div class="step-title">임포트 버튼 클릭</div>
+          <div class="step-body">조회 화면 상단의 <strong>임포트</strong> 버튼을 클릭하면 임포트 팝업(Screen3)으로 이동합니다.</div>
+        </div>
+      </li>
+      <li class="step-item">
+        <div class="step-dot">2</div>
+        <div class="step-content">
+          <div class="step-title">템플릿 다운로드</div>
+          <div class="step-body"><strong>다운로드</strong> 버튼을 클릭하여 표준 엑셀 업로드 템플릿 파일을 내려받습니다.</div>
+        </div>
+      </li>
+      <li class="step-item">
+        <div class="step-dot">3</div>
+        <div class="step-content">
+          <div class="step-title">파일 선택 (찾아보기)</div>
+          <div class="step-body"><strong>찾아보기</strong> 버튼을 클릭하여 업로드할 엑셀 파일을 선택합니다. 파일 탐색기 창이 열립니다.</div>
+        </div>
+      </li>
+      <li class="step-item">
+        <div class="step-dot">4</div>
+        <div class="step-content">
+          <div class="step-title">매핑 개정 라인 선택 후 임포트</div>
+          <div class="step-body">리스트에서 대상 <strong>매핑 개정 라인을 선택</strong>한 후 <strong>임포트</strong> 버튼을 클릭합니다. 라인을 선택하지 않은 경우 임포트 버튼이 비활성화됩니다.</div>
+        </div>
+      </li>
+      <li class="step-item">
+        <div class="step-dot">5</div>
+        <div class="step-content">
+          <div class="step-title">오류 처리</div>
+          <div class="step-body">업로드 과정에서 오류 발생 시 화면에 오류 메시지가 반환됩니다. 엑셀 파일을 수정한 후 재시도합니다.</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="warn">
+      <strong>⚠ 주의:</strong> 연결항목(isConsolidationItem = '예')으로 설정된 재무제표 항목은 Non-SAP 매핑 대상에서 제외됩니다. 해당 항목 매핑 시도 시 "연결 전용 항목은 매핑할 수 없습니다" 오류 메시지가 반환됩니다.
+    </div>
+  </div>
+
+  <!-- S6: 편집 -->
+  <div class="section" id="s6">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <div>
+        <h2>매핑 내역 편집</h2>
+        <div class="section-desc">조회 화면에서 > 버튼으로 진입하는 상세 편집 화면입니다. G/L 계정과 재무제표 항목의 매핑을 수정합니다.</div>
+      </div>
+    </div>
+
+    <h3 style="font-size:14px;font-weight:700;color:var(--navy);margin:0 0 12px;">편집 화면 그리드 항목</h3>
+    <table class="data-table">
+      <thead>
+        <tr><th>항목명</th><th>필드명</th><th>편집 가능</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>연결 계정과목표</td><td><span class="badge badge-code">Ritclg</span></td><td>—</td></tr>
+        <tr><td>연결단위</td><td><span class="badge badge-code">Rbunit</span></td><td>—</td></tr>
+        <tr><td>매핑 ID</td><td><span class="badge badge-code">MappingId</span></td><td>—</td></tr>
+        <tr><td>개정</td><td><span class="badge badge-code">Revision</span></td><td>—</td></tr>
+        <tr><td>G/L 계정</td><td><span class="badge badge-code">Zracct</span></td><td>✓ 편집 가능</td></tr>
+        <tr><td>G/L 계정 설명(로컬)</td><td><span class="badge badge-code">ZracctTextLo</span></td><td>✓ 편집 가능</td></tr>
+        <tr><td>G/L 계정 설명(그룹)</td><td><span class="badge badge-code">ZracctTextGr</span></td><td>✓ 편집 가능</td></tr>
+        <tr><td>재무제표 항목</td><td><span class="badge badge-code">Ritem</span></td><td>✓ 편집 가능</td></tr>
+        <tr><td>재무제표 항목 텍스트</td><td><span class="badge badge-code">CnsldtnFSItemText</span></td><td>—</td></tr>
+        <tr><td>재무제표 항목 중간문자열</td><td><span class="badge badge-code">CnsldtnFSItemMediumText</span></td><td>—</td></tr>
+      </tbody>
+    </table>
+
+    <ul class="steps" style="margin-top:16px;">
+      <li class="step-item">
+        <div class="step-dot">1</div>
+        <div class="step-content">
+          <div class="step-title">편집 버튼 클릭</div>
+          <div class="step-body">상세 화면 상단의 <strong>편집</strong> 버튼을 클릭하면 수정 가능 상태로 전환됩니다. 편집된 데이터는 임시로 <strong>ZGRTCOA04_D (드래프트 테이블)</strong>에 저장됩니다.</div>
+        </div>
+      </li>
+      <li class="step-item">
+        <div class="step-dot">2</div>
+        <div class="step-content">
+          <div class="step-title">데이터 수정</div>
+          <div class="step-body">G/L 계정, G/L 계정 설명(로컬), G/L 계정 설명(그룹), 재무제표 항목을 수정합니다. 라인 추가 및 삭제도 가능합니다.</div>
+        </div>
+      </li>
+      <li class="step-item">
+        <div class="step-dot">3</div>
+        <div class="step-content">
+          <div class="step-title">저장 (유효성 검증 후 확정)</div>
+          <div class="step-body"><strong>저장</strong> 버튼 클릭 시 데이터 유효성 검증이 실행됩니다. 검증 통과 시 <strong>ZGRTCOA04 (액티브 테이블)</strong>에 최종 반영됩니다. 오류 발생 시 화면에 오류 메시지가 표시됩니다.</div>
+        </div>
+      </li>
+      <li class="step-item">
+        <div class="step-dot">4</div>
+        <div class="step-content">
+          <div class="step-title">취소</div>
+          <div class="step-body"><strong>취소</strong> 버튼 클릭 시 변경 사항을 저장하지 않고 이전 상태로 돌아갑니다.</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- S7: 기타 버튼 -->
+  <div class="section" id="s7">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <div>
+        <h2>기타 버튼 안내</h2>
+        <div class="section-desc">조회 화면에서 사용 가능한 버튼들의 기능과 활성화 조건입니다.</div>
+      </div>
+    </div>
+
+    <div class="btn-grid">
+      <div class="btn-card">
+        <div class="btn-card-name"><span class="btn-icon">🔄</span> 새로고침</div>
+        <p>테이블의 최신 데이터를 다시 불러옵니다. 액티브 데이터와 드래프트 데이터 모두 확인 가능합니다.</p>
+      </div>
+      <div class="btn-card">
+        <div class="btn-card-name"><span class="btn-icon">📥</span> 엑스포트</div>
+        <p>조회된 결과를 엑셀 파일로 다운로드합니다.</p>
+        <p class="cond">라인을 체크해야 활성화됩니다.</p>
+      </div>
+      <div class="btn-card">
+        <div class="btn-card-name"><span class="btn-icon">📋</span> 복사</div>
+        <p>선택한 매핑 내역을 복사하여 신규 생성합니다. 새로운 매핑 ID가 자동 생성되며, 복사 후 즉시 수정 화면으로 이동합니다.</p>
+        <p class="cond">라인을 체크해야 활성화됩니다.</p>
+      </div>
+      <div class="btn-card">
+        <div class="btn-card-name"><span class="btn-icon">🗑</span> 삭제</div>
+        <p>선택한 매핑 내역을 삭제합니다. 삭제 확인 팝업(삭제하시겠습니까? Y/N)이 표시됩니다.</p>
+        <p class="cond">라인을 체크해야 활성화됩니다. 해당 매핑 ID에 전표가 생성된 경우 삭제 불가.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S8: 드래프트/액티브 -->
+  <div class="section" id="s8">
+    <div class="section-header">
+      <div class="section-num">·</div>
+      <div>
+        <h2>드래프트 / 액티브 데이터 구조</h2>
+        <div class="section-desc">편집 중 데이터는 드래프트 상태로 관리되며, 저장 시 액티브로 전환됩니다.</div>
+      </div>
+    </div>
+
+    <div class="status-flow">
+      <div class="status-item draft">
+        <div class="status-label">Draft</div>
+        <div class="status-desc">편집 중 임시 저장<br>ZGRTCOA04_D</div>
+      </div>
+      <div class="status-item" style="flex:0.3;background:white;display:flex;align-items:center;justify-content:center;font-size:18px;color:#ccc;">→</div>
+      <div class="status-item active">
+        <div class="status-label">Active</div>
+        <div class="status-desc">유효성 검증 후 확정<br>ZGRTCOA04</div>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:12px;">
+      새로고침 기능 사용 시 액티브 데이터와 드래프트 데이터를 모두 확인할 수 있습니다.
+    </div>
+  </div>
+
+  <!-- S9: 테이블/CDS -->
+  <div class="section" id="s9">
+    <div class="section-header">
+      <div class="section-num">·</div>
+      <div>
+        <h2>테이블 및 CDS View 구조</h2>
+        <div class="section-desc">프로그램에서 사용하는 SAP 커스텀 테이블과 CDS View 목록입니다.</div>
+      </div>
+    </div>
+
+    <div class="tech-grid">
+      <div class="tech-card">
+        <div class="tech-card-title">커스텀 테이블</div>
+        <div class="tech-item"><code>ZGRTCOA01</code> — 매핑 ID 및 관련 정보</div>
+        <div class="tech-item"><code>ZGRTCOA02</code> — 매핑 개정 및 관련 정보</div>
+        <div class="tech-item"><code>ZGRTCOA03</code> — 매핑 버전과 효력기간</div>
+        <div class="tech-item"><code>ZGRTCOA04</code> — 업로드 데이터 (액티브)</div>
+        <div class="tech-item"><code>ZGRTCOA04_D</code> — 업로드 데이터 (드래프트)</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-title">CDS View (인터페이스)</div>
+        <div class="tech-item"><code>ZI_GRVCOA01</code> — ZGRTCOA01 인터페이스</div>
+        <div class="tech-item"><code>ZI_GRVCOA02</code> — ZGRTCOA02 인터페이스</div>
+        <div class="tech-item"><code>ZI_GRVCOA03</code> — ZGRTCOA03 인터페이스</div>
+        <div class="tech-item"><code>ZI_GRVCOA04</code> — ZGRTCOA04 인터페이스</div>
+        <div class="tech-item"><code>ZI_GRVCOA04_D</code> — 드래프트 인터페이스</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S10: 조회 조건 상세 -->
+  <div class="section" id="s10">
+    <div class="section-header">
+      <div class="section-num">·</div>
+      <div>
+        <h2>조회 조건 필드 상세</h2>
+        <div class="section-desc">초기 화면의 조회 조건 필드 정의 및 속성입니다.</div>
+      </div>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>레이블</th><th>테이블/필드</th><th>타입</th><th>길이</th><th>UI 요소</th><th>선택범위</th><th>기본값</th><th>필수</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>연결단위</td>
+          <td><span class="badge badge-code">ZGRTCOA04.RBUNIT</span></td>
+          <td>CHAR</td><td>18</td><td>Value Help</td><td>Single</td><td>—</td>
+          <td><span class="badge badge-req">필수</span></td>
+        </tr>
+        <tr>
+          <td>연결 계정과목표</td>
+          <td><span class="badge badge-code">ZGRTCOA04.RITCLG</span></td>
+          <td>CHAR</td><td>2</td><td>Value Help</td><td>Single</td><td>Y1</td>
+          <td><span class="badge badge-req">필수</span></td>
+        </tr>
+        <tr>
+          <td>매핑 ID</td>
+          <td><span class="badge badge-code">ZGRTCOA04.MAPPING_ID</span></td>
+          <td>CHAR</td><td>10</td><td>Value Help</td><td>Multiple</td><td>—</td>
+          <td><span class="badge badge-opt">선택</span></td>
+        </tr>
+        <tr>
+          <td>개정</td>
+          <td><span class="badge badge-code">ZGRTCOA04.REVISION</span></td>
+          <td>CHAR</td><td>10</td><td>Value Help</td><td>Single</td><td>—</td>
+          <td><span class="badge badge-opt">선택</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note" style="margin-top:14px;">
+      <strong>📌 연결단위 조회 범위:</strong> 연결 담당자는 글로벌 매개변수(Global Parameter)에 설정된 법인 외에도 다른 법인을 선택하여 조회·관리할 수 있습니다. 글로벌 파라미터 값은 기본값으로 적용되지만, 다른 법인 선택도 가능합니다.
+    </div>
+  </div>
+
+</main>
+
+<script>
+  // Active nav highlighting on scroll
+  const sections = document.querySelectorAll('.section, .overview, .flow-box');
+  const navItems = document.querySelectorAll('.nav-item');
+
+  const sectionIds = ['overview', 's1','s2','s3','s4','s5','s6','s7','s8','s9','s10'];
+
+  function setActive(id) {
+    navItems.forEach(el => {
+      el.classList.toggle('active', el.getAttribute('href') === '#' + id);
+    });
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) setActive(e.target.id);
+    });
+  }, { rootMargin: '-60px 0px -60% 0px', threshold: 0 });
+
+  sectionIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
+
+  // Smooth scroll
+  navItems.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+</body>
+</html>
