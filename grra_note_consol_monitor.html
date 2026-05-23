@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>연결주석모니터 — 사용자 도움말</title>
+<style>
+  :root{--navy:#003366;--navy-mid:#004b99;--navy-light:#e8eef7;--navy-border:#c8d8ee;--white:#fff;--text:#333;--text-light:#666;--text-muted:#999;--bg:#f7f9fc;--sidebar-w:272px;--header-h:60px;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.7;}
+  header{position:fixed;top:0;left:0;right:0;height:var(--header-h);background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 28px;z-index:200;border-bottom:3px solid var(--navy-mid);}
+  .hl{display:flex;align-items:center;gap:14px;}.logo{width:32px;height:32px;background:#fff;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .htitle{color:#fff;font-size:15px;font-weight:700;}.hsub{color:rgba(255,255,255,0.55);font-size:12px;margin-top:1px;}
+  .hbadge{background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.8);font-size:11px;padding:3px 9px;border-radius:20px;border:1px solid rgba(255,255,255,0.2);}
+  aside{position:fixed;top:var(--header-h);left:0;bottom:0;width:var(--sidebar-w);background:#fff;border-right:1px solid var(--navy-border);overflow-y:auto;z-index:100;padding:20px 0 40px;}
+  .nlabel{font-size:10px;font-weight:700;letter-spacing:1.2px;color:var(--text-muted);text-transform:uppercase;padding:14px 20px 6px;}
+  .nitem{display:flex;align-items:center;gap:10px;padding:8px 20px;cursor:pointer;color:var(--text-light);font-size:13px;transition:background 0.15s,color 0.15s;border-left:3px solid transparent;text-decoration:none;}
+  .nitem:hover{background:var(--navy-light);color:var(--navy);}.nitem.active{background:var(--navy-light);color:var(--navy);font-weight:600;border-left-color:var(--navy);}
+  .nnum{width:20px;height:20px;background:var(--navy);color:#fff;font-size:10px;font-weight:700;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .nitem:not(.active) .nnum{background:#d0d8e8;color:#666;}aside::-webkit-scrollbar{width:4px;}aside::-webkit-scrollbar-thumb{background:var(--navy-border);border-radius:4px;}
+  main{margin-left:var(--sidebar-w);margin-top:var(--header-h);padding:40px 48px 80px;max-width:980px;}
+  .ov{background:var(--navy);color:#fff;border-radius:6px;padding:32px 36px;margin-bottom:40px;position:relative;overflow:hidden;}
+  .ov::after{content:'';position:absolute;right:-20px;top:-20px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.04);}
+  .ovtag{display:inline-block;background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.85);font-size:11px;font-weight:600;letter-spacing:0.8px;padding:3px 10px;border-radius:3px;text-transform:uppercase;margin-bottom:14px;}
+  .ov h1{font-size:22px;font-weight:700;margin-bottom:12px;letter-spacing:-0.5px;}.ov p{font-size:14px;color:rgba(255,255,255,0.78);line-height:1.75;max-width:640px;}
+  .ovmeta{margin-top:24px;display:flex;gap:32px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,0.15);padding-top:20px;}
+  .oml{font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:3px;}.omv{font-size:13px;color:rgba(255,255,255,0.9);font-weight:600;}
+  .flow-box{background:#fff;border:1px solid var(--navy-border);border-radius:6px;padding:28px 32px;margin-bottom:40px;}
+  .flow-box h2{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--navy-border);}
+  .fsteps{display:flex;align-items:flex-start;overflow-x:auto;padding-bottom:4px;}
+  .fstep{flex:1;min-width:100px;text-align:center;position:relative;padding:0 4px 8px;}
+  .fstep:not(:last-child)::after{content:'→';position:absolute;right:-9px;top:20px;color:var(--navy-border);font-size:18px;}
+  .ficon{width:44px;height:44px;background:var(--navy-light);border:2px solid var(--navy-border);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:18px;}
+  .fsn{font-size:10px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;}.fsl{font-size:12px;color:var(--text);font-weight:500;}
+  .sec{background:#fff;border:1px solid var(--navy-border);border-radius:6px;padding:32px 36px;margin-bottom:28px;scroll-margin-top:calc(var(--header-h)+20px);}
+  .shead{display:flex;align-items:center;gap:14px;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid var(--navy-light);}
+  .snum{width:34px;height:34px;background:var(--navy);color:#fff;font-size:14px;font-weight:700;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .sec h2{font-size:18px;font-weight:700;color:var(--navy);}.sdesc{font-size:13px;color:var(--text-light);margin-top:2px;}
+  h3.sub{font-size:14px;font-weight:700;color:var(--navy);margin:22px 0 10px;}
+  .steps{list-style:none;margin:16px 0;}.si{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--navy-light);}.si:last-child{border-bottom:none;}
+  .sdot{width:24px;height:24px;background:var(--navy-light);border:2px solid var(--navy-border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--navy);flex-shrink:0;margin-top:1px;}
+  .sc{flex:1;}.stit{font-weight:600;color:var(--text);margin-bottom:3px;font-size:13.5px;}.sbody{font-size:13px;color:var(--text-light);}
+  .note{background:var(--navy-light);border-left:4px solid var(--navy);border-radius:0 4px 4px 0;padding:12px 16px;margin:14px 0;font-size:13px;color:var(--navy);}.note strong{font-weight:700;}
+  .warn{background:#fff8e1;border-left:4px solid #f59e0b;border-radius:0 4px 4px 0;padding:12px 16px;margin:14px 0;font-size:13px;color:#7c5800;}.warn strong{font-weight:700;}
+  .danger{background:#fdf2f2;border-left:4px solid #e74c3c;border-radius:0 4px 4px 0;padding:12px 16px;margin:14px 0;font-size:13px;color:#922b21;}.danger strong{font-weight:700;}
+  .dt{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px;}.dt th{background:var(--navy);color:#fff;padding:10px 14px;text-align:left;font-weight:600;font-size:12px;}
+  .dt td{padding:9px 14px;border-bottom:1px solid var(--navy-border);vertical-align:top;}.dt tr:nth-child(even) td{background:var(--navy-light);}.dt tr:last-child td{border-bottom:none;}
+  .b{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;white-space:nowrap;}
+  .br{background:#fde8e8;color:#c0392b;}.bo{background:#e8f5e9;color:#27ae60;}.ba{background:var(--navy-light);color:var(--navy);}.bc{background:#f5f5f5;color:#555;font-family:'Courier New',monospace;font-size:11px;}
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;}
+  .card{border:1px solid var(--navy-border);border-radius:5px;padding:14px 16px;background:#fff;}.ctit{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;color:var(--navy);margin-bottom:7px;}.card p{font-size:12.5px;color:var(--text-light);}
+  /* status pills row */
+  .sp-row{display:flex;gap:0;border:1px solid var(--navy-border);border-radius:5px;overflow:hidden;margin:14px 0;}
+  .sp-item{flex:1;padding:12px 10px;text-align:center;border-right:1px solid var(--navy-border);}
+  .sp-item:last-child{border-right:none;}
+  .sp-code{font-size:20px;font-weight:800;margin-bottom:3px;}
+  .sp-label{font-size:12px;font-weight:700;margin-bottom:2px;}.sp-desc{font-size:11.5px;color:var(--text-light);}
+  .sp-y{background:#e8f5e9;}.sp-y .sp-code{color:#15803d;}
+  .sp-n{background:#fff8e1;}.sp-n .sp-code{color:#b45309;}
+  .sp-blank{background:#f9f9f9;}.sp-blank .sp-code{color:#aaa;}
+  @media(max-width:900px){:root{--sidebar-w:0px;}aside{display:none;}main{padding:24px 20px 60px;}.g2{grid-template-columns:1fr;}.sp-row{flex-direction:column;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="hl">
+    <div class="logo"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="16" height="16" rx="2" fill="#003366" opacity="0.15"/><circle cx="10" cy="10" r="6" stroke="#003366" stroke-width="1.5" fill="none"/><path d="M7 10h6M10 7v6" stroke="#003366" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+    <div><div class="htitle">연결주석모니터</div><div class="hsub">Module 3.3.1 — 연결주석 통합관리</div></div>
+  </div>
+  <span class="hbadge">V1.0</span>
+</header>
+<aside>
+  <div><div class="nlabel">개요</div><a class="nitem active" href="#overview"><span class="nnum">·</span> 프로그램 개요</a></div>
+  <div><div class="nlabel">주요 기능</div>
+    <a class="nitem" href="#s1"><span class="nnum">1</span> 조회</a>
+    <a class="nitem" href="#s2"><span class="nnum">2</span> 집계</a>
+    <a class="nitem" href="#s3"><span class="nnum">3</span> 환산</a>
+    <a class="nitem" href="#s4"><span class="nnum">4</span> 조정</a>
+    <a class="nitem" href="#s5"><span class="nnum">5</span> 마감 / 일괄마감</a>
+  </div>
+  <div><div class="nlabel">참고</div>
+    <a class="nitem" href="#s6"><span class="nnum">·</span> 집계·환산·마감 상태 코드</a>
+    <a class="nitem" href="#s7"><span class="nnum">·</span> 조회 조건 필드</a>
+    <a class="nitem" href="#s8"><span class="nnum">·</span> 테이블 구조</a>
+  </div>
+</aside>
+<main>
+<div class="ov" id="overview">
+  <div class="ovtag">3.3.1</div>
+  <h1>연결주석모니터</h1>
+  <p>개별 법인이 입력·마감한 주석 데이터를 연결그룹 기준으로 집계하고, 그룹통화로 환산하여 마감 처리하는 연결담당자용 프로그램입니다. 마감 처리된 메뉴는 집계·환산이 불가하며, 개별주석작성 모니터에도 마감이 반영됩니다.</p>
+  <div class="ovmeta">
+    <div><div class="oml">메뉴 경로</div><div class="omv">ASPN 주석관리 › 연결주석 관리 › 연결주석 모니터</div></div>
+    <div><div class="oml">주요 테이블</div><div class="omv">ZGRADIS07T (연결마감 관리)</div></div>
+  </div>
+</div>
+
+<div class="flow-box">
+  <h2>📋 주요 프로세스 흐름</h2>
+  <div class="fsteps">
+    <div class="fstep"><div class="ficon">🔍</div><div class="fsn">Step 1</div><div class="fsl">조회</div></div>
+    <div class="fstep"><div class="ficon">📊</div><div class="fsn">Step 2</div><div class="fsl">집계</div></div>
+    <div class="fstep"><div class="ficon">💱</div><div class="fsn">Step 3</div><div class="fsl">환산</div></div>
+    <div class="fstep"><div class="ficon">🔧</div><div class="fsn">Step 4</div><div class="fsl">조정</div></div>
+    <div class="fstep"><div class="ficon">🔒</div><div class="fsn">Step 5</div><div class="fsl">마감</div></div>
+  </div>
+  <div class="note" style="margin-top:20px;"><strong>순서 주의:</strong> 집계 → 환산 → (조정) → 마감 순서로 진행합니다. 마감 처리 후에는 집계 및 환산이 불가합니다. 최상위 노드 메뉴는 집계·환산·마감 상태를 관리하지 않습니다.</div>
+</div>
+
+<!-- S1 -->
+<div class="sec" id="s1">
+  <div class="shead"><div class="snum">1</div><div><h2>조회</h2><div class="sdesc">연결그룹·버전 기준으로 메뉴별 집계·환산·마감 상태를 조회합니다.</div></div></div>
+  <ul class="steps">
+    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">조회 조건 입력 후 실행</div><div class="sbody">주석양식ID, 연결그룹, 연결버전, 회계연도, 회계기간을 입력합니다. 회계연도·기간은 글로벌 파라미터 기본값이 적용됩니다.</div></div></li>
+    <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">메뉴 트리 확인</div><div class="sbody">조회 결과로 메뉴 트리와 각 메뉴의 집계(Y/N/공란)·환산(Y/공란)·마감 상태가 표시됩니다.</div></div></li>
+  </ul>
+</div>
+
+<!-- S2 -->
+<div class="sec" id="s2">
+  <div class="shead"><div class="snum">2</div><div><h2>집계</h2><div class="sdesc">개별 법인이 마감한 주석 데이터를 연결그룹 기준으로 집계합니다.</div></div></div>
+  <ul class="steps">
+    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">집계 대상 메뉴 선택 → 집계 클릭</div><div class="sbody">집계할 메뉴를 선택하고 <strong>집계</strong> 버튼을 클릭합니다. 작성 마감된 법인의 데이터를 연결그룹 단위로 취합합니다.</div></div></li>
+    <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">집계 상태 확인</div><div class="sbody">집계 완료 시 집계 컬럼에 <strong>Y</strong>가 표시됩니다. 집계 후 법인의 데이터가 변경된 경우 <strong>N</strong>으로 표시되어 재집계가 필요함을 알립니다.</div></div></li>
+  </ul>
+  <h3 class="sub">집계 상태 표시</h3>
+  <div class="sp-row">
+    <div class="sp-item sp-blank"><div class="sp-code">' '</div><div class="sp-label">미집계</div><div class="sp-desc">집계 전 상태</div></div>
+    <div class="sp-item sp-n"><div class="sp-code">N</div><div class="sp-label">재집계 필요</div><div class="sp-desc">법인 데이터 변경됨</div></div>
+    <div class="sp-item sp-y"><div class="sp-code">Y</div><div class="sp-label">집계 완료</div><div class="sp-desc">최신 데이터 반영됨</div></div>
+  </div>
+</div>
+
+<!-- S3 -->
+<div class="sec" id="s3">
+  <div class="shead"><div class="snum">3</div><div><h2>환산</h2><div class="sdesc">집계된 로컬통화 데이터를 그룹통화로 환산합니다.</div></div></div>
+  <ul class="steps">
+    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">환산 클릭</div><div class="sbody">집계 완료(Y) 상태에서 <strong>환산</strong> 버튼을 클릭합니다. 레이아웃관리에서 설정한 CONV(환산구분) 기준(OPE·AVG·CLO·COPY·FORMULA)으로 그룹통화 금액이 산출됩니다.</div></div></li>
+    <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">환산 상태 확인</div><div class="sbody">환산 완료 시 환산 컬럼에 <strong>Y</strong>가 표시됩니다. ZGRADIS07T.VSTAT 필드에 Y로 저장됩니다.</div></div></li>
+  </ul>
+</div>
+
+<!-- S4 -->
+<div class="sec" id="s4">
+  <div class="shead"><div class="snum">4</div><div><h2>조정</h2><div class="sdesc">레이아웃의 연결참조(GSELECTION)를 기반으로 조정 데이터를 불러옵니다.</div></div></div>
+  <div class="note"><strong>📌 조정 기능:</strong> 레이아웃 구성 시 연결참조를 설정한 항목의 조정 데이터(자동조정 CDS, GR총금액 CDS)를 불러와 ZGRADIS06T(연결주석조회 테이블)에 저장합니다. 연결주석조회 화면에서 해당 데이터를 확인할 수 있습니다.</div>
+</div>
+
+<!-- S5 -->
+<div class="sec" id="s5">
+  <div class="shead"><div class="snum">5</div><div><h2>마감 / 일괄마감</h2><div class="sdesc">메뉴의 집계·환산·조정 작업을 마감합니다.</div></div></div>
+  <div class="g2">
+    <div class="card"><div class="ctit">🔒 마감</div><p>선택한 메뉴의 마감 처리. ZGRADIS07T.CSTAT를 Y로 변경. 마감 후 집계·환산 불가. 개별주석작성모니터 메뉴도 자동 마감됨.</p></div>
+    <div class="card"><div class="ctit">🔒 일괄마감 / 일괄마감 취소</div><p>조회된 모든 메뉴를 일괄 마감하거나 일괄 취소합니다.</p></div>
+  </div>
+  <div class="danger"><strong>🚫 마감 후 제한:</strong> 마감 상태에서는 집계·환산이 불가합니다. 개별주석작성모니터에서도 해당 메뉴의 마감 취소가 불가능해집니다.</div>
+</div>
+
+<!-- S6 -->
+<div class="sec" id="s6">
+  <div class="shead"><div class="snum">·</div><div><h2>집계·환산·마감 상태 코드</h2></div></div>
+  <table class="dt">
+    <thead><tr><th>구분</th><th>필드</th><th>코드</th><th>의미</th></tr></thead>
+    <tbody>
+      <tr><td>집계 상태</td><td><span class="b bc">ZGRADIS07T.ASTAT</span></td><td>공란 / N / Y</td><td>공란: 미집계 / N: 재집계 필요 / Y: 집계 완료</td></tr>
+      <tr><td>환산 상태</td><td><span class="b bc">ZGRADIS07T.VSTAT</span></td><td>공란 / Y</td><td>공란: 미환산 / Y: 환산 완료</td></tr>
+      <tr><td>마감 상태</td><td><span class="b bc">ZGRADIS07T.CSTAT</span></td><td>공란 / Y</td><td>공란: 미마감 / Y: 마감 완료</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- S7 -->
+<div class="sec" id="s7">
+  <div class="shead"><div class="snum">·</div><div><h2>조회 조건 필드</h2></div></div>
+  <table class="dt">
+    <thead><tr><th>필드</th><th>UI 요소</th><th>필수</th><th>비고</th></tr></thead>
+    <tbody>
+      <tr><td>주석양식ID</td><td>도움창</td><td><span class="b br">필수</span></td><td>Single Parameter</td></tr>
+      <tr><td>메뉴ID</td><td>도움창</td><td><span class="b ba">선택</span></td><td>Single Parameter</td></tr>
+      <tr><td>연결그룹</td><td>도움창</td><td><span class="b br">필수</span></td><td>Single Parameter</td></tr>
+      <tr><td>연결버전</td><td>도움창</td><td><span class="b br">필수</span></td><td>Single Parameter</td></tr>
+      <tr><td>회계연도</td><td>도움창</td><td><span class="b br">필수</span></td><td>글로벌 파라미터 기본값</td></tr>
+      <tr><td>회계기간</td><td>도움창</td><td><span class="b br">필수</span></td><td>글로벌 파라미터 기본값</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- S8 -->
+<div class="sec" id="s8">
+  <div class="shead"><div class="snum">·</div><div><h2>테이블 구조</h2></div></div>
+  <table class="dt">
+    <thead><tr><th>테이블</th><th>설명</th><th>주요 필드</th></tr></thead>
+    <tbody>
+      <tr><td><span class="b bc">ZGRADIS07T</span></td><td>연결마감 관리</td><td>FORM_ID, MENU_ID, CGROUP, RVERS, FYEAR, FPERIOD(PK), ASTAT(집계), ATIME(집계시간), VSTAT(환산), CSTAT(마감), CRE/UPD 로그</td></tr>
+      <tr><td><span class="b bc">ZGRADIS06T</span></td><td>연결주석조회</td><td>DISCID, MENUID, CGROUP, RVERS, RBUNIT, FYEAR, FPERIOD, DATATYPE, ROW_ID, CONVTYPE, AMT01~10, CURR01~10</td></tr>
+    </tbody>
+  </table>
+</div>
+</main>
+<script>
+  const ids=['overview','s1','s2','s3','s4','s5','s6','s7','s8'];
+  const navItems=document.querySelectorAll('.nitem');
+  function setActive(id){navItems.forEach(el=>el.classList.toggle('active',el.getAttribute('href')==='#'+id));}
+  const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)setActive(x.target.id);});},{rootMargin:'-60px 0px -60% 0px'});
+  ids.forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el);});
+  navItems.forEach(l=>{l.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(l.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});});});
+</script>
+</body>
+</html>

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 3. 연결주석 통합관리 — 사용자 도움말</title>
+<style>
+  :root{--navy:#003366;--navy-mid:#004b99;--navy-light:#e8eef7;--navy-border:#c8d8ee;--white:#fff;--text:#333;--text-light:#666;--text-muted:#999;--bg:#f7f9fc;
+    --m31:#0055b3;--m31-light:#e6f0ff;--m31-border:#99c0ff;
+    --m32:#00664d;--m32-light:#e6f5f0;--m32-border:#80ccb3;
+    --m33:#6b21a8;--m33-light:#f3e8ff;--m33-border:#c4b5fd;
+    --sidebar-w:272px;--header-h:60px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.7;}
+  header{position:fixed;top:0;left:0;right:0;height:var(--header-h);background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 28px;z-index:200;border-bottom:3px solid var(--navy-mid);}
+  .hl{display:flex;align-items:center;gap:14px;}
+  .logo{width:32px;height:32px;background:#fff;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .htitle{color:#fff;font-size:15px;font-weight:700;letter-spacing:-0.3px;}
+  .hsub{color:rgba(255,255,255,0.55);font-size:12px;margin-top:1px;}
+  .hbadge{background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.8);font-size:11px;padding:3px 9px;border-radius:20px;border:1px solid rgba(255,255,255,0.2);}
+  aside{position:fixed;top:var(--header-h);left:0;bottom:0;width:var(--sidebar-w);background:#fff;border-right:1px solid var(--navy-border);overflow-y:auto;z-index:100;padding:20px 0 40px;}
+  .nlabel{font-size:10px;font-weight:700;letter-spacing:1.2px;color:var(--text-muted);text-transform:uppercase;padding:14px 20px 6px;}
+  .nitem{display:flex;align-items:center;gap:10px;padding:8px 20px;cursor:pointer;color:var(--text-light);font-size:13px;transition:background 0.15s,color 0.15s;border-left:3px solid transparent;text-decoration:none;}
+  .nitem:hover{background:var(--navy-light);color:var(--navy);}
+  .nitem.active{background:var(--navy-light);color:var(--navy);font-weight:600;border-left-color:var(--navy);}
+  .nnum{width:20px;height:20px;background:var(--navy);color:#fff;font-size:10px;font-weight:700;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .nitem:not(.active) .nnum{background:#d0d8e8;color:#666;}
+  aside::-webkit-scrollbar{width:4px;}aside::-webkit-scrollbar-thumb{background:var(--navy-border);border-radius:4px;}
+  main{margin-left:var(--sidebar-w);margin-top:var(--header-h);padding:40px 48px 80px;max-width:1040px;}
+
+  /* HERO */
+  .hero{background:var(--navy);border-radius:8px;padding:40px 44px;margin-bottom:48px;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;right:-40px;top:-40px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,0.04);}
+  .hero::after{content:'';position:absolute;left:0;bottom:0;right:0;height:3px;background:linear-gradient(90deg,#004b99,#6b21a8);}
+  .hero-tag{display:inline-block;background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.85);font-size:11px;font-weight:600;letter-spacing:0.8px;padding:3px 10px;border-radius:3px;text-transform:uppercase;margin-bottom:16px;}
+  .hero h1{font-size:28px;font-weight:700;color:#fff;letter-spacing:-0.5px;margin-bottom:14px;}
+  .hero p{font-size:14.5px;color:rgba(255,255,255,0.72);line-height:1.8;max-width:620px;margin-bottom:28px;}
+  .hero-stats{display:flex;gap:28px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,0.15);padding-top:24px;}
+  .hstat{border-left:2px solid rgba(255,255,255,0.2);padding-left:16px;}
+  .hstat-num{font-size:20px;font-weight:700;color:#fff;margin-bottom:3px;}
+  .hstat-label{font-size:11.5px;color:rgba(255,255,255,0.5);}
+
+  /* MASTER FLOW */
+  .mflow{background:#fff;border:1px solid var(--navy-border);border-radius:8px;padding:32px 36px;margin-bottom:48px;}
+  .mflow h2{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:24px;padding-bottom:14px;border-bottom:2px solid var(--navy-border);}
+  .flow-lanes{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid var(--navy-border);border-radius:6px;overflow:hidden;}
+  .fl{padding:14px 12px;border-right:1px solid var(--navy-border);}
+  .fl:last-child{border-right:none;}
+  .fl-head{font-size:10px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;padding:6px 0;margin-bottom:12px;border-bottom:2px solid;}
+  .fl-1 .fl-head{color:var(--m31);border-color:var(--m31);}
+  .fl-2 .fl-head{color:var(--m32);border-color:var(--m32);}
+  .fl-3 .fl-head{color:var(--m33);border-color:var(--m33);}
+  .fl-n .fl-head{color:var(--navy);border-color:var(--navy);}
+  .fl-step{background:#fff;border:1px solid var(--navy-border);border-radius:4px;padding:9px 11px;margin-bottom:8px;font-size:12px;}
+  .fl-1 .fl-step{border-left:3px solid var(--m31);}
+  .fl-2 .fl-step{border-left:3px solid var(--m32);}
+  .fl-3 .fl-step{border-left:3px solid var(--m33);}
+  .fl-n .fl-step{border-left:3px solid var(--navy);}
+  .fl-step-num{font-size:10px;color:var(--text-muted);margin-bottom:2px;}
+  .fl-step-title{font-weight:600;color:var(--text);font-size:12px;}
+  .fl-step-sub{font-size:11px;color:var(--text-light);margin-top:2px;}
+  .fl-arrow{display:flex;align-items:center;justify-content:center;padding:0 6px;font-size:18px;color:var(--navy-border);}
+
+  /* SECTION LABEL */
+  .slabel{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-bottom:20px;margin-top:8px;display:flex;align-items:center;gap:10px;}
+  .slabel::after{content:'';flex:1;height:1px;background:var(--navy-border);}
+
+  /* GROUP BLOCKS */
+  .grp{margin-bottom:44px;}
+  .grp-header{display:flex;align-items:center;gap:16px;padding:18px 22px;border-radius:6px 6px 0 0;border:1px solid transparent;}
+  .grp-1{background:var(--m31);border-color:var(--m31);}
+  .grp-2{background:var(--m32);border-color:var(--m32);}
+  .grp-3{background:var(--m33);border-color:var(--m33);}
+  .grp-icon{width:38px;height:38px;background:rgba(255,255,255,0.15);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+  .grp-meta{flex:1;}
+  .grp-num{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-bottom:4px;}
+  .grp-title{font-size:16px;font-weight:700;color:#fff;}
+  .grp-desc{font-size:12.5px;color:rgba(255,255,255,0.62);margin-top:4px;}
+  .grp-count{background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.85);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;white-space:nowrap;}
+  .grp-items{border:1px solid var(--navy-border);border-top:none;border-radius:0 0 6px 6px;background:#fff;overflow:hidden;}
+
+  /* DOC CARD */
+  .doc-card{display:flex;align-items:center;gap:0;border-bottom:1px solid var(--navy-border);text-decoration:none;transition:background 0.12s;}
+  .doc-card:last-child{border-bottom:none;}
+  .doc-card:hover{background:#f8faff;}
+  .doc-card:hover .doc-arrow{opacity:1;transform:translateX(3px);}
+  .doc-inner{display:flex;align-items:center;gap:16px;padding:16px 22px;flex:1;}
+  .doc-num{font-size:11px;font-weight:700;color:var(--text-muted);min-width:36px;flex-shrink:0;}
+  .doc-ico{width:36px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+  .ico-1{background:var(--m31-light);border:1px solid var(--m31-border);}
+  .ico-2{background:var(--m32-light);border:1px solid var(--m32-border);}
+  .ico-3{background:var(--m33-light);border:1px solid var(--m33-border);}
+  .doc-text{flex:1;}
+  .doc-title{font-size:13.5px;font-weight:600;color:var(--text);margin-bottom:3px;}
+  .doc-subtitle{font-size:12px;color:var(--text-muted);}
+  .doc-tags{display:flex;align-items:center;gap:8px;flex-shrink:0;padding-right:6px;}
+  .tag{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;}
+  .tag-avail{background:#e8f5e9;color:#15803d;border:1px solid #a7d7b4;}
+  .doc-arrow{font-size:16px;color:var(--navy);padding:16px 20px 16px 8px;opacity:0;transition:opacity 0.15s,transform 0.15s;}
+
+  /* PROCESS OVERVIEW TABLE */
+  .proc-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px;}
+  .proc-table th{background:var(--navy);color:#fff;padding:10px 14px;font-size:12px;font-weight:600;text-align:left;}
+  .proc-table td{padding:10px 14px;border-bottom:1px solid var(--navy-border);vertical-align:top;}
+  .proc-table tr:nth-child(even) td{background:var(--navy-light);}
+  .proc-table tr:last-child td{border-bottom:none;}
+  .b{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;white-space:nowrap;}
+  .bc{background:#f5f5f5;color:#555;font-family:'Courier New',monospace;font-size:11px;}
+  .ba{background:var(--navy-light);color:var(--navy);}
+  .note{background:var(--navy-light);border-left:4px solid var(--navy);border-radius:0 4px 4px 0;padding:12px 16px;margin:14px 0;font-size:13px;color:var(--navy);}
+  .note strong{font-weight:700;}
+
+  /* SEC */
+  .sec{background:#fff;border:1px solid var(--navy-border);border-radius:6px;padding:28px 32px;margin-bottom:28px;scroll-margin-top:calc(var(--header-h)+20px);}
+  .sec-title{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--navy-border);}
+
+  @media(max-width:900px){
+    :root{--sidebar-w:0px;}
+    aside{display:none;}
+    main{padding:24px 20px 60px;}
+    .flow-lanes{grid-template-columns:1fr;}
+    .fl{border-right:none;border-bottom:1px solid var(--navy-border);}
+    .doc-tags{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hl">
+    <div class="logo">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <rect x="2" y="2" width="7" height="7" rx="1" fill="#003366" opacity="0.9"/>
+        <rect x="11" y="2" width="7" height="7" rx="1" fill="#003366" opacity="0.55"/>
+        <rect x="2" y="11" width="7" height="7" rx="1" fill="#003366" opacity="0.55"/>
+        <rect x="11" y="11" width="7" height="7" rx="1" fill="#003366" opacity="0.9"/>
+      </svg>
+    </div>
+    <div>
+      <div class="htitle">Module 3. 연결주석 통합관리</div>
+      <div class="hsub">Advanced Group Reporting Add-in — 도움말 포털</div>
+    </div>
+  </div>
+  <span class="hbadge">V1.0</span>
+</header>
+
+<aside>
+  <div><div class="nlabel">개요</div>
+    <a class="nitem active" href="#overview"><span class="nnum">·</span> 모듈 개요 및 전체 흐름</a>
+    <a class="nitem" href="#arch"><span class="nnum">·</span> 시스템 아키텍처 개요</a>
+  </div>
+  <div><div class="nlabel">3.1 양식 및 메뉴관리</div>
+    <a class="nitem" href="#g31"><span class="nnum">·</span> 그룹 개요</a>
+    <a class="nitem" href="#p311"><span class="nnum">1</span> 양식 및 메뉴관리</a>
+    <a class="nitem" href="#p312"><span class="nnum">2</span> 주석 레이아웃관리</a>
+  </div>
+  <div><div class="nlabel">3.2 개별주석 관리</div>
+    <a class="nitem" href="#g32"><span class="nnum">·</span> 그룹 개요</a>
+    <a class="nitem" href="#p321"><span class="nnum">3</span> 개별주석작성리스트</a>
+    <a class="nitem" href="#p322"><span class="nnum">4</span> 주석작성 모니터</a>
+  </div>
+  <div><div class="nlabel">3.3 연결주석 관리</div>
+    <a class="nitem" href="#g33"><span class="nnum">·</span> 그룹 개요</a>
+    <a class="nitem" href="#p331"><span class="nnum">5</span> 연결주석모니터</a>
+    <a class="nitem" href="#p332"><span class="nnum">6</span> 연결주석조회</a>
+    <a class="nitem" href="#p333"><span class="nnum">7</span> 환산수식관리</a>
+  </div>
+</aside>
+
+<main>
+
+<!-- HERO -->
+<div class="hero" id="overview">
+  <div class="hero-tag">Module 3</div>
+  <h1>연결주석 통합관리</h1>
+  <p>IFRS 연결재무제표 주석 작성·취합·환산·마감 전 과정을 SAP S/4HANA Public Cloud 위에서 자동화합니다. 양식·메뉴·레이아웃을 한 번 정의하면, 개별 법인이 각자의 주석을 직접 입력하고 연결담당자가 집계·환산·마감으로 연결주석을 완성합니다.</p>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-num">3</div><div class="hstat-label">서브 그룹</div></div>
+    <div class="hstat"><div class="hstat-num">8</div><div class="hstat-label">프로그램</div></div>
+    <div class="hstat"><div class="hstat-num">10+</div><div class="hstat-label">커스텀 테이블</div></div>
+    <div class="hstat"><div class="hstat-num">IFRS</div><div class="hstat-label">연결주석 기준</div></div>
+  </div>
+</div>
+
+<!-- MASTER FLOW -->
+<div class="mflow">
+  <h2>📋 전체 프로세스 흐름 — 역할별 레인</h2>
+  <div class="flow-lanes">
+    <div class="fl fl-1">
+      <div class="fl-head">마스터 설정</div>
+      <div class="fl-step">
+        <div class="fl-step-num">3.1.1</div>
+        <div class="fl-step-title">양식·메뉴 생성</div>
+        <div class="fl-step-sub">ZGDT0010·0011·0012</div>
+      </div>
+      <div class="fl-step">
+        <div class="fl-step-num">3.1.2</div>
+        <div class="fl-step-title">레이아웃 설정</div>
+        <div class="fl-step-sub">행·열·수식 ZGRADIS03R/C/F</div>
+      </div>
+    </div>
+    <div class="fl fl-2">
+      <div class="fl-head">개별 법인</div>
+      <div class="fl-step" style="margin-top:24px;">
+        <div class="fl-step-num">3.2.1</div>
+        <div class="fl-step-title">주석 입력</div>
+        <div class="fl-step-sub">ZGRADIS04T</div>
+      </div>
+      <div class="fl-step">
+        <div class="fl-step-num">3.2.2</div>
+        <div class="fl-step-title">법인별 마감</div>
+        <div class="fl-step-sub">ZGRADIS05T</div>
+      </div>
+    </div>
+    <div class="fl fl-3">
+      <div class="fl-head">연결 담당자</div>
+      <div class="fl-step" style="margin-top:48px;">
+        <div class="fl-step-num">3.3.1</div>
+        <div class="fl-step-title">집계 → 환산</div>
+        <div class="fl-step-sub">ZGRADIS07T</div>
+      </div>
+      <div class="fl-step">
+        <div class="fl-step-num">3.3.1</div>
+        <div class="fl-step-title">연결 마감</div>
+        <div class="fl-step-sub">ZGRADIS07T.CSTAT</div>
+      </div>
+    </div>
+    <div class="fl fl-n">
+      <div class="fl-head">조회</div>
+      <div class="fl-step" style="margin-top:72px;">
+        <div class="fl-step-num">3.3.2</div>
+        <div class="fl-step-title">연결주석조회</div>
+        <div class="fl-step-sub">합산/법인별/LC</div>
+      </div>
+    </div>
+    <div class="fl fl-3">
+      <div class="fl-head">수식 설정</div>
+      <div class="fl-step" style="margin-top:24px;">
+        <div class="fl-step-num">사전</div>
+        <div class="fl-step-title">레이아웃 FORMULA</div>
+        <div class="fl-step-sub">ZGRADIS03R/C</div>
+      </div>
+      <div class="fl-step">
+        <div class="fl-step-num">3.3.3</div>
+        <div class="fl-step-title">환산수식 정의</div>
+        <div class="fl-step-sub">ZGRADIS08T</div>
+      </div>
+    </div>
+  </div>
+  <div class="note" style="margin-top:20px;">
+    <strong>프로세스 순서:</strong> 마스터 설정(양식·레이아웃) → 개별 법인 입력·마감 → 연결담당자 집계·환산·마감 → 연결주석조회. 환산수식은 레이아웃 설정 직후, 집계·환산 전에 정의합니다.
+  </div>
+</div>
+
+<!-- ARCH -->
+<div class="sec" id="arch">
+  <div class="sec-title">🗄️ 주요 테이블 구조 및 연관 관계</div>
+  <table class="proc-table">
+    <thead><tr><th>테이블</th><th>설명</th><th>연관 프로그램</th></tr></thead>
+    <tbody>
+      <tr><td><span class="b bc">ZGDT0010</span></td><td>주석양식 (Form ID, 작성주기)</td><td>3.1.1</td></tr>
+      <tr><td><span class="b bc">ZGDT0012</span></td><td>주석양식 텍스트 (다국어 양식명)</td><td>3.1.1</td></tr>
+      <tr><td><span class="b bc">ZGDT0011</span></td><td>주석메뉴 (트리 구조, 조회구분, 조정타입, 행우선환산)</td><td>3.1.1, 3.2.1, 3.2.2, 3.3.1~3</td></tr>
+      <tr><td><span class="b bc">ZGRADIS01_LAN</span></td><td>주석메뉴 텍스트 (다국어 메뉴명)</td><td>3.1.1</td></tr>
+      <tr><td><span class="b bc">ZGRADIS03R / 03C</span></td><td>레이아웃 행·열 (CONV, VISIBLE, DATATYPE, FIELDTYPE 등)</td><td>3.1.2, 3.2.1, 3.3.3</td></tr>
+      <tr><td><span class="b bc">ZGRADIS03F</span></td><td>레이아웃 수식 (셀 단위 수식)</td><td>3.1.2</td></tr>
+      <tr><td><span class="b bc">ZGRADIS04T</span></td><td>개별주석입력 (ROW_ID, COL_ID, AMT/TXT/QUAN, DATATYPE=I)</td><td>3.2.1</td></tr>
+      <tr><td><span class="b bc">ZGRADIS05T</span></td><td>개별마감관리 (법인별 CSTAT: Y/공란)</td><td>3.2.2</td></tr>
+      <tr><td><span class="b bc">ZGRADIS07T</span></td><td>연결마감관리 (ASTAT 집계, VSTAT 환산, CSTAT 마감)</td><td>3.3.1</td></tr>
+      <tr><td><span class="b bc">ZGRADIS06T</span></td><td>연결주석조회 (집계·환산된 최종 데이터, CONVTYPE: LC/GC)</td><td>3.3.2</td></tr>
+      <tr><td><span class="b bc">ZGRADIS08T</span></td><td>환산수식입력 (CATEGORY, FML_MEM, BASE_MEM, OPERATOR, CALC_SEQ)</td><td>3.3.3</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 3.1 GROUP -->
+<div class="slabel" id="g31">3.1 — 양식 및 메뉴관리</div>
+<div class="grp">
+  <div class="grp-header grp-1">
+    <div class="grp-icon">📋</div>
+    <div class="grp-meta">
+      <div class="grp-num">Group 3.1</div>
+      <div class="grp-title">양식 및 메뉴관리</div>
+      <div class="grp-desc">주석 공시 세트(양식)와 트리 구조 메뉴, 행·열 레이아웃을 정의합니다. 이후 모든 주석 프로그램의 기반 마스터 데이터입니다.</div>
+    </div>
+    <div class="grp-count">2개 프로그램</div>
+  </div>
+  <div class="grp-items">
+
+    <div class="sec" id="p311" style="border:none;border-radius:0;border-bottom:1px solid var(--navy-border);margin-bottom:0;padding:20px 22px;">
+      <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
+        <div class="doc-ico ico-1">📝</div>
+        <div>
+          <div style="font-size:10px;color:var(--text-muted);font-weight:700;letter-spacing:0.5px;margin-bottom:3px;">3.1.1</div>
+          <div style="font-size:15px;font-weight:700;color:var(--navy);">양식 및 메뉴관리</div>
+          <div style="font-size:12px;color:var(--text-muted);">ZGDT0010 / ZGDT0011 / ZGDT0012 / ZGRADIS01_LAN</div>
+        </div>
+      </div>
+      <table class="proc-table" style="margin:0;">
+        <thead><tr><th>주요 기능</th><th>핵심 내용</th></tr></thead>
+        <tbody>
+          <tr><td>양식 생성</td><td>양식ID(최대 10자, 중복불가), 작성주기(Y/H/Q/P), 다국어 양식명 등록</td></tr>
+          <tr><td>메뉴 생성</td><td>트리 구조(P: 노드 / L: 양식), 조회구분(S합산/Y법인별), 조정타입(T합계/C셀단위), 행우선환산(Y/N)</td></tr>
+          <tr><td>삭제</td><td>양식 삭제 시 연쇄 삭제(03R/C/F, 04T, 05T, 06T, 07T 전체)</td></tr>
+          <tr><td>유효성 검증</td><td>메뉴ID 중복불가, 메뉴순서 연속성, 상위메뉴 P 여부, 자기참조 불가</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:12px;">
+        <a href="grra_note_form_menu.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:var(--m31);color:#fff;font-size:12px;font-weight:600;padding:7px 16px;border-radius:4px;text-decoration:none;">도움말 열기 →</a>
+      </div>
+    </div>
+
+    <div class="sec" id="p312" style="border:none;border-radius:0;margin-bottom:0;padding:20px 22px;">
+      <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
+        <div class="doc-ico ico-1">🗃️</div>
+        <div>
+          <div style="font-size:10px;color:var(--text-muted);font-weight:700;letter-spacing:0.5px;margin-bottom:3px;">3.1.2</div>
+          <div style="font-size:15px;font-weight:700;color:var(--navy);">주석 레이아웃관리</div>
+          <div style="font-size:12px;color:var(--text-muted);">ZGRADIS03R / ZGRADIS03C / ZGRADIS03F</div>
+        </div>
+      </div>
+      <table class="proc-table" style="margin:0;">
+        <thead><tr><th>주요 기능</th><th>핵심 내용</th></tr></thead>
+        <tbody>
+          <tr><td>행(ROW) 추가</td><td>명칭(다국어), 사용여부, 표시여부(A/G/I), 자료구분, 환산구분(OPE/AVG/CLO/COPY/FORMULA), 입력참조, 연결참조</td></tr>
+          <tr><td>열(COL) 추가</td><td>필드타입(AMT/TXT/DATE/NUM/QUAN/VALID), 통화구분(L/T), 통화단위참조, 단위(UOM)</td></tr>
+          <tr><td>서식(수식) 편집</td><td>셀 선택 → 사칙연산 수식 지정 (ZGRADIS03F 저장)</td></tr>
+          <tr><td>행·열 우선순위</td><td>ROW_CONV=Y이면 행 CONV 우선, N이면 열 CONV 우선</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:12px;">
+        <a href="grra_note_layout.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:var(--m31);color:#fff;font-size:12px;font-weight:600;padding:7px 16px;border-radius:4px;text-decoration:none;">도움말 열기 →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 3.2 GROUP -->
+<div class="slabel" id="g32">3.2 — 개별주석 관리</div>
+<div class="grp">
+  <div class="grp-header grp-2">
+    <div class="grp-icon">✏️</div>
+    <div class="grp-meta">
+      <div class="grp-num">Group 3.2</div>
+      <div class="grp-title">개별주석 관리</div>
+      <div class="grp-desc">개별 법인 담당자가 각 메뉴의 주석 데이터를 입력하고, 작성 완료 시 마감 처리합니다.</div>
+    </div>
+    <div class="grp-count">2개 프로그램</div>
+  </div>
+  <div class="grp-items">
+
+    <div class="sec" id="p321" style="border:none;border-radius:0;border-bottom:1px solid var(--navy-border);margin-bottom:0;padding:20px 22px;">
+      <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
+        <div class="doc-ico ico-2">📋</div>
+        <div>
+          <div style="font-size:10px;color:var(--text-muted);font-weight:700;letter-spacing:0.5px;margin-bottom:3px;">3.2.1</div>
+          <div style="font-size:15px;font-weight:700;color:var(--navy);">개별주석작성리스트</div>
+          <div style="font-size:12px;color:var(--text-muted);">ZGDT0011 / ZGRADIS04T</div>
+        </div>
+      </div>
+      <table class="proc-table" style="margin:0;">
+        <thead><tr><th>주요 기능</th><th>핵심 내용</th></tr></thead>
+        <tbody>
+          <tr><td>메뉴 트리 조회</td><td>양식ID 기준 메뉴를 계층 구조로 조회. 주석입력상태(●/공란) 표시</td></tr>
+          <tr><td>입력링크</td><td>레이아웃이 설정된 양식(L) 메뉴에 [입력링크] 활성화 → 새 탭에서 입력 화면 열림</td></tr>
+          <tr><td>주석 입력</td><td>행·열 그리드에 AMT/TXT/QUAN/DATE 등 입력. DATATYPE=I로 저장</td></tr>
+          <tr><td>저장</td><td>통화구분 L: 연결단위 로컬통화 자동참조 / T: REF_TXT 열 통화 참조</td></tr>
+          <tr><td>엑셀 엑스포트 / 검증</td><td>입력 데이터 다운로드 및 재무제표 항목 기준 검증</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:12px;">
+        <a href="grra_note_disc_list.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:var(--m32);color:#fff;font-size:12px;font-weight:600;padding:7px 16px;border-radius:4px;text-decoration:none;">도움말 열기 →</a>
+      </div>
+    </div>
+
+    <div class="sec" id="p322" style="border:none;border-radius:0;margin-bottom:0;padding:20px 22px;">
+      <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
+        <div class="doc-ico ico-2">📊</div>
+        <div>
+          <div style="font-size:10px;color:var(--text-muted);font-weight:700;letter-spacing:0.5px;margin-bottom:3px;">3.2.2</div>
+          <div style="font-size:15px;font-weight:700;color:var(--navy);">주석작성 모니터</div>
+          <div style="font-size:12px;color:var(--text-muted);">ZGRADIS05T</div>
+        </div>
+      </div>
+      <table class="proc-table" style="margin:0;">
+        <thead><tr><th>주요 기능</th><th>핵심 내용</th></tr></thead>
+        <tbody>
+          <tr><td>메뉴별 진행률</td><td>(작성완료 ÷ 작성대상) × 100. 진행률 100%이면 [마감취소], 미만이면 [마감] 활성</td></tr>
+          <tr><td>법인별 마감</td><td>상세 화면에서 연결단위별 CSTAT를 Y(마감) 또는 공란(취소)으로 변경</td></tr>
+          <tr><td>메뉴별 일괄 마감</td><td>해당 메뉴를 사용하는 전체 법인 일괄 마감</td></tr>
+          <tr><td>일괄마감/취소</td><td>조회된 모든 메뉴 전체 법인 일괄 처리</td></tr>
+          <tr><td>연결주석모니터 연계</td><td>연결주석모니터 마감 시 이 화면 마감 취소 불가</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:12px;">
+        <a href="grra_note_write_monitor.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:var(--m32);color:#fff;font-size:12px;font-weight:600;padding:7px 16px;border-radius:4px;text-decoration:none;">도움말 열기 →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 3.3 GROUP -->
+<div class="slabel" id="g33">3.3 — 연결주석 관리</div>
+<div class="grp">
+  <div class="grp-header grp-3">
+    <div class="grp-icon">🔗</div>
+    <div class="grp-meta">
+      <div class="grp-num">Group 3.3</div>
+      <div class="grp-title">연결주석 관리</div>
+      <div class="grp-desc">연결담당자가 개별 법인 데이터를 집계·환산·마감하고, 완성된 연결주석을 조회합니다. 환산수식은 FORMULA 설정 메뉴에 별도 수식을 정의합니다.</div>
+    </div>
+    <div class="grp-count">3개 프로그램</div>
+  </div>
+  <div class="grp-items">
+
+    <div class="sec" id="p331" style="border:none;border-radius:0;border-bottom:1px solid var(--navy-border);margin-bottom:0;padding:20px 22px;">
+      <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
+        <div class="doc-ico ico-3">🖥️</div>
+        <div>
+          <div style="font-size:10px;color:var(--text-muted);font-weight:700;letter-spacing:0.5px;margin-bottom:3px;">3.3.1</div>
+          <div style="font-size:15px;font-weight:700;color:var(--navy);">연결주석모니터</div>
+          <div style="font-size:12px;color:var(--text-muted);">ZGRADIS07T / ZGRADIS06T</div>
+        </div>
+      </div>
+      <table class="proc-table" style="margin:0;">
+        <thead><tr><th>주요 기능</th><th>핵심 내용</th></tr></thead>
+        <tbody>
+          <tr><td>집계</td><td>마감된 법인 데이터 → ZGRADIS06T 취합. ASTAT: 공란→N→Y</td></tr>
+          <tr><td>환산</td><td>집계 데이터를 CONV(OPE/AVG/CLO/COPY/FORMULA)에 따라 GC 환산. VSTAT: 공란→Y</td></tr>
+          <tr><td>조정</td><td>연결참조(GSELECTION) 기반 자동조정(A)/GR총금액(G) 데이터 불러오기</td></tr>
+          <tr><td>마감</td><td>ZGRADIS07T.CSTAT=Y. 마감 후 집계·환산 불가. 개별주석모니터 마감 취소도 불가</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:12px;">
+        <a href="grra_note_consol_monitor.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:var(--m33);color:#fff;font-size:12px;font-weight:600;padding:7px 16px;border-radius:4px;text-decoration:none;">도움말 열기 →</a>
+      </div>
+    </div>
+
+    <div class="sec" id="p332" style="border:none;border-radius:0;border-bottom:1px solid var(--navy-border);margin-bottom:0;padding:20px 22px;">
+      <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
+        <div class="doc-ico ico-3">🔍</div>
+        <div>
+          <div style="font-size:10px;color:var(--text-muted);font-weight:700;letter-spacing:0.5px;margin-bottom:3px;">3.3.2</div>
+          <div style="font-size:15px;font-weight:700;color:var(--navy);">연결주석조회</div>
+          <div style="font-size:12px;color:var(--text-muted);">ZGRADIS06T / ZGDT0011</div>
+        </div>
+      </div>
+      <table class="proc-table" style="margin:0;">
+        <thead><tr><th>주요 기능</th><th>핵심 내용</th></tr></thead>
+        <tbody>
+          <tr><td>조회링크</td><td>양식(L) 메뉴에 [조회링크] 활성. 클릭 시 새 탭에서 조회 화면 열림</td></tr>
+          <tr><td>합산조회 (S)</td><td>연결그룹 유효 법인 합산 내역. 합계조정(T) 시 수작업 조정 직접 입력 가능</td></tr>
+          <tr><td>법인별 조회 (Y)</td><td>법인별 구분 조회. [법인별조회] 버튼으로 전환</td></tr>
+          <tr><td>LC금액 조회</td><td>그룹통화 대신 법인별 로컬통화 금액으로 전환 조회</td></tr>
+          <tr><td>셀단위 조정 (C)</td><td>DATATYPE 도움창(I/M/A)으로 데이터 유형 전환 조회</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:12px;">
+        <a href="grra_note_consol_view.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:var(--m33);color:#fff;font-size:12px;font-weight:600;padding:7px 16px;border-radius:4px;text-decoration:none;">도움말 열기 →</a>
+      </div>
+    </div>
+
+    <div class="sec" id="p333" style="border:none;border-radius:0;margin-bottom:0;padding:20px 22px;">
+      <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
+        <div class="doc-ico ico-3">∑</div>
+        <div>
+          <div style="font-size:10px;color:var(--text-muted);font-weight:700;letter-spacing:0.5px;margin-bottom:3px;">3.3.3</div>
+          <div style="font-size:15px;font-weight:700;color:var(--navy);">환산수식관리</div>
+          <div style="font-size:12px;color:var(--text-muted);">ZGRADIS08T / ZGRADIS03R / ZGRADIS03C</div>
+        </div>
+      </div>
+      <table class="proc-table" style="margin:0;">
+        <thead><tr><th>주요 기능</th><th>핵심 내용</th></tr></thead>
+        <tbody>
+          <tr><td>선행 조건</td><td>레이아웃관리에서 행/열 CONV=FORMULA 설정 필수</td></tr>
+          <tr><td>리스트 조회</td><td>FORMULA 설정된 행/열 목록. 수식입력상태(●/공란) 표시</td></tr>
+          <tr><td>수식 정의</td><td>CATEGORY(ALL/COL/ROW), FML_MEM(수식멤버), BASE_MEM(구성멤버), OPERATOR(+/-/*/÷), CALC_SEQ(계산순서)</td></tr>
+          <tr><td>우선순위</td><td>특정 행/열 지정 수식(COL2, ROW1)이 ALL보다 우선 적용</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:12px;">
+        <a href="grra_note_formula.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:var(--m33);color:#fff;font-size:12px;font-weight:600;padding:7px 16px;border-radius:4px;text-decoration:none;">도움말 열기 →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</main>
+
+<script>
+  const navItems=document.querySelectorAll('.nitem');
+  function setActive(id){navItems.forEach(el=>el.classList.toggle('active',el.getAttribute('href')==='#'+id));}
+  const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)setActive(x.target.id);});},{rootMargin:'-60px 0px -50% 0px'});
+  document.querySelectorAll('[id]').forEach(el=>obs.observe(el));
+  navItems.forEach(l=>{l.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(l.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});});});
+</script>
+</body>
+</html>

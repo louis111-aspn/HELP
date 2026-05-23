@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>환산수식관리 — 사용자 도움말</title>
+<style>
+  :root{--navy:#003366;--navy-mid:#004b99;--navy-light:#e8eef7;--navy-border:#c8d8ee;--white:#fff;--text:#333;--text-light:#666;--text-muted:#999;--bg:#f7f9fc;--sidebar-w:272px;--header-h:60px;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.7;}
+  header{position:fixed;top:0;left:0;right:0;height:var(--header-h);background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 28px;z-index:200;border-bottom:3px solid var(--navy-mid);}
+  .hl{display:flex;align-items:center;gap:14px;}
+  .logo{width:32px;height:32px;background:#fff;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .htitle{color:#fff;font-size:15px;font-weight:700;letter-spacing:-0.3px;}
+  .hsub{color:rgba(255,255,255,0.55);font-size:12px;margin-top:1px;}
+  .hbadge{background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.8);font-size:11px;padding:3px 9px;border-radius:20px;border:1px solid rgba(255,255,255,0.2);}
+  aside{position:fixed;top:var(--header-h);left:0;bottom:0;width:var(--sidebar-w);background:#fff;border-right:1px solid var(--navy-border);overflow-y:auto;z-index:100;padding:20px 0 40px;}
+  .nlabel{font-size:10px;font-weight:700;letter-spacing:1.2px;color:var(--text-muted);text-transform:uppercase;padding:14px 20px 6px;}
+  .nitem{display:flex;align-items:center;gap:10px;padding:8px 20px;cursor:pointer;color:var(--text-light);font-size:13px;transition:background 0.15s,color 0.15s;border-left:3px solid transparent;text-decoration:none;}
+  .nitem:hover{background:var(--navy-light);color:var(--navy);}
+  .nitem.active{background:var(--navy-light);color:var(--navy);font-weight:600;border-left-color:var(--navy);}
+  .nnum{width:20px;height:20px;background:var(--navy);color:#fff;font-size:10px;font-weight:700;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .nitem:not(.active) .nnum{background:#d0d8e8;color:#666;}
+  aside::-webkit-scrollbar{width:4px;}aside::-webkit-scrollbar-thumb{background:var(--navy-border);border-radius:4px;}
+  main{margin-left:var(--sidebar-w);margin-top:var(--header-h);padding:40px 48px 80px;max-width:980px;}
+  .ov{background:var(--navy);color:#fff;border-radius:6px;padding:32px 36px;margin-bottom:40px;position:relative;overflow:hidden;}
+  .ov::after{content:'';position:absolute;right:-20px;top:-20px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.04);}
+  .ovtag{display:inline-block;background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.85);font-size:11px;font-weight:600;letter-spacing:0.8px;padding:3px 10px;border-radius:3px;text-transform:uppercase;margin-bottom:14px;}
+  .ov h1{font-size:22px;font-weight:700;margin-bottom:12px;letter-spacing:-0.5px;}
+  .ov p{font-size:14px;color:rgba(255,255,255,0.78);line-height:1.75;max-width:640px;}
+  .ovmeta{margin-top:24px;display:flex;gap:32px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,0.15);padding-top:20px;}
+  .oml{font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:3px;}
+  .omv{font-size:13px;color:rgba(255,255,255,0.9);font-weight:600;}
+  .flow-box{background:#fff;border:1px solid var(--navy-border);border-radius:6px;padding:28px 32px;margin-bottom:40px;}
+  .flow-box h2{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--navy-border);}
+  .fsteps{display:flex;align-items:flex-start;overflow-x:auto;padding-bottom:4px;}
+  .fstep{flex:1;min-width:100px;text-align:center;position:relative;padding:0 4px 8px;}
+  .fstep:not(:last-child)::after{content:'→';position:absolute;right:-9px;top:20px;color:var(--navy-border);font-size:18px;}
+  .ficon{width:44px;height:44px;background:var(--navy-light);border:2px solid var(--navy-border);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:18px;}
+  .fsn{font-size:10px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;}
+  .fsl{font-size:12px;color:var(--text);font-weight:500;}
+  .sec{background:#fff;border:1px solid var(--navy-border);border-radius:6px;padding:32px 36px;margin-bottom:28px;scroll-margin-top:calc(var(--header-h)+20px);}
+  .shead{display:flex;align-items:center;gap:14px;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid var(--navy-light);}
+  .snum{width:34px;height:34px;background:var(--navy);color:#fff;font-size:14px;font-weight:700;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .sec h2{font-size:18px;font-weight:700;color:var(--navy);}
+  .sdesc{font-size:13px;color:var(--text-light);margin-top:2px;}
+  h3.sub{font-size:14px;font-weight:700;color:var(--navy);margin:22px 0 10px;}
+  .steps{list-style:none;margin:16px 0;}
+  .si{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--navy-light);}
+  .si:last-child{border-bottom:none;}
+  .sdot{width:24px;height:24px;background:var(--navy-light);border:2px solid var(--navy-border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--navy);flex-shrink:0;margin-top:1px;}
+  .sc{flex:1;}
+  .stit{font-weight:600;color:var(--text);margin-bottom:3px;font-size:13.5px;}
+  .sbody{font-size:13px;color:var(--text-light);}
+  .note{background:var(--navy-light);border-left:4px solid var(--navy);border-radius:0 4px 4px 0;padding:12px 16px;margin:14px 0;font-size:13px;color:var(--navy);}
+  .note strong{font-weight:700;}
+  .warn{background:#fff8e1;border-left:4px solid #f59e0b;border-radius:0 4px 4px 0;padding:12px 16px;margin:14px 0;font-size:13px;color:#7c5800;}
+  .warn strong{font-weight:700;}
+  .dt{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px;}
+  .dt th{background:var(--navy);color:#fff;padding:10px 14px;text-align:left;font-weight:600;font-size:12px;}
+  .dt td{padding:9px 14px;border-bottom:1px solid var(--navy-border);vertical-align:top;}
+  .dt tr:nth-child(even) td{background:var(--navy-light);}
+  .dt tr:last-child td{border-bottom:none;}
+  .b{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;white-space:nowrap;}
+  .br{background:#fde8e8;color:#c0392b;}
+  .bo{background:#e8f5e9;color:#27ae60;}
+  .ba{background:var(--navy-light);color:var(--navy);}
+  .bc{background:#f5f5f5;color:#555;font-family:'Courier New',monospace;font-size:11px;}
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0;}
+  .card{border:1px solid var(--navy-border);border-radius:5px;padding:16px 18px;background:#fff;}
+  .ctit{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;color:var(--navy);margin-bottom:8px;}
+  .card p{font-size:12.5px;color:var(--text-light);}
+
+  /* formula example grid */
+  .fml-demo{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0;}
+  .fml-table-wrap{border:1px solid var(--navy-border);border-radius:5px;overflow:hidden;}
+  .fml-title{background:var(--navy);color:#fff;font-size:12px;font-weight:700;padding:8px 14px;}
+  .fml-grid{width:100%;border-collapse:collapse;font-size:12px;}
+  .fml-grid th{background:var(--navy-light);color:var(--navy);padding:6px 10px;text-align:center;font-weight:700;border-bottom:1px solid var(--navy-border);}
+  .fml-grid td{padding:6px 10px;text-align:right;border-bottom:1px solid var(--navy-light);}
+  .fml-grid td:first-child{text-align:left;font-weight:600;color:var(--navy);}
+  .fml-grid tr:last-child td{border-bottom:none;}
+  .fml-formula{background:var(--navy-light);border-radius:4px;padding:10px 14px;font-family:'Courier New',monospace;font-size:12px;color:var(--navy);margin:8px 0;line-height:1.8;}
+  .fml-formula .comment{color:var(--text-muted);font-style:italic;}
+
+  /* category pills */
+  .cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0;}
+  .cat-item{border:1px solid var(--navy-border);border-radius:5px;padding:12px 14px;background:#fff;}
+  .cat-code{font-size:13px;font-weight:800;color:var(--navy);margin-bottom:4px;font-family:'Courier New',monospace;}
+  .cat-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px;}
+  .cat-desc{font-size:11.5px;color:var(--text-light);}
+
+  @media(max-width:900px){
+    :root{--sidebar-w:0px;}
+    aside{display:none;}
+    main{padding:24px 20px 60px;}
+    .g2,.fml-demo,.cat-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hl">
+    <div class="logo">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <rect x="2" y="2" width="16" height="16" rx="2" fill="#003366" opacity="0.15"/>
+        <text x="4" y="14" font-family="serif" font-size="12" font-weight="700" fill="#003366">∑</text>
+      </svg>
+    </div>
+    <div>
+      <div class="htitle">환산수식관리</div>
+      <div class="hsub">Module 3.3.3 — 연결주석 통합관리</div>
+    </div>
+  </div>
+  <span class="hbadge">V1.0</span>
+</header>
+
+<aside>
+  <div><div class="nlabel">개요</div>
+    <a class="nitem active" href="#overview"><span class="nnum">·</span> 프로그램 개요</a>
+  </div>
+  <div><div class="nlabel">주요 기능</div>
+    <a class="nitem" href="#s1"><span class="nnum">1</span> 선행 작업 (레이아웃 FORMULA 설정)</a>
+    <a class="nitem" href="#s2"><span class="nnum">2</span> 리스트 조회</a>
+    <a class="nitem" href="#s3"><span class="nnum">3</span> 수식 입력 화면</a>
+    <a class="nitem" href="#s4"><span class="nnum">4</span> 저장</a>
+  </div>
+  <div><div class="nlabel">참고</div>
+    <a class="nitem" href="#s5"><span class="nnum">·</span> 구분(CATEGORY) 코드</a>
+    <a class="nitem" href="#s6"><span class="nnum">·</span> 수식 계산 예시</a>
+    <a class="nitem" href="#s7"><span class="nnum">·</span> 테이블 구조</a>
+  </div>
+</aside>
+
+<main>
+
+<div class="ov" id="overview">
+  <div class="ovtag">3.3.3</div>
+  <h1>환산수식관리</h1>
+  <p>연결주석 환산 시 환산구분이 <strong>FORMULA</strong>로 설정된 행 또는 열에 적용할 사칙연산 수식을 정의하는 프로그램입니다. 수식멤버(결과값이 될 행/열)와 구성멤버(계산에 사용할 행/열), 연산자, 계산순서를 설정하여 환산 계산을 자동화합니다.</p>
+  <div class="ovmeta">
+    <div><div class="oml">메뉴 경로</div><div class="omv">ASPN 주석관리 › 연결주석 관리 › 환산수식관리</div></div>
+    <div><div class="oml">주요 테이블</div><div class="omv">ZGRADIS08T (환산수식입력)</div></div>
+  </div>
+</div>
+
+<div class="flow-box">
+  <h2>📋 주요 프로세스 흐름</h2>
+  <div class="fsteps">
+    <div class="fstep"><div class="ficon">🗂️</div><div class="fsn">Step 0</div><div class="fsl">레이아웃에 FORMULA 설정</div></div>
+    <div class="fstep"><div class="ficon">🔍</div><div class="fsn">Step 1</div><div class="fsl">리스트 조회</div></div>
+    <div class="fstep"><div class="ficon">▶</div><div class="fsn">Step 2</div><div class="fsl">&gt; 클릭 → 입력 화면</div></div>
+    <div class="fstep"><div class="ficon">✏️</div><div class="fsn">Step 3</div><div class="fsl">수식 입력</div></div>
+    <div class="fstep"><div class="ficon">💾</div><div class="fsn">Step 4</div><div class="fsl">저장</div></div>
+  </div>
+  <div class="note" style="margin-top:20px;">
+    <strong>선행 조건:</strong> 주석 레이아웃관리에서 해당 행(ROW) 또는 열(COL)의 환산구분(CONV)을 <strong>FORMULA</strong>로 설정해야 이 화면에서 수식을 지정할 수 있습니다. FORMULA로 설정된 행/열만 리스트에 조회됩니다.
+  </div>
+</div>
+
+<!-- S1 -->
+<div class="sec" id="s1">
+  <div class="shead">
+    <div class="snum">1</div>
+    <div><h2>선행 작업 — 레이아웃에 FORMULA 설정</h2>
+    <div class="sdesc">주석 레이아웃관리에서 수식 환산 대상 행/열의 CONV 값을 FORMULA로 설정합니다.</div></div>
+  </div>
+  <ul class="steps">
+    <li class="si"><div class="sdot">1</div><div class="sc">
+      <div class="stit">주석 레이아웃관리 실행</div>
+      <div class="sbody">주석 레이아웃관리 앱에서 수식을 적용할 양식ID와 메뉴ID를 선택하여 실행합니다.</div>
+    </div></li>
+    <li class="si"><div class="sdot">2</div><div class="sc">
+      <div class="stit">행 또는 열 항목 선택 → 환산구분 FORMULA 입력</div>
+      <div class="sbody">수식 환산을 적용할 행(ROW) 또는 열(COL)의 속성 패널에서 <strong>환산구분(CONV)</strong> 필드에 <code style="background:var(--navy-light);padding:1px 5px;border-radius:3px;font-family:monospace;">FORMULA</code>를 입력하고 [적용]을 클릭합니다.</div>
+    </div></li>
+    <li class="si"><div class="sdot">3</div><div class="sc">
+      <div class="stit">레이아웃 저장</div>
+      <div class="sbody">설정 완료 후 <strong>레이아웃 저장</strong>을 클릭하여 ZGRADIS03R 또는 ZGRADIS03C 테이블에 CONV='FORMULA'로 저장합니다.</div>
+    </div></li>
+  </ul>
+  <div class="note">
+    <strong>📌 환산 기준 결정:</strong> 양식 및 메뉴관리의 <strong>행 우선 환산(ROW_CONV)</strong> 설정에 따라 행 또는 열 중 어느 쪽의 CONV 값이 적용될지 결정됩니다. ROW_CONV=Y이면 행의 CONV, N이면 열의 CONV가 우선 적용됩니다.
+  </div>
+</div>
+
+<!-- S2 -->
+<div class="sec" id="s2">
+  <div class="shead">
+    <div class="snum">2</div>
+    <div><h2>리스트 조회</h2>
+    <div class="sdesc">FORMULA로 설정된 행/열 목록을 조회합니다.</div></div>
+  </div>
+  <ul class="steps">
+    <li class="si"><div class="sdot">1</div><div class="sc">
+      <div class="stit">주석양식ID 선택 후 실행</div>
+      <div class="sbody">도움창으로 주석양식ID를 선택하고 <strong>실행</strong>을 클릭합니다. 해당 양식에서 CONV='FORMULA'로 설정된 행·열 목록이 그리드에 표시됩니다.</div>
+    </div></li>
+    <li class="si"><div class="sdot">2</div><div class="sc">
+      <div class="stit">수식입력상태 확인</div>
+      <div class="sbody">각 수식멤버의 수식입력 여부를 확인합니다. 수식이 입력된 경우 <strong>●</strong>, 미입력 시 공란으로 표시됩니다.</div>
+    </div></li>
+  </ul>
+
+  <h3 class="sub">리스트 그리드 컬럼</h3>
+  <table class="dt">
+    <thead><tr><th>컬럼</th><th>필드</th><th>설명</th></tr></thead>
+    <tbody>
+      <tr><td>메뉴ID</td><td><span class="b bc">ZGDT0011.MENU_ID</span></td><td></td></tr>
+      <tr><td>메뉴명</td><td><span class="b bc">ZGRADIS03R_LAN.ROWDE / ZGRADIS03C_LAN.COLDE</span></td><td></td></tr>
+      <tr><td>환산기준</td><td>행/열 구분</td><td>ROW_CONV=Y 이면 행, N 이면 열</td></tr>
+      <tr><td>수식멤버</td><td><span class="b bc">ROW_ID / COL_ID</span></td><td>수식의 결과가 채워질 행 또는 열 ID</td></tr>
+      <tr><td>수식입력상태</td><td>ZGRADIS08T COUNT 기반</td><td>● = 수식 있음 / 공란 = 미입력</td></tr>
+      <tr><td>&gt; 버튼</td><td>—</td><td>클릭 시 해당 수식멤버의 입력 화면으로 이동</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- S3 -->
+<div class="sec" id="s3">
+  <div class="shead">
+    <div class="snum">3</div>
+    <div><h2>수식 입력 화면</h2>
+    <div class="sdesc">&gt; 버튼으로 진입하여 수식멤버에 대한 사칙연산 수식을 정의합니다.</div></div>
+  </div>
+  <ul class="steps">
+    <li class="si"><div class="sdot">1</div><div class="sc">
+      <div class="stit">&gt; 버튼 클릭 → 세부사항 진입</div>
+      <div class="sbody">리스트에서 &gt; 버튼을 클릭하면 해당 수식멤버의 수식 입력 화면이 열립니다. 상단에 주석양식ID·메뉴ID·수식멤버·Description 정보가 표시되며 변경 불가합니다.</div>
+    </div></li>
+    <li class="si"><div class="sdot">2</div><div class="sc">
+      <div class="stit">Create 클릭 → 수식 행 추가</div>
+      <div class="sbody"><strong>Create</strong> 버튼을 클릭하여 수식 항목을 추가합니다. 한 수식멤버에 여러 구성멤버와 연산자를 계산순서에 따라 등록할 수 있습니다.</div>
+    </div></li>
+    <li class="si"><div class="sdot">3</div><div class="sc">
+      <div class="stit">구분(CATEGORY) 선택</div>
+      <div class="sbody">Possible Entry 버튼으로 구분 값을 선택합니다. <strong>ALL</strong>은 모든 행/열에 공통 적용되는 수식, <strong>COL/ROW</strong>는 특정 행/열에만 적용되는 예외 수식입니다.</div>
+    </div></li>
+    <li class="si"><div class="sdot">4</div><div class="sc">
+      <div class="stit">구성멤버·연산자·계산순서 입력</div>
+      <div class="sbody">구성멤버(BASE_MEM)는 수식멤버를 제외한 다른 행/열 ID를 Possible Entry로 선택합니다. 연산자(OPERATOR)는 +, -, *, / 중 선택합니다. 계산순서(CALC_SEQ)는 동일 수식멤버 내 계산 우선순위를 지정합니다.</div>
+    </div></li>
+    <li class="si"><div class="sdot">5</div><div class="sc">
+      <div class="stit">수식 확인 → 수식변경</div>
+      <div class="sbody">입력된 수식을 확인하고, 변경이 필요하면 <strong>수식변경</strong> 버튼을 클릭하여 수정합니다. 수식 입력이 완료되면 이전 리스트 화면의 수식입력상태 컬럼에 ●(녹색)이 표시됩니다.</div>
+    </div></li>
+  </ul>
+
+  <h3 class="sub">입력 그리드 컬럼</h3>
+  <table class="dt">
+    <thead><tr><th>컬럼</th><th>필드</th><th>값</th></tr></thead>
+    <tbody>
+      <tr><td>구분 (CATEGORY)</td><td><span class="b bc">ZGRADIS08T.CATEGORY</span></td><td>ALL / COL1, COL2... / ROW1, ROW2... (Possible Entry)</td></tr>
+      <tr><td>수식멤버 (FML_MEM)</td><td><span class="b bc">ZGRADIS08T.FML_MEM</span></td><td>CONV=FORMULA인 행/열 ID. 상단 정보에서 고정, 변경 불가</td></tr>
+      <tr><td>연산자 (OPERATOR)</td><td><span class="b bc">ZGRADIS08T.OPERATOR</span></td><td>+, -, *, / (Possible Entry)</td></tr>
+      <tr><td>구성멤버 (BASE_MEM)</td><td><span class="b bc">ZGRADIS08T.BASE_MEM</span></td><td>수식멤버를 제외한 메뉴의 행/열 ID (Possible Entry)</td></tr>
+      <tr><td>Description</td><td>텍스트 테이블 참조</td><td>ZGRADIS03C_LAN.COLDE 또는 ZGRADIS03R_LAN.ROWDE</td></tr>
+      <tr><td>계산순서 (CALC_SEQ)</td><td><span class="b bc">ZGRADIS08T.CALC_SEQ</span></td><td>숫자. 동일 구분·수식멤버 내 계산 우선순위</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- S4 -->
+<div class="sec" id="s4">
+  <div class="shead">
+    <div class="snum">4</div>
+    <div><h2>저장</h2>
+    <div class="sdesc">입력된 수식 내용을 ZGRADIS08T 테이블에 저장합니다.</div></div>
+  </div>
+  <ul class="steps">
+    <li class="si"><div class="sdot">1</div><div class="sc">
+      <div class="stit">저장 클릭</div>
+      <div class="sbody"><strong>저장</strong> 버튼을 클릭합니다. 변경된 사항이 없으면 저장 버튼이 비활성화됩니다. "저장하시겠습니까?" 확인 후 ZGRADIS08T 테이블에 CATEGORY, FML_MEM, BASE_MEM, OPERATOR, CALC_SEQ가 저장됩니다.</div>
+    </div></li>
+  </ul>
+  <div class="note">
+    <strong>📌 수식 변경 후 환산 재실행:</strong> 수식을 변경한 경우 연결주석모니터에서 해당 메뉴의 환산을 다시 실행해야 변경된 수식이 반영됩니다.
+  </div>
+</div>
+
+<!-- S5 -->
+<div class="sec" id="s5">
+  <div class="shead">
+    <div class="snum">·</div>
+    <div><h2>구분(CATEGORY) 코드</h2>
+    <div class="sdesc">수식이 적용되는 범위를 지정합니다. 수식멤버가 ROW인지 COL인지에 따라 선택 가능한 값이 다릅니다.</div></div>
+  </div>
+  <div class="cat-grid">
+    <div class="cat-item">
+      <div class="cat-code">ALL</div>
+      <div class="cat-name">전체 적용 (기본값)</div>
+      <div class="cat-desc">수식멤버가 ROW이면 모든 열(COL)에, COL이면 모든 행(ROW)에 동일하게 적용되는 공통 수식입니다.</div>
+    </div>
+    <div class="cat-item">
+      <div class="cat-code">COL1, COL2…</div>
+      <div class="cat-name">특정 열에만 적용</div>
+      <div class="cat-desc">수식멤버가 ROW일 때 사용. 특정 열에만 예외적으로 다른 수식을 적용할 때 지정합니다.</div>
+    </div>
+    <div class="cat-item">
+      <div class="cat-code">ROW1, ROW2…</div>
+      <div class="cat-name">특정 행에만 적용</div>
+      <div class="cat-desc">수식멤버가 COL일 때 사용. 특정 행에만 예외적으로 다른 수식을 적용할 때 지정합니다.</div>
+    </div>
+  </div>
+  <div class="note">
+    <strong>📌 우선순위:</strong> 특정 행/열 지정 수식(COL2, ROW1 등)이 ALL보다 우선 적용됩니다. 즉, ALL로 공통 수식을 정의하고 예외적인 행/열만 별도 구분으로 지정하는 방식으로 구성합니다.
+  </div>
+</div>
+
+<!-- S6 -->
+<div class="sec" id="s6">
+  <div class="shead">
+    <div class="snum">·</div>
+    <div><h2>수식 계산 예시</h2>
+    <div class="sdesc">수식멤버가 ROW인 경우와 COL인 경우의 계산 방식 예시입니다.</div></div>
+  </div>
+
+  <h3 class="sub">CASE 1 — 수식멤버가 ROW4 (행)인 경우</h3>
+  <div class="fml-demo">
+    <div class="fml-table-wrap">
+      <div class="fml-title">입력 데이터</div>
+      <table class="fml-grid">
+        <thead><tr><th>구분</th><th>COL1</th><th>COL2</th><th>COL3</th></tr></thead>
+        <tbody>
+          <tr><td>ROW1</td><td>200</td><td>50</td><td>50</td></tr>
+          <tr><td>ROW2</td><td>100</td><td>30</td><td>20</td></tr>
+          <tr><td>ROW3</td><td>50</td><td>20</td><td>30</td></tr>
+          <tr><td><strong>ROW4</strong></td><td style="color:var(--navy);font-weight:700;">?</td><td style="color:var(--navy);font-weight:700;">?</td><td style="color:var(--navy);font-weight:700;">?</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <div class="fml-formula">
+        <span class="comment">/* CATEGORY=ALL: 모든 열에 공통 수식 */</span><br>
+        ROW4 = ROW1 × ROW3 ÷ ROW2<br>
+        <span class="comment">/* CALC_SEQ: 1=ROW1×ROW3, 2=÷ROW2 */</span><br><br>
+        <span class="comment">/* CATEGORY=COL2: COL2에만 예외 수식 */</span><br>
+        ROW4(COL2) = ROW1 × ROW3
+      </div>
+      <table class="fml-grid" style="border:1px solid var(--navy-border);border-radius:4px;">
+        <thead><tr><th>구분</th><th>COL1 결과</th><th>COL2 결과</th></tr></thead>
+        <tbody>
+          <tr><td>ROW4</td><td>200×50÷100 = <strong>10</strong></td><td>50×20 = <strong>1000</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h3 class="sub">CASE 2 — 수식멤버가 COL4 (열)인 경우</h3>
+  <div class="fml-demo">
+    <div class="fml-table-wrap">
+      <div class="fml-title">입력 데이터</div>
+      <table class="fml-grid">
+        <thead><tr><th>구분</th><th>COL1</th><th>COL2</th><th>COL3</th><th>COL4</th></tr></thead>
+        <tbody>
+          <tr><td>ROW1</td><td>150</td><td>30</td><td>50</td><td style="color:var(--navy);font-weight:700;">?</td></tr>
+          <tr><td>ROW2</td><td>100</td><td>30</td><td>30</td><td style="color:var(--navy);font-weight:700;">?</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <div class="fml-formula">
+        <span class="comment">/* CATEGORY=ALL: 모든 행에 공통 수식 */</span><br>
+        COL4 = COL1 + COL2 - COL3<br><br>
+        <span class="comment">/* CATEGORY=ROW2: ROW2에만 예외 수식 */</span><br>
+        COL4(ROW2) = COL1 - COL3
+      </div>
+      <table class="fml-grid" style="border:1px solid var(--navy-border);border-radius:4px;">
+        <thead><tr><th>구분</th><th>COL4 결과</th></tr></thead>
+        <tbody>
+          <tr><td>ROW1</td><td>150+30-50 = <strong>130</strong></td></tr>
+          <tr><td>ROW2 (예외)</td><td>100-30 = <strong>70</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- S7 -->
+<div class="sec" id="s7">
+  <div class="shead">
+    <div class="snum">·</div>
+    <div><h2>테이블 구조</h2></div>
+  </div>
+  <table class="dt">
+    <thead><tr><th>테이블</th><th>설명</th><th>주요 필드</th></tr></thead>
+    <tbody>
+      <tr><td><span class="b bc">ZGRADIS08T</span></td><td>환산수식입력</td><td>DISCID(PK), MENUID(PK), CATEGORY, FML_MEM, BASE_MEM, OPERATOR(+/-/*/÷), CALC_SEQ(계산순서), CRE/UPD 로그</td></tr>
+      <tr><td><span class="b bc">ZGRADIS03R</span></td><td>레이아웃 행</td><td>CONV='FORMULA' 설정된 ROW_ID → 이 화면 리스트의 소스</td></tr>
+      <tr><td><span class="b bc">ZGRADIS03C</span></td><td>레이아웃 열</td><td>CONV='FORMULA' 설정된 COL_ID → 이 화면 리스트의 소스</td></tr>
+      <tr><td><span class="b bc">ZGDT0011</span></td><td>주석작성메뉴</td><td>ROW_CONV — 행 우선 환산 여부 결정</td></tr>
+    </tbody>
+  </table>
+</div>
+
+</main>
+
+<script>
+  const ids=['overview','s1','s2','s3','s4','s5','s6','s7'];
+  const navItems=document.querySelectorAll('.nitem');
+  function setActive(id){navItems.forEach(el=>el.classList.toggle('active',el.getAttribute('href')==='#'+id));}
+  const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)setActive(x.target.id);});},{rootMargin:'-60px 0px -60% 0px'});
+  ids.forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el);});
+  navItems.forEach(l=>{l.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(l.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});});});
+</script>
+</body>
+</html>

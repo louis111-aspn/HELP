@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>연결주석조회 — 사용자 도움말</title>
+<style>
+  :root{--navy:#003366;--navy-mid:#004b99;--navy-light:#e8eef7;--navy-border:#c8d8ee;--white:#fff;--text:#333;--text-light:#666;--text-muted:#999;--bg:#f7f9fc;--sidebar-w:272px;--header-h:60px;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.7;}
+  header{position:fixed;top:0;left:0;right:0;height:var(--header-h);background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 28px;z-index:200;border-bottom:3px solid var(--navy-mid);}
+  .hl{display:flex;align-items:center;gap:14px;}.logo{width:32px;height:32px;background:#fff;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .htitle{color:#fff;font-size:15px;font-weight:700;}.hsub{color:rgba(255,255,255,0.55);font-size:12px;margin-top:1px;}
+  .hbadge{background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.8);font-size:11px;padding:3px 9px;border-radius:20px;border:1px solid rgba(255,255,255,0.2);}
+  aside{position:fixed;top:var(--header-h);left:0;bottom:0;width:var(--sidebar-w);background:#fff;border-right:1px solid var(--navy-border);overflow-y:auto;z-index:100;padding:20px 0 40px;}
+  .nlabel{font-size:10px;font-weight:700;letter-spacing:1.2px;color:var(--text-muted);text-transform:uppercase;padding:14px 20px 6px;}
+  .nitem{display:flex;align-items:center;gap:10px;padding:8px 20px;cursor:pointer;color:var(--text-light);font-size:13px;transition:background 0.15s,color 0.15s;border-left:3px solid transparent;text-decoration:none;}
+  .nitem:hover{background:var(--navy-light);color:var(--navy);}.nitem.active{background:var(--navy-light);color:var(--navy);font-weight:600;border-left-color:var(--navy);}
+  .nnum{width:20px;height:20px;background:var(--navy);color:#fff;font-size:10px;font-weight:700;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .nitem:not(.active) .nnum{background:#d0d8e8;color:#666;}aside::-webkit-scrollbar{width:4px;}aside::-webkit-scrollbar-thumb{background:var(--navy-border);border-radius:4px;}
+  main{margin-left:var(--sidebar-w);margin-top:var(--header-h);padding:40px 48px 80px;max-width:980px;}
+  .ov{background:var(--navy);color:#fff;border-radius:6px;padding:32px 36px;margin-bottom:40px;position:relative;overflow:hidden;}
+  .ov::after{content:'';position:absolute;right:-20px;top:-20px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.04);}
+  .ovtag{display:inline-block;background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.85);font-size:11px;font-weight:600;letter-spacing:0.8px;padding:3px 10px;border-radius:3px;text-transform:uppercase;margin-bottom:14px;}
+  .ov h1{font-size:22px;font-weight:700;margin-bottom:12px;letter-spacing:-0.5px;}.ov p{font-size:14px;color:rgba(255,255,255,0.78);line-height:1.75;max-width:640px;}
+  .ovmeta{margin-top:24px;display:flex;gap:32px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,0.15);padding-top:20px;}
+  .oml{font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:3px;}.omv{font-size:13px;color:rgba(255,255,255,0.9);font-weight:600;}
+  .flow-box{background:#fff;border:1px solid var(--navy-border);border-radius:6px;padding:28px 32px;margin-bottom:40px;}
+  .flow-box h2{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--navy-border);}
+  .fsteps{display:flex;align-items:flex-start;overflow-x:auto;padding-bottom:4px;}
+  .fstep{flex:1;min-width:100px;text-align:center;position:relative;padding:0 4px 8px;}
+  .fstep:not(:last-child)::after{content:'→';position:absolute;right:-9px;top:20px;color:var(--navy-border);font-size:18px;}
+  .ficon{width:44px;height:44px;background:var(--navy-light);border:2px solid var(--navy-border);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:18px;}
+  .fsn{font-size:10px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;}.fsl{font-size:12px;color:var(--text);font-weight:500;}
+  .sec{background:#fff;border:1px solid var(--navy-border);border-radius:6px;padding:32px 36px;margin-bottom:28px;scroll-margin-top:calc(var(--header-h)+20px);}
+  .shead{display:flex;align-items:center;gap:14px;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid var(--navy-light);}
+  .snum{width:34px;height:34px;background:var(--navy);color:#fff;font-size:14px;font-weight:700;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .sec h2{font-size:18px;font-weight:700;color:var(--navy);}.sdesc{font-size:13px;color:var(--text-light);margin-top:2px;}
+  h3.sub{font-size:14px;font-weight:700;color:var(--navy);margin:22px 0 10px;}
+  .steps{list-style:none;margin:16px 0;}.si{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--navy-light);}.si:last-child{border-bottom:none;}
+  .sdot{width:24px;height:24px;background:var(--navy-light);border:2px solid var(--navy-border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--navy);flex-shrink:0;margin-top:1px;}
+  .sc{flex:1;}.stit{font-weight:600;color:var(--text);margin-bottom:3px;font-size:13.5px;}.sbody{font-size:13px;color:var(--text-light);}
+  .note{background:var(--navy-light);border-left:4px solid var(--navy);border-radius:0 4px 4px 0;padding:12px 16px;margin:14px 0;font-size:13px;color:var(--navy);}.note strong{font-weight:700;}
+  .warn{background:#fff8e1;border-left:4px solid #f59e0b;border-radius:0 4px 4px 0;padding:12px 16px;margin:14px 0;font-size:13px;color:#7c5800;}.warn strong{font-weight:700;}
+  .dt{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px;}.dt th{background:var(--navy);color:#fff;padding:10px 14px;text-align:left;font-weight:600;font-size:12px;}
+  .dt td{padding:9px 14px;border-bottom:1px solid var(--navy-border);vertical-align:top;}.dt tr:nth-child(even) td{background:var(--navy-light);}.dt tr:last-child td{border-bottom:none;}
+  .b{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;white-space:nowrap;}
+  .br{background:#fde8e8;color:#c0392b;}.bo{background:#e8f5e9;color:#27ae60;}.ba{background:var(--navy-light);color:var(--navy);}.bc{background:#f5f5f5;color:#555;font-family:'Courier New',monospace;font-size:11px;}
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;}
+  .card{border:1px solid var(--navy-border);border-radius:5px;padding:14px 16px;background:#fff;}.ctit{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;color:var(--navy);margin-bottom:7px;}.card p{font-size:12.5px;color:var(--text-light);}
+  @media(max-width:900px){:root{--sidebar-w:0px;}aside{display:none;}main{padding:24px 20px 60px;}.g2{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="hl">
+    <div class="logo"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="16" height="16" rx="2" fill="#003366" opacity="0.15"/><path d="M4 8h12M4 12h8" stroke="#003366" stroke-width="1.5" stroke-linecap="round"/><circle cx="14" cy="12" r="2.5" stroke="#003366" stroke-width="1.2" fill="none"/></svg></div>
+    <div><div class="htitle">연결주석조회</div><div class="hsub">Module 3.3.2 — 연결주석 통합관리</div></div>
+  </div>
+  <span class="hbadge">V1.0</span>
+</header>
+<aside>
+  <div><div class="nlabel">개요</div><a class="nitem active" href="#overview"><span class="nnum">·</span> 프로그램 개요</a></div>
+  <div><div class="nlabel">주요 기능</div>
+    <a class="nitem" href="#s1"><span class="nnum">1</span> 초기 화면 조회 및 조회링크</a>
+    <a class="nitem" href="#s2"><span class="nnum">2</span> 합산조회 화면</a>
+    <a class="nitem" href="#s3"><span class="nnum">3</span> 법인별 조회 화면</a>
+    <a class="nitem" href="#s4"><span class="nnum">4</span> 수작업 조정</a>
+    <a class="nitem" href="#s5"><span class="nnum">5</span> LC금액 조회</a>
+  </div>
+  <div><div class="nlabel">참고</div>
+    <a class="nitem" href="#s6"><span class="nnum">·</span> 자료구분(DATATYPE) 조회 방식</a>
+    <a class="nitem" href="#s7"><span class="nnum">·</span> 테이블 구조</a>
+  </div>
+</aside>
+<main>
+<div class="ov" id="overview">
+  <div class="ovtag">3.3.2</div>
+  <h1>연결주석조회</h1>
+  <p>연결주석모니터에서 집계·환산된 연결주석 데이터를 연결그룹 기준으로 합산 또는 법인별로 조회하는 프로그램입니다. 양식 및 메뉴관리에서 설정한 조회구분(합산/법인별)에 따라 기본 조회 방식이 결정되며, 수작업 조정도 지원합니다.</p>
+  <div class="ovmeta">
+    <div><div class="oml">메뉴 경로</div><div class="omv">ASPN 주석관리 › 연결주석 관리 › 연결주석 조회</div></div>
+    <div><div class="oml">주요 테이블</div><div class="omv">ZGRADIS06T (연결주석조회)</div></div>
+  </div>
+</div>
+
+<div class="flow-box">
+  <h2>📋 주요 프로세스 흐름</h2>
+  <div class="fsteps">
+    <div class="fstep"><div class="ficon">🔍</div><div class="fsn">Step 1</div><div class="fsl">초기 화면 조회</div></div>
+    <div class="fstep"><div class="ficon">🔗</div><div class="fsn">Step 2</div><div class="fsl">조회링크 클릭</div></div>
+    <div class="fstep"><div class="ficon">📊</div><div class="fsn">Step 3</div><div class="fsl">합산/법인별 조회</div></div>
+    <div class="fstep"><div class="ficon">🔧</div><div class="fsn">Step 4</div><div class="fsl">수작업 조정 (선택)</div></div>
+  </div>
+</div>
+
+<!-- S1 -->
+<div class="sec" id="s1">
+  <div class="shead"><div class="snum">1</div><div><h2>초기 화면 조회 및 조회링크</h2><div class="sdesc">조회 조건을 입력하고 메뉴 트리에서 조회링크를 클릭합니다.</div></div></div>
+  <ul class="steps">
+    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">조회 조건 입력 후 실행</div><div class="sbody">주석양식ID, 연결그룹, 연결버전을 입력합니다. 글로벌 파라미터 기본값이 적용됩니다.</div></div></li>
+    <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">메뉴 트리에서 조회링크 클릭</div><div class="sbody">양식(L) 메뉴에 <strong>[조회링크]</strong>가 활성화됩니다. 클릭하면 <strong>새 탭</strong>에서 해당 메뉴의 주석 조회 화면이 열립니다. 기본 조회 방식(합산/법인별)은 ZGDT0011.VIEWGUBUN 설정에 따라 결정됩니다.</div></div></li>
+  </ul>
+  <div class="note"><strong>📌 조회링크 활성화 조건:</strong> 메뉴구분이 양식(L)인 메뉴에만 조회링크가 표시됩니다. 노드(P) 메뉴에는 링크가 없습니다.</div>
+</div>
+
+<!-- S2 -->
+<div class="sec" id="s2">
+  <div class="shead"><div class="snum">2</div><div><h2>합산조회 화면</h2><div class="sdesc">연결그룹 내 유효한 법인의 데이터를 합산하여 조회합니다.</div></div></div>
+  <ul class="steps">
+    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">합산 내역 확인</div><div class="sbody">연결그룹에 해당하는 유효 법인들의 주석 데이터가 합산된 그리드가 표시됩니다. 레이아웃에서 설정한 행·열 구조로 화면이 구성됩니다.</div></div></li>
+    <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">법인별 조회 전환</div><div class="sbody"><strong>[법인별 조회]</strong> 버튼을 클릭하면 법인별 내역으로 전환됩니다.</div></div></li>
+  </ul>
+  <div class="note"><strong>📌 조정타입 합계조정(T) 화면:</strong> 합산조회 화면에서 수작업 조정 컬럼(DATATYPE=M)이 표시되며, 직접 입력·편집이 가능합니다.</div>
+</div>
+
+<!-- S3 -->
+<div class="sec" id="s3">
+  <div class="shead"><div class="snum">3</div><div><h2>법인별 조회 화면</h2><div class="sdesc">연결그룹 내 법인별로 구분된 주석 데이터를 조회합니다.</div></div></div>
+  <ul class="steps">
+    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">법인별 내역 확인</div><div class="sbody">법인별로 구분된 주석 데이터가 표시됩니다. 각 법인(T100, T200, ...)의 행별 내역을 확인할 수 있습니다.</div></div></li>
+    <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">LC금액 조회 전환</div><div class="sbody">법인별 조회 화면에서 <strong>[LC금액조회]</strong> 버튼을 클릭하면 그룹통화 대신 로컬통화 금액으로 전환하여 조회됩니다.</div></div></li>
+  </ul>
+</div>
+
+<!-- S4 -->
+<div class="sec" id="s4">
+  <div class="shead"><div class="snum">4</div><div><h2>수작업 조정</h2><div class="sdesc">양식 및 메뉴관리에서 설정한 조정타입에 따라 데이터를 수동 조정합니다.</div></div></div>
+  <div class="g2">
+    <div class="card"><div class="ctit">📊 합계조정 (T)</div><p>합산조회 화면에서 수작업 조정 컬럼에 직접 값을 입력합니다. 입력한 데이터는 ZGRADIS06T에 DATATYPE=M으로 저장됩니다.</p></div>
+    <div class="card"><div class="ctit">🔬 셀단위 조정 (C)</div><p>상단에 DATATYPE 선택 도움창이 활성화됩니다. 입력내역(I) / 수작업조정(M) / 자동조정(A) 중 선택하여 각 데이터 유형의 그리드를 전환 조회합니다.</p></div>
+  </div>
+</div>
+
+<!-- S5 -->
+<div class="sec" id="s5">
+  <div class="shead"><div class="snum">5</div><div><h2>LC금액 조회</h2></div></div>
+  <ul class="steps">
+    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">[LC금액조회] 선택 후 조회</div><div class="sbody">법인별 조회 화면에서 <strong>[LC금액조회]</strong>를 선택하면, 연결그룹 내 법인별 로컬통화(LC) 금액 내역을 확인할 수 있습니다.</div></div></li>
+  </ul>
+</div>
+
+<!-- S6 -->
+<div class="sec" id="s6">
+  <div class="shead"><div class="snum">·</div><div><h2>자료구분(DATATYPE) 조회 방식</h2></div></div>
+  <table class="dt">
+    <thead><tr><th>DATATYPE</th><th>의미</th><th>데이터 소스</th><th>편집 가능</th></tr></thead>
+    <tbody>
+      <tr><td><span class="b bc">공란</span></td><td>일반 입력</td><td>ZGRADIS06T 저장 데이터</td><td>레이아웃 속성에 따라</td></tr>
+      <tr><td><span class="b bc">M</span></td><td>수작업 조정</td><td>ZGRADIS06T.DATATYPE=M</td><td>합산조회(S) 시 편집 가능</td></tr>
+      <tr><td><span class="b bc">A</span></td><td>자동 조정</td><td>조정 CDS 뷰 참조 후 ZGRADIS06T에 저장</td><td>편집 불가</td></tr>
+      <tr><td><span class="b bc">G</span></td><td>GR 총금액</td><td>GR총금액 CDS 뷰 실시간 참조 (ZGRADIS06T 저장 안 함)</td><td>편집 불가</td></tr>
+    </tbody>
+  </table>
+  <div class="note"><strong>📌 행 환산 적용(ROW_CONV=Y) 시:</strong> ZGRADIS06T.DATATYPE은 행 레이아웃(ZGRADIS03R)의 DATATYPE을 기준으로 적용됩니다.</div>
+</div>
+
+<!-- S7 -->
+<div class="sec" id="s7">
+  <div class="shead"><div class="snum">·</div><div><h2>테이블 구조</h2></div></div>
+  <table class="dt">
+    <thead><tr><th>테이블</th><th>설명</th><th>주요 필드</th></tr></thead>
+    <tbody>
+      <tr><td><span class="b bc">ZGRADIS06T</span></td><td>연결주석조회</td><td>DISCID, MENUID, CGROUP, RVERS, RBUNIT, RBUPTR, FYEAR, FPERIOD, FSITEM, DATATYPE, ROW_ID, CONVTYPE(LC/GC), CURR01~05, AMT01~10, TXT01~16</td></tr>
+      <tr><td><span class="b bc">ZGDT0011</span></td><td>주석작성메뉴</td><td>VIEWGUBUN(합산S/법인별Y), ADJ_TYPE(합계T/셀단위C), ROW_CONV</td></tr>
+    </tbody>
+  </table>
+</div>
+</main>
+<script>
+  const ids=['overview','s1','s2','s3','s4','s5','s6','s7'];
+  const navItems=document.querySelectorAll('.nitem');
+  function setActive(id){navItems.forEach(el=>el.classList.toggle('active',el.getAttribute('href')==='#'+id));}
+  const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)setActive(x.target.id);});},{rootMargin:'-60px 0px -60% 0px'});
+  ids.forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el);});
+  navItems.forEach(l=>{l.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(l.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});});});
+</script>
+</body>
+</html>

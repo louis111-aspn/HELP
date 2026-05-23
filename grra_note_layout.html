@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>주석 레이아웃관리 — 사용자 도움말</title>
+<style>
+  :root{--navy:#003366;--navy-mid:#004b99;--navy-light:#e8eef7;--navy-border:#c8d8ee;--white:#fff;--text:#333;--text-light:#666;--text-muted:#999;--bg:#f7f9fc;--sidebar-w:272px;--header-h:60px;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.7;}
+  header{position:fixed;top:0;left:0;right:0;height:var(--header-h);background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 28px;z-index:200;border-bottom:3px solid var(--navy-mid);}
+  .hl{display:flex;align-items:center;gap:14px;}
+  .logo{width:32px;height:32px;background:var(--white);border-radius:4px;display:flex;align-items:center;justify-content:center;}
+  .htitle{color:var(--white);font-size:15px;font-weight:700;}
+  .hsub{color:rgba(255,255,255,0.55);font-size:12px;margin-top:1px;}
+  .hbadge{background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.8);font-size:11px;padding:3px 9px;border-radius:20px;border:1px solid rgba(255,255,255,0.2);}
+  aside{position:fixed;top:var(--header-h);left:0;bottom:0;width:var(--sidebar-w);background:var(--white);border-right:1px solid var(--navy-border);overflow-y:auto;z-index:100;padding:20px 0 40px;}
+  .nlabel{font-size:10px;font-weight:700;letter-spacing:1.2px;color:var(--text-muted);text-transform:uppercase;padding:14px 20px 6px;}
+  .nitem{display:flex;align-items:center;gap:10px;padding:8px 20px;color:var(--text-light);font-size:13px;transition:background 0.15s;border-left:3px solid transparent;text-decoration:none;}
+  .nitem:hover{background:var(--navy-light);color:var(--navy);}
+  .nitem.active{background:var(--navy-light);color:var(--navy);font-weight:600;border-left-color:var(--navy);}
+  .nnum{width:20px;height:20px;background:var(--navy);color:#fff;font-size:10px;font-weight:700;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .nitem:not(.active) .nnum{background:#d0d8e8;color:#666;}
+  aside::-webkit-scrollbar{width:4px;}aside::-webkit-scrollbar-thumb{background:var(--navy-border);}
+  main{margin-left:var(--sidebar-w);margin-top:var(--header-h);padding:40px 48px 80px;max-width:980px;}
+  .ov{background:var(--navy);color:#fff;border-radius:6px;padding:32px 36px;margin-bottom:40px;position:relative;overflow:hidden;}
+  .ov::after{content:'';position:absolute;right:-20px;top:-20px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.04);}
+  .ovtag{display:inline-block;background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.85);font-size:11px;font-weight:600;letter-spacing:0.8px;padding:3px 10px;border-radius:3px;margin-bottom:14px;}
+  .ov h1{font-size:22px;font-weight:700;margin-bottom:12px;}
+  .ov p{font-size:14px;color:rgba(255,255,255,0.78);line-height:1.75;max-width:640px;}
+  .ovmeta{margin-top:24px;display:flex;gap:32px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,0.15);padding-top:20px;}
+  .oml{font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:3px;}
+  .omv{font-size:13px;color:rgba(255,255,255,0.9);font-weight:600;}
+  .flow{background:#fff;border:1px solid var(--navy-border);border-radius:6px;padding:28px 32px;margin-bottom:40px;}
+  .flow h2{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--navy-border);}
+  .fsteps{display:flex;align-items:flex-start;overflow-x:auto;padding-bottom:4px;}
+  .fstep{flex:1;min-width:110px;text-align:center;position:relative;padding:0 4px 8px;}
+  .fstep:not(:last-child)::after{content:'→';position:absolute;right:-10px;top:18px;color:var(--navy-border);font-size:18px;}
+  .ficon{width:44px;height:44px;background:var(--navy-light);border:2px solid var(--navy-border);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:18px;}
+  .fsn{font-size:10px;font-weight:700;color:var(--navy);text-transform:uppercase;margin-bottom:3px;}
+  .fsl{font-size:12px;color:var(--text);font-weight:500;}
+  .sec{background:#fff;border:1px solid var(--navy-border);border-radius:6px;padding:32px 36px;margin-bottom:28px;scroll-margin-top:calc(var(--header-h)+20px);}
+  .shead{display:flex;align-items:center;gap:14px;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid var(--navy-light);}
+  .snum{width:34px;height:34px;background:var(--navy);color:#fff;font-size:14px;font-weight:700;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .sec h2{font-size:18px;font-weight:700;color:var(--navy);}
+  .sdesc{font-size:13px;color:var(--text-light);margin-top:2px;}
+  h3.sub{font-size:14px;font-weight:700;color:var(--navy);margin:22px 0 10px;}
+  .steps{list-style:none;margin:16px 0;}
+  .si{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--navy-light);}
+  .si:last-child{border-bottom:none;}
+  .sdot{width:24px;height:24px;background:var(--navy-light);border:2px solid var(--navy-border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--navy);flex-shrink:0;margin-top:1px;}
+  .sc{flex:1;}.stit{font-weight:600;color:var(--text);margin-bottom:3px;font-size:13.5px;}.sbody{font-size:13px;color:var(--text-light);}
+  .note{background:var(--navy-light);border-left:4px solid var(--navy);border-radius:0 4px 4px 0;padding:12px 16px;margin:14px 0;font-size:13px;color:var(--navy);}
+  .note strong{font-weight:700;}
+  .warn{background:#fff8e1;border-left:4px solid #f59e0b;border-radius:0 4px 4px 0;padding:12px 16px;margin:14px 0;font-size:13px;color:#7c5800;}
+  .dt{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px;}
+  .dt th{background:var(--navy);color:#fff;padding:10px 14px;text-align:left;font-weight:600;font-size:12px;}
+  .dt td{padding:9px 14px;border-bottom:1px solid var(--navy-border);vertical-align:top;}
+  .dt tr:nth-child(even) td{background:var(--navy-light);}
+  .dt tr:last-child td{border-bottom:none;}
+  .b{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;white-space:nowrap;}
+  .bc{background:#f5f5f5;color:#555;font-family:'Courier New',monospace;font-size:11px;}
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;}
+  .card{border:1px solid var(--navy-border);border-radius:5px;padding:14px 16px;background:#fff;}
+  .ctit{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;color:var(--navy);margin-bottom:7px;}
+  .card p{font-size:12.5px;color:var(--text-light);}
+  /* conv grid */
+  .conv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0;}
+  .conv-item{border:1px solid var(--navy-border);border-radius:4px;padding:12px 14px;background:#fff;border-top:3px solid var(--navy);}
+  .conv-code{font-size:15px;font-weight:800;color:var(--navy);margin-bottom:3px;}
+  .conv-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px;}
+  .conv-desc{font-size:11.5px;color:var(--text-light);}
+  /* field type */
+  .ft-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0;}
+  .ft-item{border:1px solid var(--navy-border);border-radius:4px;padding:10px 12px;background:#fff;}
+  .ft-code{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px;}
+  .ft-desc{font-size:12px;color:var(--text-light);}
+  /* tech */
+  .tc2{border:1px solid var(--navy-border);border-radius:5px;padding:14px 16px;background:#fff;}
+  .tct{font-size:11px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;}
+  .ti{font-size:12.5px;padding:4px 0;border-bottom:1px solid var(--navy-light);display:flex;align-items:baseline;gap:8px;}
+  .ti:last-child{border-bottom:none;}
+  .ti code{font-family:'Courier New',monospace;font-size:12px;color:var(--navy);background:var(--navy-light);padding:1px 5px;border-radius:3px;flex-shrink:0;}
+  .td2{color:var(--text-light);font-size:12px;}
+  @media(max-width:900px){:root{--sidebar-w:0px;}aside{display:none;}main{padding:24px 20px 60px;}.g2,.conv-grid,.ft-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="hl">
+    <div class="logo">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <rect x="2" y="2" width="7" height="7" rx="1.5" fill="#003366"/>
+        <rect x="11" y="2" width="7" height="7" rx="1.5" fill="#003366" opacity=".5"/>
+        <rect x="2" y="11" width="7" height="7" rx="1.5" fill="#003366" opacity=".5"/>
+        <rect x="11" y="11" width="7" height="7" rx="1.5" fill="#003366"/>
+      </svg>
+    </div>
+    <div>
+      <div class="htitle">주석 레이아웃관리</div>
+      <div class="hsub">GRRA Add-in Module 3 — 사용자 도움말</div>
+    </div>
+  </div>
+  <span class="hbadge">3.1.2</span>
+</header>
+<aside>
+  <div><div class="nlabel">개요</div><a class="nitem active" href="#overview"><span class="nnum">·</span> 프로그램 개요 및 흐름</a></div>
+  <div><div class="nlabel">주요 기능</div>
+    <a class="nitem" href="#s1"><span class="nnum">1</span> 실행 및 조회</a>
+    <a class="nitem" href="#s2"><span class="nnum">2</span> 행(ROW) 추가 및 속성 설정</a>
+    <a class="nitem" href="#s3"><span class="nnum">3</span> 열(COL) 추가 및 속성 설정</a>
+    <a class="nitem" href="#s4"><span class="nnum">4</span> 수식(Formula) 설정</a>
+    <a class="nitem" href="#s5"><span class="nnum">5</span> 레이아웃 저장</a>
+  </div>
+  <div><div class="nlabel">참고</div>
+    <a class="nitem" href="#s6"><span class="nnum">·</span> 환산구분 코드 정의</a>
+    <a class="nitem" href="#s7"><span class="nnum">·</span> 필드타입 정의</a>
+    <a class="nitem" href="#s8"><span class="nnum">·</span> 표시여부 / 자료구분</a>
+    <a class="nitem" href="#s9"><span class="nnum">·</span> 테이블 구조</a>
+  </div>
+</aside>
+<main>
+<div class="ov" id="overview">
+  <div class="ovtag">3.1.2 주석 레이아웃관리</div>
+  <h1>주석 레이아웃관리</h1>
+  <p>양식 및 메뉴관리에서 생성된 <strong>양식 메뉴(L)</strong>의 주석 입력·조회 레이아웃을 구성하는 화면입니다. 행(ROW)과 열(COL)을 정의하고 각 항목의 환산구분·필드타입·표시여부 등 속성을 설정합니다. 수식 셀을 지정하여 다른 행/열 값의 계산 결과를 자동 산출할 수 있습니다.</p>
+  <div class="ovmeta">
+    <div><div class="oml">메뉴 경로</div><div class="omv">ASPN 주석관리 > 주석관리-양식 및 메뉴관리 > 주석 레이아웃관리</div></div>
+    <div><div class="oml">주요 테이블</div><div class="omv">ZGRADIS03R / ZGRADIS03C / ZGRADIS03F</div></div>
+  </div>
+</div>
+
+<div class="flow">
+  <h2>📋 레이아웃 구성 흐름</h2>
+  <div class="fsteps">
+    <div class="fstep"><div class="ficon">🔍</div><div class="fsn">Step 1</div><div class="fsl">양식·메뉴 선택 후 실행</div></div>
+    <div class="fstep"><div class="ficon">➕</div><div class="fsn">Step 2</div><div class="fsl">행(ROW) 추가 및 속성 설정</div></div>
+    <div class="fstep"><div class="ficon">➕</div><div class="fsn">Step 3</div><div class="fsl">열(COL) 추가 및 속성 설정</div></div>
+    <div class="fstep"><div class="ficon">🧮</div><div class="fsn">Step 4</div><div class="fsl">수식 셀 지정 (선택)</div></div>
+    <div class="fstep"><div class="ficon">💾</div><div class="fsn">Step 5</div><div class="fsl">레이아웃 저장</div></div>
+  </div>
+  <div class="note" style="margin-top:16px;"><strong>선행 조건:</strong> 레이아웃을 설정하려면 <strong>양식 및 메뉴관리(3.1.1)</strong>에서 해당 양식과 양식 메뉴(L)가 먼저 등록되어 있어야 합니다. 레이아웃이 없는 메뉴는 개별주석 입력 화면으로 이동 불가합니다.</div>
+</div>
+
+<!-- S1 실행 -->
+<div class="sec" id="s1">
+  <div class="shead"><div class="snum">1</div><div><h2>실행 및 조회</h2><div class="sdesc">주석양식 ID와 메뉴 ID를 선택하여 레이아웃 화면을 실행합니다.</div></div></div>
+  <ul class="steps">
+    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">주석양식ID 선택</div><div class="sbody">도움창(F4)으로 ZGDT0010에 등록된 주석양식ID를 선택합니다.</div></div></li>
+    <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">메뉴ID 선택 → [실행]</div><div class="sbody">해당 양식의 메뉴ID를 선택하고 [실행]을 클릭합니다. 이미 레이아웃이 있으면 기존 행·열 구성이 표시됩니다.</div></div></li>
+  </ul>
+  <div class="note"><strong>📌 레이아웃 조회 방식:</strong> ZGRADIS03C(열)와 ZGRADIS03R(행)을 UNION하여 조회합니다. 행/열 구분 컬럼은 테이블에 없으므로 화면에서 구분하여 표시합니다.</div>
+</div>
+
+<!-- S2 행 -->
+<div class="sec" id="s2">
+  <div class="shead"><div class="snum">2</div><div><h2>행(ROW) 추가 및 속성 설정</h2><div class="sdesc">주석 그리드의 행 항목을 추가하고 속성을 설정합니다.</div></div></div>
+  <ul class="steps">
+    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">[ROWS ADD] 클릭</div><div class="sbody">새로운 행이 추가됩니다. 행ID(ROW_ID)가 자동 부여됩니다.</div></div></li>
+    <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">행 속성 설정 팝업</div><div class="sbody">해당 행의 속성을 설정합니다. 다국어[A↔文] 버튼으로 행 레이블(명칭)을 언어별로 입력합니다.</div></div></li>
+  </ul>
+  <h3 class="sub">행 속성 항목 (ZGRADIS03R)</h3>
+  <table class="dt">
+    <thead><tr><th>속성명</th><th>필드</th><th>값/설명</th></tr></thead>
+    <tbody>
+      <tr><td>레이블(명칭)</td><td><span class="b bc">ZGRADIS03R_LAN.ROWDE</span></td><td>다국어 텍스트 (최대 200자)</td></tr>
+      <tr><td>사용여부</td><td><span class="b bc">ACTIVE</span></td><td>Y: 사용자 화면에 해당 행 표시</td></tr>
+      <tr><td>열표시여부(VISIBLE)</td><td><span class="b bc">VISIBLE</span></td><td>행이 열 헤더로도 표시될지 여부</td></tr>
+      <tr><td>표시여부</td><td><span class="b bc">VISIBLE</span></td><td>A: 모두 표시 / G: 연결주석조회만 / I: 개별주석조회만</td></tr>
+      <tr><td>자료구분</td><td><span class="b bc">DATATYPE</span></td><td>A: 자동조정 / G: 총금액 / M: 매뉴얼 조정</td></tr>
+      <tr><td>환산구분</td><td><span class="b bc">CONV</span></td><td>AVG/CLO/OPE/COPY/FORMULA (행 우선 환산 적용 시)</td></tr>
+      <tr><td>입력참조</td><td><span class="b bc">SELECTION</span></td><td>개별주석 입력 시 검증 기준 재무제표 항목</td></tr>
+      <tr><td>연결참조</td><td><span class="b bc">GSELECTION</span></td><td>연결주석 조정 데이터·GR총금액 조회 기준</td></tr>
+      <tr><td>통화값</td><td><span class="b bc">CURR</span></td><td>L: 로컬통화 / T: 거래통화</td></tr>
+      <tr><td>단위값</td><td><span class="b bc">UOM</span></td><td>수량 단위 (KG, EA 등)</td></tr>
+      <tr><td>출력순서</td><td><span class="b bc">SEQ</span></td><td>화면 표시 순서</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- S3 열 -->
+<div class="sec" id="s3">
+  <div class="shead"><div class="snum">3</div><div><h2>열(COL) 추가 및 속성 설정</h2><div class="sdesc">주석 그리드의 열 항목을 추가하고 속성을 설정합니다.</div></div></div>
+  <ul class="steps">
+    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">[COLUMNS ADD] 클릭</div><div class="sbody">새로운 열이 추가됩니다. 열ID(COL_ID)가 자동 부여됩니다.</div></div></li>
+    <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">열 속성 설정 팝업</div><div class="sbody">열 레이블과 속성을 설정합니다. 행 속성과 대부분 동일하나 <strong>필드타입(FIELDTYPE)</strong>이 추가됩니다.</div></div></li>
+  </ul>
+  <h3 class="sub">열 전용 추가 속성 (ZGRADIS03C)</h3>
+  <table class="dt">
+    <thead><tr><th>속성명</th><th>필드</th><th>값/설명</th></tr></thead>
+    <tbody>
+      <tr><td>레이블(명칭)</td><td><span class="b bc">ZGRADIS03C_LAN.COLDE</span></td><td>다국어 텍스트 (최대 200자)</td></tr>
+      <tr><td>필드타입</td><td><span class="b bc">FIELDTYPE</span></td><td>AMT01~10 / TXT01~16 / DATE / NUM / QUAN / VALID</td></tr>
+      <tr><td>통화구분</td><td><span class="b bc">CURR</span></td><td>L: 로컬통화 / T: 거래통화</td></tr>
+      <tr><td>통화단위 참조</td><td><span class="b bc">REF_TXT</span></td><td>CURR=T일 때 활성화. 통화값을 참조할 TXT 타입 열 지정</td></tr>
+      <tr><td>환산구분</td><td><span class="b bc">CONV</span></td><td>열 기준 환산 적용 시 (행 우선 환산=N인 메뉴)</td></tr>
+    </tbody>
+  </table>
+  <div class="note"><strong>📌 행·열 우선순위:</strong> 동일 속성(환산구분 등)이 행과 열 양쪽에 설정된 경우, 메뉴의 <strong>행 우선 환산(ROW_CONV)</strong> 설정에 따라 행 또는 열 속성이 우선 적용됩니다.</div>
+  <div class="warn"><strong>⚠ 수식 → 일반 데이터 변경 시:</strong> 수식(FORMULA) 환산구분이 설정된 셀에 일반 데이터로 변경하면 기존 행·열의 CONV(환산구분) 값이 삭제됩니다.</div>
+</div>
+
+<!-- S4 수식 -->
+<div class="sec" id="s4">
+  <div class="shead"><div class="snum">4</div><div><h2>수식(Formula) 설정</h2><div class="sdesc">특정 셀의 값을 다른 행·열 값의 계산 결과로 자동 산출되도록 수식을 지정합니다.</div></div></div>
+  <ul class="steps">
+    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">수식을 적용할 셀 선택</div><div class="sbody">그리드에서 수식을 입력할 셀(행·열 교차 지점)을 클릭합니다.</div></div></li>
+    <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">[서식 편집] 클릭</div><div class="sbody">[서식 편집] 버튼을 클릭하면 수식 입력 팝업이 열립니다.</div></div></li>
+    <li class="si"><div class="sdot">3</div><div class="sc"><div class="stit">수식 입력 → [저장]</div><div class="sbody">함수 및 변수 입력창에서 사칙연산(+, -, *, /)으로 계산식을 작성합니다. 완료 후 [저장]을 클릭합니다. ZGRADIS03F(수식 테이블)에 저장됩니다.</div></div></li>
+  </ul>
+  <div class="note"><strong>📌 수식 우선 적용:</strong> 행·열 레이아웃의 CONV(환산구분)를 FORMULA로 설정한 후 이 수식 설정을 통해 환산수식관리(3.3.3)에서 구체적인 수식 멤버를 정의합니다.</div>
+</div>
+
+<!-- S5 저장 -->
+<div class="sec" id="s5">
+  <div class="shead"><div class="snum">5</div><div><h2>레이아웃 저장</h2><div class="sdesc">구성한 레이아웃을 확정 저장합니다.</div></div></div>
+  <ul class="steps">
+    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">[레이아웃 저장] 클릭</div><div class="sbody">레이아웃 구성을 완료한 후 [레이아웃 저장] 버튼을 클릭합니다. 행 데이터는 ZGRADIS03R, 열 데이터는 ZGRADIS03C, 수식은 ZGRADIS03F에 저장됩니다.</div></div></li>
+  </ul>
+  <div class="warn"><strong>⚠ 저장 전 확인사항:</strong> 레이아웃 저장 후 개별주석 데이터가 입력된 상태에서 행·열을 추가/삭제하면 기존 데이터와의 정합성이 깨질 수 있습니다. 운영 중에는 레이아웃 변경을 최소화하십시오.</div>
+</div>
+
+<!-- S6 환산구분 -->
+<div class="sec" id="s6">
+  <div class="shead"><div class="snum">·</div><div><h2>환산구분 코드 정의</h2><div class="sdesc">연결주석 모니터 환산 시 적용되는 환율 기준 코드입니다.</div></div></div>
+  <div class="conv-grid">
+    <div class="conv-item"><div class="conv-code">OPE</div><div class="conv-name">기초환율</div><div class="conv-desc">기수(期首) 환율 적용. 기초잔액 관련 항목에 사용.</div></div>
+    <div class="conv-item"><div class="conv-code">AVG</div><div class="conv-name">평균환율</div><div class="conv-desc">해당 기간의 평균환율 적용. 손익 항목에 주로 사용.</div></div>
+    <div class="conv-item"><div class="conv-code">CLO</div><div class="conv-name">기말환율</div><div class="conv-desc">기말(期末) 환율 적용. 재무상태표 항목에 사용.</div></div>
+    <div class="conv-item"><div class="conv-code">COPY</div><div class="conv-name">LC금액 복사</div><div class="conv-desc">환율 환산 없이 로컬통화(LC) 금액을 그대로 복사.</div></div>
+    <div class="conv-item"><div class="conv-code">FORMULA</div><div class="conv-name">수식 환산</div><div class="conv-desc">환산수식관리(3.3.3)에서 정의한 수식으로 환산. 다른 행/열 값의 계산 결과를 사용.</div></div>
+    <div class="conv-item"><div class="conv-code">NONE</div><div class="conv-name">환산 없음</div><div class="conv-desc">환산을 적용하지 않습니다.</div></div>
+  </div>
+</div>
+
+<!-- S7 필드타입 -->
+<div class="sec" id="s7">
+  <div class="shead"><div class="snum">·</div><div><h2>필드타입 정의</h2><div class="sdesc">열(COL)의 FIELDTYPE 값 및 ZGRADIS04T 저장 필드와의 매핑입니다.</div></div></div>
+  <div class="ft-grid">
+    <div class="ft-item"><div class="ft-code">AMT01 ~ AMT10</div><div class="ft-desc">금액 필드. 대응 통화: CURR01~CURR10</div></div>
+    <div class="ft-item"><div class="ft-code">TXT01 ~ TXT16</div><div class="ft-desc">텍스트 필드. 거래통화(T) 입력 시 통화코드 보관에도 사용</div></div>
+    <div class="ft-item"><div class="ft-code">DATE</div><div class="ft-desc">일자 (YYYYMMDD 형식)</div></div>
+    <div class="ft-item"><div class="ft-code">NUM</div><div class="ft-desc">숫자 (통화 없는 수치)</div></div>
+    <div class="ft-item"><div class="ft-code">QUAN01 ~ QUAN10</div><div class="ft-desc">수량 필드. 대응 단위: UNIT01~UNIT10</div></div>
+    <div class="ft-item"><div class="ft-code">VALID</div><div class="ft-desc">검증 열 (자동 계산 결과 표시)</div></div>
+  </div>
+  <div class="note"><strong>📌 AMT ↔ CURR 참조:</strong> AMT01은 CURR01, AMT02는 CURR02를 참조합니다. QUAN01은 UNIT01, QUAN02는 UNIT02를 참조하는 방식으로 쌍으로 관리됩니다.</div>
+</div>
+
+<!-- S8 표시여부/자료구분 -->
+<div class="sec" id="s8">
+  <div class="shead"><div class="snum">·</div><div><h2>표시여부 / 자료구분</h2><div class="sdesc">행·열의 표시 방식 및 연결주석 조정 유형 코드입니다.</div></div></div>
+  <div class="g2">
+    <div>
+      <h3 class="sub">표시여부 (VISIBLE)</h3>
+      <table class="dt" style="font-size:12.5px;">
+        <thead><tr><th>값</th><th>명칭</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td><strong>A</strong></td><td>모두 표시</td><td>개별주석 입력화면과 연결주석조회 모두 표시</td></tr>
+          <tr><td><strong>G</strong></td><td>연결주석조회만</td><td>연결주석조회 화면에서만 표시 (개별입력 시 숨김)</td></tr>
+          <tr><td><strong>I</strong></td><td>개별주석조회만</td><td>개별주석 입력 화면에서만 표시</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h3 class="sub">자료구분 (DATATYPE)</h3>
+      <table class="dt" style="font-size:12.5px;">
+        <thead><tr><th>값</th><th>명칭</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td><strong>I</strong></td><td>개별주석 입력</td><td>법인 담당자가 직접 입력한 데이터</td></tr>
+          <tr><td><strong>M</strong></td><td>매뉴얼 조정</td><td>연결주석조회에서 수작업으로 조정한 데이터</td></tr>
+          <tr><td><strong>A</strong></td><td>자동조정</td><td>GR 원장(GSELECTION)을 참조하여 자동 산출</td></tr>
+          <tr><td><strong>G</strong></td><td>GR 총금액</td><td>GR총금액 CDS뷰 참조 (연결주석조회에 INSERT X)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- S9 테이블 -->
+<div class="sec" id="s9">
+  <div class="shead"><div class="snum">·</div><div><h2>테이블 구조</h2><div class="sdesc">레이아웃관리에서 사용하는 커스텀 테이블입니다.</div></div></div>
+  <div class="g2">
+    <div class="tc2">
+      <div class="tct">ZGRADIS03R — 행 레이아웃</div>
+      <div class="ti"><code>DISCID / MENUID / ROWID</code><span class="td2">복합 PK</span></div>
+      <div class="ti"><code>VISIBLE</code><span class="td2">열표시여부</span></div>
+      <div class="ti"><code>ACTIVE</code><span class="td2">사용여부</span></div>
+      <div class="ti"><code>SEQ</code><span class="td2">출력순서</span></div>
+      <div class="ti"><code>CONV</code><span class="td2">환산구분</span></div>
+      <div class="ti"><code>SELECTION / GSELECTION</code><span class="td2">입력참조 / 연결참조</span></div>
+      <div class="ti"><code>CURR / UOM</code><span class="td2">통화값 / 단위값</span></div>
+      <div class="ti"><code>DATATYPE</code><span class="td2">자료구분</span></div>
+    </div>
+    <div class="tc2">
+      <div class="tct">ZGRADIS03C — 열 레이아웃</div>
+      <div class="ti"><code>DISCID / MENUID / COLID</code><span class="td2">복합 PK</span></div>
+      <div class="ti"><code>FIELDTYPE</code><span class="td2">필드타입 (AMT/TXT/DATE 등)</span></div>
+      <div class="ti"><code>ACTIVE</code><span class="td2">사용여부</span></div>
+      <div class="ti"><code>SEQ</code><span class="td2">출력순서</span></div>
+      <div class="ti"><code>CONV</code><span class="td2">환산구분</span></div>
+      <div class="ti"><code>CURR / UOM</code><span class="td2">통화구분 / 단위</span></div>
+      <div class="ti"><code>DATATYPE</code><span class="td2">자료구분</span></div>
+      <div class="ti"><code>LDESC / GDESC</code><span class="td2">컬럼명(로컬) / 컬럼명(그룹)</span></div>
+    </div>
+    <div class="tc2">
+      <div class="tct">ZGRADIS03F — 수식 레이아웃</div>
+      <div class="ti"><code>DISCID / MENUID</code><span class="td2">양식ID / 메뉴ID</span></div>
+      <div class="ti"><code>ROW_ID / COL_ID</code><span class="td2">행ID / 열ID (좌표 기준)</span></div>
+      <div class="ti"><code>수식 내용</code><span class="td2">해당 좌표 셀의 계산 수식</span></div>
+    </div>
+    <div class="tc2">
+      <div class="tct">텍스트 테이블</div>
+      <div class="ti"><code>ZGRADIS03R_LAN</code><span class="td2">행 레이아웃 명칭 텍스트 (ROWDE, 최대 200자)</span></div>
+      <div class="ti"><code>ZGRADIS03C_LAN</code><span class="td2">열 레이아웃 명칭 텍스트 (COLDE, 최대 200자)</span></div>
+    </div>
+  </div>
+</div>
+</main>
+<script>
+  const ids=['overview','s1','s2','s3','s4','s5','s6','s7','s8','s9'];
+  const navItems=document.querySelectorAll('.nitem');
+  function setActive(id){navItems.forEach(el=>el.classList.toggle('active',el.getAttribute('href')==='#'+id));}
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)setActive(e.target.id);});},{rootMargin:'-60px 0px -60% 0px'});
+  ids.forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el);});
+  navItems.forEach(link=>{link.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(link.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});});});
+</script>
+</body>
+</html>
