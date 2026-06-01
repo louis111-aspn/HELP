@@ -584,8 +584,8 @@
       </thead>
       <tbody>
         <tr><td>매핑 ID (MappingId)</td><td><span class="badge badge-req">필수</span></td><td>단일값(Single Value). 법인당 하나의 매핑 ID만 존재 가능</td></tr>
-        <tr><td>매핑 텍스트(로컬) (MappingTextLo)</td><td><span class="badge badge-req">필수</span></td><td>매핑명 (로컬 언어)</td></tr>
-        <tr><td>매핑 텍스트(그룹) (MappingTextGr)</td><td><span class="badge badge-req">필수</span></td><td>매핑명 (그룹 언어)</td></tr>
+        <tr><td>매핑 내역(로컬) (MappingTextLo)</td><td><span class="badge badge-req">필수</span></td><td>매핑명 (로컬 언어)</td></tr>
+        <tr><td>매핑 내역(그룹) (MappingTextGr)</td><td><span class="badge badge-req">필수</span></td><td>매핑명 (그룹 언어)</td></tr>
         <tr><td>UUID / 생성일시 / 생성자</td><td><span class="badge badge-auto">자동</span></td><td>시스템이 자동 생성</td></tr>
       </tbody>
     </table>
@@ -640,7 +640,7 @@
     </ul>
 
     <div class="note">
-      <strong>📌 개정 번호 규칙:</strong> 개정 필드에는 숫자만 입력 가능합니다. 텍스트 입력 시 "입력 형식 오류: 숫자만 기입할 수 있습니다" 메시지가 반환됩니다.
+      <strong>📌 개정 번호 규칙:</strong> 개정 번호 규칙: 개정 필드에는 숫자만 입력 가능합니다. 텍스트는 입력할 수 없도록 제한되어 있습니다.
     </div>
   </div>
 
@@ -959,7 +959,7 @@
           <td>연결 계정과목표</td>
           <td><span class="badge badge-code">ZGRTCOA04.RITCLG</span></td>
           <td>CHAR</td><td>2</td><td>Value Help</td><td>Single</td><td>Y1</td>
-          <td><span class="badge badge-req">필수</span></td>
+          <td><span class="badge badge-opt">선택</span></td>
         </tr>
         <tr>
           <td>매핑 ID</td>
@@ -977,7 +977,7 @@
     </table>
 
     <div class="note" style="margin-top:14px;">
-      <strong>📌 연결단위 조회 범위:</strong> 연결 담당자는 글로벌 매개변수(Global Parameter)에 설정된 법인 외에도 다른 법인을 선택하여 조회·관리할 수 있습니다. 글로벌 파라미터 값은 기본값으로 적용되지만, 다른 법인 선택도 가능합니다.
+      <strong>📌 연결단위 조회 범위:</strong> 글로벌 매개변수에 설정된 법인만 조회할 수 있습니다. 다른 법인을 선택해야 하는 경우 글로벌 매개변수 값을 변경합니다.
     </div>
   </div>
 
