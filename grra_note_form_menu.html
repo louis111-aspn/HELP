@@ -195,7 +195,7 @@
       <p>양식을 선택하고 [삭제]를 클릭합니다. 해당 양식에 속한 <strong>모든 메뉴 및 연결 데이터(레이아웃·주석 데이터 포함)가 연쇄 삭제</strong>됩니다. 경고 팝업 확인 후 진행합니다.</p>
     </div>
   </div>
-  <div class="danger"><strong>🚫 양식 삭제 시 연쇄 삭제 범위:</strong> ZGDT0010(양식) → ZGDT0011(메뉴) → ZGRADIS03C/R/F(레이아웃) → ZGRADIS04T(개별주석입력) → ZGRADIS05T(개별마감) → ZGRADIS06T(연결주석조회) → ZGRADIS07T(연결마감) → 각 텍스트 테이블이 모두 삭제됩니다.</div>
+  <div class="danger"><strong>🚫 양식 삭제 시 연쇄 삭제 범위:</strong> ZGDT0010(양식) → ZGDT0011(메뉴) → ZGRADIS03C/R/F(레이아웃) → ZGRADIS04T(개별주석입력) → ZGRADIS05T(개별마감) → ZGRADIS06T(연결주석조회) → ZGRADIS07T(연결마감) → ZGRADIS08T(환산수식관리) → 각 텍스트 테이블이 모두 삭제됩니다.</div>
 </div>
 
 <!-- S4 메뉴 구조 조회 -->
@@ -216,10 +216,12 @@
     <tbody>
       <tr><td>메뉴ID</td><td><span class="b bc">ZGDT0011.MENU_ID</span></td><td>중복 불가</td></tr>
       <tr><td>메뉴명칭</td><td><span class="b bc">ZGRADIS01_LAN.MENUTEXT</span></td><td>언어별 텍스트 테이블</td></tr>
-      <tr><td>상위메뉴</td><td><span class="b bc">ZGDT0011.PARENT_MENU</span></td><td>P 타입 메뉴만 지정 가능</td></tr>
+      <tr><td>상위메뉴ID</td><td><span class="b bc">ZGDT0011.PARENT_MENU</span></td><td>P 타입 메뉴만 지정 가능</td></tr>
       <tr><td>메뉴구분</td><td><span class="b bc">ZGDT0011.MENUGUBUN</span></td><td>0:노드(P) / 1:양식(L)</td></tr>
+      <tr><td>행우선환산</td><td><span class="b bc">ZGDT0011.ROW_CONV</span></td><td>환산 시 행 우선 환산</td></tr>
       <tr><td>메뉴순서</td><td><span class="b bc">ZGDT0011.MENU_SEQ</span></td><td>연속된 숫자. Drag&amp;Drop 정렬 가능</td></tr>
-      <tr><td>로그</td><td><span class="b bc">ZGDT0011.CRE_USER / UPD_USER</span></td><td>생성자/최종수정자</td></tr>
+      <tr><td>조회구분</td><td><span class="b bc">ZGDT0011.VIEWGUBUN</span></td><td>S:합산조회, Y:법인별조회</td></tr>
+      <tr><td>조정타입</td><td><span class="b bc">ZGDT0011.ADJ_TYPE</span></td><td>T:합계조정, C:셀단위 조정</td></tr>
     </tbody>
   </table>
 </div>
@@ -228,12 +230,13 @@
 <div class="sec" id="s5">
   <div class="shead"><div class="snum">5</div><div><h2>메뉴 신규 생성</h2><div class="sdesc">새로운 주석 메뉴 항목을 생성합니다.</div></div></div>
   <ul class="steps">
-    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">[신규] 버튼 → 신규 오브젝트 팝업</div><div class="sbody">하단에 입력행이 추가됩니다. <strong>메뉴ID</strong>(중복 불가), <strong>메뉴구분</strong>(노드/양식), <strong>메뉴순서</strong>를 입력합니다.</div></div></li>
-    <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">메뉴 속성 설정</div><div class="sbody"><strong>행 우선 환산</strong>, <strong>조회구분</strong>, <strong>조정타입</strong>, <strong>상위메뉴ID</strong>를 설정합니다. 상위메뉴 지정 시 메뉴구분이 자동으로 L(양식)로 설정됩니다.</div></div></li>
-    <li class="si"><div class="sdot">3</div><div class="sc"><div class="stit">메뉴명 텍스트 생성</div><div class="sbody">언어구분 선택 후 메뉴명을 입력합니다. [계속] → [적용]을 클릭하여 ZGRADIS01_LAN(메뉴텍스트 테이블)에 저장합니다.</div></div></li>
-    <li class="si"><div class="sdot">4</div><div class="sc"><div class="stit">[생성] 또는 [저장]으로 확정</div><div class="sbody">생성된 메뉴를 확인하고 [생성] 버튼을 클릭하여 저장합니다.</div></div></li>
+    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">[편집] 버튼</div><div class="sbody">오른쪽 상단의 [편집] 버튼을 클릭하면 양식명 및 메뉴 편집이 활성화됩니다.</div></div></li>
+    <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">[신규] 버튼 → 신규 오브젝트 팝업</div><div class="sbody">하단에 입력행이 추가됩니다. <strong>메뉴ID</strong>(중복 불가), <strong>메뉴구분</strong>(노드/양식), <strong>메뉴순서</strong>를 입력합니다.</div></div></li>
+    <li class="si"><div class="sdot">3</div><div class="sc"><div class="stit">메뉴 속성 설정</div><div class="sbody"><strong>행 우선 환산</strong>, <strong>조회구분</strong>, <strong>조정타입</strong>, <strong>상위메뉴ID</strong>를 설정합니다. 상위메뉴 지정 시 메뉴구분이 자동으로 L(양식)로 설정됩니다.</div></div></li>
+    <li class="si"><div class="sdot">4</div><div class="sc"><div class="stit">메뉴명 텍스트 생성</div><div class="sbody">언어구분 선택 후 메뉴명을 입력합니다. [계속] → [적용]을 클릭하여 ZGRADIS01_LAN(메뉴텍스트 테이블)에 저장합니다.</div></div></li>
+    <li class="si"><div class="sdot">5</div><div class="sc"><div class="stit">[생성] 또는 [저장]으로 확정</div><div class="sbody">생성된 메뉴를 확인하고 [생성] 버튼을 클릭하여 저장합니다.</div></div></li>
   </ul>
-  <div class="note"><strong>📌 메뉴순서 자동 부여:</strong> 신규 생성 시 메뉴순서는 자동으로 연속 번호가 부여됩니다. 사용자가 변경 가능하나, 저장 시 1·2·3처럼 연속된 숫자 체계인지 검증합니다.</div>
+  <div class="note"><strong>📌 메뉴순서 입력:</strong> 메뉴순서는 자동으로 부여되지 않습니다. 사용자가 직접 입력해야 하며, 저장 시 1-2-3처럼 연속된 숫자 체계인지 검증합니다.</div>
 </div>
 
 <!-- S6 메뉴 편집 -->
@@ -292,7 +295,6 @@
       <tr><td>행 우선 환산</td><td><span class="b bc">ROW_CONV</span></td><td>Y / N</td><td>Y: 행 기준 환산 / N: 열 기준 환산 (기본값 N)</td></tr>
       <tr><td>조회구분</td><td><span class="b bc">VIEWGUBUN</span></td><td>S / Y</td><td>S: 합산조회 (기본값) / Y: 법인별 조회</td></tr>
       <tr><td>조정타입</td><td><span class="b bc">ADJ_TYPE</span></td><td>T / C</td><td>T: 합계조정 (기본값) / C: 셀단위 조정</td></tr>
-      <tr><td>열 숨김</td><td><span class="b bc">HIDE_COL</span></td><td>Y / blank</td><td>Y: 개별주석 입력 화면에서 첫 번째 열 숨김</td></tr>
     </tbody>
   </table>
 </div>
@@ -306,11 +308,8 @@
       <tr><td>양식ID 중복</td><td>동일 FORM_ID 이미 존재</td><td>"키 값이 이미 사용 중입니다. 다른 값을 입력하십시오."</td></tr>
       <tr><td>양식ID 길이</td><td>10자 초과</td><td>"최대 10자(공백 포함)의 텍스트를 입력하십시오."</td></tr>
       <tr><td>메뉴ID 중복</td><td>동일 MENU_ID 이미 존재</td><td>"메뉴 ID가 존재합니다"</td></tr>
-      <tr><td>메뉴순서 연속성</td><td>1, 2, 4처럼 불연속</td><td>저장 실패 — 연속된 숫자 체계 확인 요청</td></tr>
-      <tr><td>상위메뉴 존재 여부</td><td>입력한 상위메뉴ID 없음</td><td>"메뉴 ID를 확인하세요"</td></tr>
       <tr><td>상위메뉴 타입</td><td>상위메뉴의 MENUGUBUN ≠ P</td><td>"상위메뉴의 메뉴구분(P)을 확인하세요"</td></tr>
       <tr><td>자기 자신을 상위메뉴로 지정</td><td>MENUID = PARENT_MENU</td><td>"자기 자신을 상위메뉴로 지정할 수 없습니다."</td></tr>
-      <tr><td>P→L 변경 시 자식 존재</td><td>하위 L 메뉴 존재하는 P 메뉴를 L로 변경</td><td>"하위 메뉴가 존재합니다."</td></tr>
       <tr><td>L 메뉴의 상위메뉴 없음</td><td>PARENT_MENU IS INITIAL AND MENUGUBUN='L'</td><td>"상위메뉴가 존재하지 않습니다."</td></tr>
     </tbody>
   </table>

@@ -256,7 +256,7 @@
       <tr><td>연결계정과목표</td><td>도움창</td><td><span class="b br">필수</span></td><td><span class="b bc">ZGRAT5210.RITCLG</span></td></tr>
       <tr><td>연결버전</td><td>도움창</td><td><span class="b br">필수</span></td><td><span class="b bc">ZGRAT5210.RVERS</span></td></tr>
       <tr><td>회계연도</td><td>도움창</td><td><span class="b br">필수</span></td><td><span class="b bc">ZGRAT5200.ZDATE_CLO</span></td></tr>
-      <tr><td>회계월</td><td>도움창</td><td><span class="b br">필수</span></td><td><span class="b bc">ZGRAT5200.ZDATE_CLO</span></td></tr>
+      <tr><td>회계기간</td><td>도움창</td><td><span class="b br">필수</span></td><td><span class="b bc">ZGRAT5200.ZDATE_CLO</span></td></tr>
       <tr><td>거래유형</td><td>도움창</td><td><span class="b bo">선택</span> · CBO 테이블 관리</td><td>—</td></tr>
       <tr><td>거래코드</td><td>도움창</td><td><span class="b bo">선택</span></td><td><span class="b bc">ZGRAT5200.ZTRS</span></td></tr>
     </tbody>
@@ -274,7 +274,9 @@
         <tr><td>매입법인(피투자) / 법인명</td><td><span class="b bc">ZGRAT5200.RBUPTR</span></td></tr>
         <tr><td>거래일자 / 상각일자</td><td><span class="b bc">ZDATE_TRS / ZDATE_CLO</span></td></tr>
         <tr><td>통화키</td><td><span class="b bc">ZGRAT5200.RHCUR</span></td></tr>
-        <tr><td>미실현손익 (LC / GC)</td><td><span class="b bc">ZAMT_UNRLZ / ZAMT_UNRLZ_GC</span></td></tr>
+        <tr><td>그룹통화키</td><td><span class="b bc">ZGRAT5200.RKCUR</span></td></tr>
+        <tr><td>미실현손익(TC)</td><td><span class="b bc">ZAMT_UNRLZ</span></td></tr>
+        <tr><td>미실현손익(GC)</td><td><span class="b bc">ZAMT_UNRLZ_GC</span></td></tr>
         <tr><td>상각기간(개월)</td><td><span class="b bc">ZGRAT5200.ZUSFL</span></td></tr>
         <tr><td>실현금액(개월)</td><td>ZAMT_UNRLZ ÷ ZUSFL (계산값)</td></tr>
         <tr><td>이연법인세 적용</td><td><span class="b bc">ZGRAT5200.ZCK_DEFTAX</span></td></tr>
@@ -292,8 +294,8 @@
         <tr><td>상각비잔액(LC) / 상각누계(LC)</td><td><span class="b bc">ZAMT_REDEP_LC / ZAMT_ACCU_LC</span></td></tr>
         <tr><td>상각비(GC) / 상각누계(GC)</td><td><span class="b bc">ZAMT_DEP_GC / ZAMT_ACCU_GC</span></td></tr>
         <tr><td>법인세율(%)</td><td><span class="b bc">ZGRAT5210.TAXRT</span></td></tr>
-        <tr><td>이연법인세(LC/GC)</td><td><span class="b bc">ZAMT_DEF_LC / ZAMT_DEF_GC</span></td></tr>
-        <tr><td>법인세비용(LC/GC)</td><td><span class="b bc">ZAMT_TAX_LC / ZAMT_TAX_GC</span></td></tr>
+        <tr><td>이연법인세(TC/GC)</td><td><span class="b bc">ZAMT_DEF_LC / ZAMT_DEF_GC</span></td></tr>
+        <tr><td>법인세비용(TC/GC)</td><td><span class="b bc">ZAMT_TAX_LC / ZAMT_TAX_GC</span></td></tr>
         <tr><td>전표번호</td><td><span class="b bc">ZGRAT5210.DOCNR</span></td></tr>
         <tr><td>메시지</td><td>처리 결과 메시지</td></tr>
       </tbody>
@@ -466,13 +468,6 @@
     <li class="si">
       <div class="sdot">2</div>
       <div class="sc">
-        <div class="stit">체크박스 선택 → 일괄계산 클릭</div>
-        <div class="sbody">일괄계산할 자산코드의 체크박스를 선택한 후 <strong>일괄계산</strong> 버튼을 클릭합니다. 지정한 회계연도와 회계월 기준으로 시스템이 자동으로 상각 스케줄을 계산합니다.</div>
-      </div>
-    </li>
-    <li class="si">
-      <div class="sdot">3</div>
-      <div class="sc">
         <div class="stit">법인세율 자동 적용</div>
         <div class="sbody">일괄계산 시 법인세율은 다음 기준으로 자동 적용됩니다.<br>
         • <strong>최초 스케줄 생성:</strong> 연결단위 마스터에 등록된 세율<br>
@@ -480,7 +475,7 @@
       </div>
     </li>
     <li class="si">
-      <div class="sdot">4</div>
+      <div class="sdot">3</div>
       <div class="sc">
         <div class="stit">저장 — 기존 스케줄 재계산 후 갱신</div>
         <div class="sbody">저장 시 해당 거래코드의 ZGRAT5210 기존 스케줄을 삭제하고 재계산하여 다시 저장합니다. 단, <strong>기준월보다 큰 월에 해당하는 스케줄만 삭제</strong> 후 재계산합니다.</div>
@@ -511,8 +506,8 @@
     <li class="si">
       <div class="sdot">1</div>
       <div class="sc">
-        <div class="stit">편집 버튼 클릭 → 편집 활성화</div>
-        <div class="sbody">상세 화면 상단의 <strong>편집</strong> 버튼을 클릭하면 편집 가능한 필드(상각비(LC)-조정, 법인세율)가 활성화됩니다.</div>
+        <div class="stit">상세 화면 버튼 클릭 → 편집 활성화</div>
+        <div class="sbody">상세 화면 버튼을 클릭하면 편집 가능한 필드(상각비(LC)-조정, 법인세율)가 활성화됩니다.</div>
       </div>
     </li>
     <li class="si">

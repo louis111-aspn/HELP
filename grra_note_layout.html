@@ -165,15 +165,11 @@
     <tbody>
       <tr><td>레이블(명칭)</td><td><span class="b bc">ZGRADIS03R_LAN.ROWDE</span></td><td>다국어 텍스트 (최대 200자)</td></tr>
       <tr><td>사용여부</td><td><span class="b bc">ACTIVE</span></td><td>Y: 사용자 화면에 해당 행 표시</td></tr>
-      <tr><td>열표시여부(VISIBLE)</td><td><span class="b bc">VISIBLE</span></td><td>행이 열 헤더로도 표시될지 여부</td></tr>
       <tr><td>표시여부</td><td><span class="b bc">VISIBLE</span></td><td>A: 모두 표시 / G: 연결주석조회만 / I: 개별주석조회만</td></tr>
       <tr><td>자료구분</td><td><span class="b bc">DATATYPE</span></td><td>A: 자동조정 / G: 총금액 / M: 매뉴얼 조정</td></tr>
       <tr><td>환산구분</td><td><span class="b bc">CONV</span></td><td>AVG/CLO/OPE/COPY/FORMULA (행 우선 환산 적용 시)</td></tr>
       <tr><td>입력참조</td><td><span class="b bc">SELECTION</span></td><td>개별주석 입력 시 검증 기준 재무제표 항목</td></tr>
       <tr><td>연결참조</td><td><span class="b bc">GSELECTION</span></td><td>연결주석 조정 데이터·GR총금액 조회 기준</td></tr>
-      <tr><td>통화값</td><td><span class="b bc">CURR</span></td><td>L: 로컬통화 / T: 거래통화</td></tr>
-      <tr><td>단위값</td><td><span class="b bc">UOM</span></td><td>수량 단위 (KG, EA 등)</td></tr>
-      <tr><td>출력순서</td><td><span class="b bc">SEQ</span></td><td>화면 표시 순서</td></tr>
     </tbody>
   </table>
 </div>
@@ -192,6 +188,7 @@
       <tr><td>레이블(명칭)</td><td><span class="b bc">ZGRADIS03C_LAN.COLDE</span></td><td>다국어 텍스트 (최대 200자)</td></tr>
       <tr><td>필드타입</td><td><span class="b bc">FIELDTYPE</span></td><td>AMT01~10 / TXT01~16 / DATE / NUM / QUAN / VALID</td></tr>
       <tr><td>통화구분</td><td><span class="b bc">CURR</span></td><td>L: 로컬통화 / T: 거래통화</td></tr>
+      <tr><td>단위값</td><td><span class="b bc">UOM</span></td><td>수량 단위 (KG, EA 등)</td></tr>
       <tr><td>통화단위 참조</td><td><span class="b bc">REF_TXT</span></td><td>CURR=T일 때 활성화. 통화값을 참조할 TXT 타입 열 지정</td></tr>
       <tr><td>환산구분</td><td><span class="b bc">CONV</span></td><td>열 기준 환산 적용 시 (행 우선 환산=N인 메뉴)</td></tr>
     </tbody>
@@ -229,7 +226,6 @@
     <div class="conv-item"><div class="conv-code">CLO</div><div class="conv-name">기말환율</div><div class="conv-desc">기말(期末) 환율 적용. 재무상태표 항목에 사용.</div></div>
     <div class="conv-item"><div class="conv-code">COPY</div><div class="conv-name">LC금액 복사</div><div class="conv-desc">환율 환산 없이 로컬통화(LC) 금액을 그대로 복사.</div></div>
     <div class="conv-item"><div class="conv-code">FORMULA</div><div class="conv-name">수식 환산</div><div class="conv-desc">환산수식관리(3.3.3)에서 정의한 수식으로 환산. 다른 행/열 값의 계산 결과를 사용.</div></div>
-    <div class="conv-item"><div class="conv-code">NONE</div><div class="conv-name">환산 없음</div><div class="conv-desc">환산을 적용하지 않습니다.</div></div>
   </div>
 </div>
 
@@ -284,7 +280,7 @@
     <div class="tc2">
       <div class="tct">ZGRADIS03R — 행 레이아웃</div>
       <div class="ti"><code>DISCID / MENUID / ROWID</code><span class="td2">복합 PK</span></div>
-      <div class="ti"><code>VISIBLE</code><span class="td2">열표시여부</span></div>
+      <div class="ti"><code>VISIBLE</code><span class="td2">표시여부</span></div>
       <div class="ti"><code>ACTIVE</code><span class="td2">사용여부</span></div>
       <div class="ti"><code>SEQ</code><span class="td2">출력순서</span></div>
       <div class="ti"><code>CONV</code><span class="td2">환산구분</span></div>

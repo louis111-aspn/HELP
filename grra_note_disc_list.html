@@ -150,7 +150,7 @@
       <tr><td>메뉴ID</td><td>도움창 (멀티)</td><td>공란 (ALL)</td><td>공란 시 전체 메뉴 조회</td></tr>
       <tr><td>회계연도</td><td>도움창</td><td>글로벌 파라미터</td><td><span class="b" style="background:#fde8e8;color:#c0392b;font-size:11px;">필수</span></td></tr>
       <tr><td>회계기간</td><td>도움창</td><td>글로벌 파라미터</td><td><span class="b" style="background:#fde8e8;color:#c0392b;font-size:11px;">필수</span></td></tr>
-      <tr><td>연결단위</td><td>도움창</td><td>글로벌 파라미터</td><td>CDS뷰 ZGVD_VH_0033 사용 (연결그룹+버전 기준 유효 법인)</td></tr>
+      <tr><td>연결단위</td><td>도움창</td><td>글로벌 파라미터</td><td><span class="b" style="background:#fde8e8;color:#c0392b;font-size:11px;">필수</span> · CDS뷰 ZGVD_VH_0033 사용 (연결그룹+버전 기준 유효 법인)</td></tr>
     </tbody>
   </table>
   <div class="note"><strong>📌 초기 화면:</strong> 최초 진입 시 주석양식ID와 메뉴ID가 공란으로 표시됩니다. [실행] 클릭 후 데이터가 조회됩니다.</div>
@@ -193,14 +193,14 @@
     <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">양식(L) 메뉴의 [입력링크] 클릭</div><div class="sbody">레이아웃이 구성된 양식 메뉴에만 [입력링크] 버튼이 활성화됩니다. 클릭 시 새 탭이 열리면서 해당 메뉴의 개별주석 입력화면으로 이동합니다.</div></div></li>
     <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">조회 조건 전달</div><div class="sbody">리스트 화면의 조회 조건(주석양식ID·메뉴ID·연결단위·회계연도·회계기간)이 입력 화면으로 전달됩니다. 이 중 주석양식ID·메뉴ID는 변경 불가이며, 연결단위·회계연도·회계기간은 입력 화면에서 변경 가능합니다.</div></div></li>
   </ul>
-  <div class="warn"><strong>⚠ 레이아웃 미구성 시:</strong> 해당 메뉴의 레이아웃이 없으면 [입력링크] 클릭 시 "해당 메뉴의 레이아웃이 없습니다" 알림창이 표시되고 화면 이동이 차단됩니다.</div>
+  <div class="warn"><strong>⚠ 레이아웃 미구성 시:</strong> 해당 메뉴의 레이아웃이 없으면 [입력링크] 버튼이 비활성화됩니다.</div>
 </div>
 
 <!-- S4 개별주석 입력 및 저장 -->
 <div class="sec" id="s4">
   <div class="shead"><div class="snum">4</div><div><h2>개별주석 입력 및 저장</h2><div class="sdesc">레이아웃 구성에 따른 그리드에 주석 데이터를 입력하고 저장합니다.</div></div></div>
   <ul class="steps">
-    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">입력 화면 진입 시 자동 조회</div><div class="sbody">첫 화면 진입 시 [조회] 버튼 없이 기존 데이터가 자동 조회됩니다. 레이아웃관리에서 구성한 행·열 구조로 그리드가 표시됩니다.</div></div></li>
+    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">입력 화면 진입 시 자동 조회</div><div class="sbody">첫 화면 진입 시 기존 데이터가 자동 조회됩니다. 레이아웃관리에서 구성한 행·열 구조로 그리드가 표시됩니다.</div></div></li>
     <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">데이터 입력</div><div class="sbody">그리드 셀에 주석 내용을 입력합니다. <strong>Ctrl+셀 선택 후 Ctrl+V</strong>로 엑셀 복사·붙여넣기가 가능합니다. 그리드 구성(행/열) 변경은 이 화면에서 불가하며 레이아웃관리 앱에서만 수정 가능합니다.</div></div></li>
     <li class="si"><div class="sdot">3</div><div class="sc"><div class="stit">검증 (선택)</div><div class="sbody">레이아웃관리에서 입력참조(SELECTION)를 설정한 경우, 해당 재무제표 항목의 전표 내역을 기반으로 입력값을 검증합니다.</div></div></li>
     <li class="si"><div class="sdot">4</div><div class="sc"><div class="stit">[데이터 저장] 클릭</div><div class="sbody">입력된 데이터가 ZGRADIS04T(개별주석입력 테이블)에 DATATYPE='I'로 저장됩니다.</div></div></li>

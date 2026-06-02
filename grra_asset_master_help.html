@@ -267,14 +267,9 @@
   <table class="data-table">
     <thead><tr><th>필드</th><th>UI 요소</th><th>기본값 / 비고</th><th>테이블/필드</th></tr></thead>
     <tbody>
-      <tr><td>연결단위 (매입법인)</td><td>도움창</td><td><span class="badge badge-req">필수</span> · 글로벌 매개변수 기본값</td><td><span class="badge badge-code">ZGRAT5200.RBUNIT</span></td></tr>
-      <tr><td>연결버전</td><td>도움창</td><td><span class="badge badge-req">필수</span> · 글로벌 매개변수 기본값</td><td><span class="badge badge-code">ZGRAT5201.RVERS</span></td></tr>
+      <tr><td>매입(피투자)법인</td><td>도움창</td><td><span class="badge badge-req">필수</span> · 글로벌 매개변수 기본값</td><td><span class="badge badge-code">ZGRAT5200.RBUNIT</span></td></tr>
       <tr><td>연결계정과목표</td><td>도움창</td><td><span class="badge badge-req">필수</span></td><td><span class="badge badge-code">ZGRAT5202.RITCLG</span></td></tr>
-      <tr><td>거래유형</td><td>도움창</td><td><span class="badge badge-req">필수</span></td><td><span class="badge badge-code">ZGRAT5203.ZTRS_TYPE</span></td></tr>
-      <tr><td>기간</td><td>도움창</td><td><span class="badge badge-opt">선택</span></td><td>—</td></tr>
-      <tr><td>완료 제외</td><td>체크박스</td><td>기본값: <strong>체크</strong> (상태 필드 기준 필터)</td><td>—</td></tr>
-      <tr><td>삭제표시 제외</td><td>체크박스</td><td>기본값: <strong>체크</strong> (상태 필드 기준 필터)</td><td>—</td></tr>
-      <tr><td>추가거래</td><td>체크박스</td><td>기본값: <strong>체크해제</strong> (손상·처분 발생 기준 필터)</td><td>—</td></tr>
+      <tr><td>검색조건</td><td>선택 (멀티)</td><td>기본값: A(완료 제외) · B(삭제표시 제외) · C(추가거래)</td><td>—</td></tr>
     </tbody>
   </table>
 
@@ -283,36 +278,37 @@
     <table class="data-table" style="font-size:12.5px;">
       <thead><tr><th>컬럼명</th><th>필드</th></tr></thead>
       <tbody>
-        <tr><td>파트너단위 (매출법인)</td><td><span class="badge badge-code">RBUPTR</span></td></tr>
-        <tr><td>통화키</td><td><span class="badge badge-code">RKCUR</span></td></tr>
-        <tr><td>자산코드 (거래코드)</td><td><span class="badge badge-code">ZTRS</span></td></tr>
-        <tr><td>자산명 (거래명)</td><td><span class="badge badge-code">ZTRS_TXT</span></td></tr>
+        <tr><td>자산코드</td><td><span class="badge badge-code">ZTRS</span></td></tr>
+        <tr><td>자산명</td><td><span class="badge badge-code">ZTRS_TXT</span></td></tr>
+        <tr><td>매입(피투자)법인</td><td><span class="badge badge-code">RBUNIT</span></td></tr>
+        <tr><td>매입(피투자)법인명</td><td><span class="badge badge-code">—</span></td></tr>
         <tr><td>고정자산계정</td><td><span class="badge badge-code">ZRITEM_FA</span></td></tr>
-        <tr><td>상각기간</td><td><span class="badge badge-code">ZUSFL</span></td></tr>
-        <tr><td>거래일</td><td><span class="badge badge-code">ZDATE_TRS</span></td></tr>
-        <tr><td>상각시작일</td><td><span class="badge badge-code">ZDATE_CLO</span></td></tr>
-        <tr><td>상각계정</td><td><span class="badge badge-code">ZRITEM_DEP</span></td></tr>
+        <tr><td>고정자산계정명</td><td><span class="badge badge-code">—</span></td></tr>
+        <tr><td>상각기간(개월)</td><td><span class="badge badge-code">ZUSFL</span></td></tr>
+        <tr><td>거래일자</td><td><span class="badge badge-code">ZDATE_TRS</span></td></tr>
+        <tr><td>상각일자</td><td><span class="badge badge-code">ZDATE_CLO</span></td></tr>
       </tbody>
     </table>
     <table class="data-table" style="font-size:12.5px;">
       <thead><tr><th>컬럼명</th><th>필드</th></tr></thead>
       <tbody>
-        <tr><td>소거계정</td><td><span class="badge badge-code">ZRITEM_ELI</span></td></tr>
-        <tr><td>상각누계계정</td><td><span class="badge badge-code">ZRITEM_ACCUM</span></td></tr>
-        <tr><td>손상차손</td><td><span class="badge badge-code">ZRITEM_IMP_DEP</span></td></tr>
-        <tr><td>이연법인세</td><td><span class="badge badge-code">ZRITEM_DEF</span></td></tr>
-        <tr><td>취득금액 (GC)</td><td><span class="badge badge-code">ZAMT_UNRLZ_GC</span></td></tr>
-        <tr><td>취득금액 (LC)</td><td><span class="badge badge-code">ZAMT_UNRLZ</span></td></tr>
+        <tr><td>상각계정</td><td><span class="badge badge-code">ZRITEM_DEP</span></td></tr>
+        <tr><td>상각계정명</td><td><span class="badge badge-code">—</span></td></tr>
+        <tr><td>손상차손계정</td><td><span class="badge badge-code">ZRITEM_IMP_DEP</span></td></tr>
+        <tr><td>손상차손계정명</td><td><span class="badge badge-code">—</span></td></tr>
+        <tr><td>이연법인세계정</td><td><span class="badge badge-code">ZRITEM_DEF</span></td></tr>
+        <tr><td>이연법인세계정명</td><td><span class="badge badge-code">—</span></td></tr>
+        <tr><td>금액(GC)</td><td><span class="badge badge-code">ZAMT_UNRLZ_GC</span></td></tr>
+        <tr><td>금액(TC)</td><td><span class="badge badge-code">ZAMT_UNRLZ</span></td></tr>
         <tr><td>전표유형</td><td><span class="badge badge-code">DOCTY</span></td></tr>
-        <tr><td>상태</td><td><span class="badge badge-code">ZSTATUS</span></td></tr>
-        <tr><td>작업상태</td><td>작성 / 제출 / 승인</td></tr>
+        <tr><td>전표유형명</td><td><span class="badge badge-code">—</span></td></tr>
       </tbody>
     </table>
   </div>
 
   <h3 class="sub">버튼 구성</h3>
   <div class="grid-2">
-    <div class="card"><div class="card-title"><span class="card-icon">➕</span> 생성</div><p>팝업창을 통해 새로운 기준정보를 생성합니다.</p></div>
+    <div class="card"><div class="card-title"><span class="card-icon">➕</span> 생성</div><p>새로운 기준정보를 생성합니다.</p></div>
     <div class="card"><div class="card-title"><span class="card-icon">📤</span> 일괄업로드</div><p>엑셀 파일을 통해 기준정보를 일괄 등록합니다.</p></div>
     <div class="card"><div class="card-title"><span class="card-icon">✏️</span> 편집</div><p>체크박스 선택 후 팝업창에서 데이터를 편집합니다.</p></div>
     <div class="card"><div class="card-title"><span class="card-icon">📝</span> 추가거래등록</div><p>손상·처분 등 변동 거래를 등록합니다.<br><span class="cond">편집 중인 데이터가 있으면 완료 후 사용 가능</span></p></div>
@@ -343,7 +339,7 @@
       <div class="step-dot">2</div>
       <div class="step-content">
         <div class="step-title">거래유형 선택</div>
-        <div class="step-body">거래유형 <span class="badge badge-a">A 고정자산 미실현</span> 또는 <span class="badge badge-b">B 공정가치 조정</span>을 선택합니다. 유형에 따라 이후 입력 필드 및 전표유형 기본값이 달라집니다.</div>
+        <div class="step-body">거래유형 <span class="badge badge-a">A 고정자산 미실현</span> 또는 <span class="badge badge-b">B 공정가치 조정</span>을 선택합니다. 조회조건에 따라 전표유형 기본값이 달라집니다.</div>
       </div>
     </li>
     <li class="step-item">
@@ -357,7 +353,7 @@
       <div class="step-dot">4</div>
       <div class="step-content">
         <div class="step-title">법인 정보 및 금액 입력</div>
-        <div class="step-body">판매(투자)법인과 매입(피투자)법인을 설정합니다. 매입법인은 글로벌 매개변수 기본값으로 편집이 불가합니다. 통화키도 매입법인에 맞춰 자동 세팅됩니다.<br>금액(LC) 입력 후 <strong>원화환산</strong> 버튼을 눌러 그룹통화금액(GC)을 산출합니다. <em>원화환산은 거래유형 A에서만 사용 가능합니다.</em></div>
+        <div class="step-body">판매(투자)법인과 매입(피투자)법인을 설정합니다. 매입법인은 글로벌 매개변수 기본값으로 편집이 불가합니다. 통화키도 매입법인에 맞춰 자동 세팅됩니다.</div>
       </div>
     </li>
     <li class="step-item">
@@ -645,19 +641,19 @@
       <div class="type-desc">그룹 내 법인 간 유·무형 고정자산 매각에서 발생하는 미실현손익을 소거하고 상각 처리하는 유형입니다.<br><br>원화환산(LC→GC) 기능을 지원하며, <strong>판매법인 ≠ 매입법인</strong>이어야 합니다.<br><br>거래자산은 자산 종류 × 거래유형 조합으로 관리합니다 (예: 건물_상각).</div>
       <div class="type-docty">
         <strong>전표유형:</strong><br>
-        Z3 — 연결조정 · 고정자산 미실현<br>
-        Z4 — 고정자산 미실현 상각종료
+        Z1 — 연결조정 · 상각자산 미실현<br>
+        Z2 — 연결조정 · 공정가치 조정
       </div>
     </div>
     <div class="type-card type-b">
       <div class="type-badge-lbl">B</div>
       <div class="type-pill">공정가치 조정</div>
       <div class="type-name">PPA 공정가치 조정 거래</div>
-      <div class="type-desc">사업결합(PPA) 시 식별 자산의 공정가치 조정분을 인식하고 이후 상각 처리하는 유형입니다.<br><br>판매법인과 매입법인이 동일해도 등록 가능합니다. 전표유형은 자동 지정 후 <strong>편집 불가</strong>입니다.<br><br>거래자산은 자산 종류 × 거래유형 조합으로 관리합니다 (예: 건물_공정가치).</div>
+      <div class="type-desc">사업결합(PPA) 시 식별 자산의 공정가치 조정분을 인식하고 이후 상각 처리하는 유형입니다.<br><br>거래자산은 자산 종류 × 거래유형 조합으로 관리합니다 (예: 건물_공정가치).</div>
       <div class="type-docty">
         <strong>전표유형:</strong><br>
-        Z1 — 연결조정 · 공정가치 조정<br>
-        Z2 — 공정가치 상각종료
+        Z1 — 연결조정 · 상각자산 미실현<br>
+        Z2 — 연결조정 · 공정가치 조정
       </div>
     </div>
   </div>
