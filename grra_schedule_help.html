@@ -208,8 +208,7 @@
     스케줄이 확정되면 상각자산 전표제출 프로그램으로 연계하여 GR 전표를 생성합니다.
   </p>
   <div class="ovmeta">
-    <div><div class="oml">연계 프로그램</div><div class="omv">상각자산 기준정보관리 (ZGRAT5200/5201)</div></div>
-    <div><div class="oml">스케줄 테이블</div><div class="omv">ZGRAT5210</div></div>
+    <div><div class="oml">연계 프로그램</div><div class="omv">상각자산 기준정보관리</div></div>
     <div><div class="oml">UI 기술</div><div class="omv">SAP Fiori / SAPUI5 (RAP)</div></div>
   </div>
 </div>
@@ -250,13 +249,13 @@
   <table class="dt">
     <thead><tr><th>필드</th><th>UI 요소</th><th>필수</th><th>테이블/필드</th></tr></thead>
     <tbody>
-      <tr><td>연결그룹</td><td>도움창</td><td><span class="b br">필수</span> · KFCG01 기본값</td><td><span class="b bc">ZGRAT5210.CONGR</span></td></tr>
-      <tr><td>연결계정과목표</td><td>도움창</td><td><span class="b br">필수</span></td><td><span class="b bc">ZGRAT5210.RITCLG</span></td></tr>
-      <tr><td>연결버전</td><td>도움창</td><td><span class="b br">필수</span></td><td><span class="b bc">ZGRAT5210.RVERS</span></td></tr>
-      <tr><td>회계연도</td><td>도움창</td><td><span class="b br">필수</span></td><td><span class="b bc">ZGRAT5200.ZDATE_CLO</span></td></tr>
-      <tr><td>회계기간</td><td>도움창</td><td><span class="b br">필수</span></td><td><span class="b bc">ZGRAT5200.ZDATE_CLO</span></td></tr>
+      <tr><td>연결그룹</td><td>도움창</td><td><span class="b br">필수</span> · KFCG01 기본값</td><td><span class="b bc">CONGR</span></td></tr>
+      <tr><td>연결계정과목표</td><td>도움창</td><td><span class="b br">필수</span></td><td><span class="b bc">RITCLG</span></td></tr>
+      <tr><td>연결버전</td><td>도움창</td><td><span class="b br">필수</span></td><td><span class="b bc">RVERS</span></td></tr>
+      <tr><td>회계연도</td><td>도움창</td><td><span class="b br">필수</span></td><td><span class="b bc">ZDATE_CLO</span></td></tr>
+      <tr><td>회계기간</td><td>도움창</td><td><span class="b br">필수</span></td><td><span class="b bc">ZDATE_CLO</span></td></tr>
       <tr><td>거래유형</td><td>도움창</td><td><span class="b bo">선택</span> · CBO 테이블 관리</td><td>—</td></tr>
-      <tr><td>거래코드</td><td>도움창</td><td><span class="b bo">선택</span></td><td><span class="b bc">ZGRAT5200.ZTRS</span></td></tr>
+      <tr><td>거래코드</td><td>도움창</td><td><span class="b bo">선택</span></td><td><span class="b bc">ZTRS</span></td></tr>
     </tbody>
   </table>
 
@@ -265,20 +264,20 @@
     <table class="dt" style="font-size:12.5px;">
       <thead><tr><th>컬럼명</th><th>테이블/필드</th></tr></thead>
       <tbody>
-        <tr><td>거래코드</td><td><span class="b bc">ZGRAT5200.ZTRS</span></td></tr>
-        <tr><td>거래명</td><td><span class="b bc">ZGRAT5200.ZTRS_TXT</span></td></tr>
+        <tr><td>거래코드</td><td><span class="b bc">ZTRS</span></td></tr>
+        <tr><td>거래명</td><td><span class="b bc">ZTRS_TXT</span></td></tr>
         <tr><td>거래유형 / 거래유형명</td><td><span class="b bc">ZTRS_TYPE / DDTEXT</span></td></tr>
         <tr><td>매출법인(투자) / 법인명</td><td><span class="b bc">RGRAT5200.RBUIT</span></td></tr>
-        <tr><td>매입법인(피투자) / 법인명</td><td><span class="b bc">ZGRAT5200.RBUPTR</span></td></tr>
+        <tr><td>매입법인(피투자) / 법인명</td><td><span class="b bc">RBUPTR</span></td></tr>
         <tr><td>거래일자 / 상각일자</td><td><span class="b bc">ZDATE_TRS / ZDATE_CLO</span></td></tr>
-        <tr><td>통화키</td><td><span class="b bc">ZGRAT5200.RHCUR</span></td></tr>
-        <tr><td>그룹통화키</td><td><span class="b bc">ZGRAT5200.RKCUR</span></td></tr>
+        <tr><td>통화키</td><td><span class="b bc">RHCUR</span></td></tr>
+        <tr><td>그룹통화키</td><td><span class="b bc">RKCUR</span></td></tr>
         <tr><td>미실현손익(TC)</td><td><span class="b bc">ZAMT_UNRLZ</span></td></tr>
         <tr><td>미실현손익(GC)</td><td><span class="b bc">ZAMT_UNRLZ_GC</span></td></tr>
-        <tr><td>상각기간(개월)</td><td><span class="b bc">ZGRAT5200.ZUSFL</span></td></tr>
+        <tr><td>상각기간(개월)</td><td><span class="b bc">ZUSFL</span></td></tr>
         <tr><td>실현금액(개월)</td><td>ZAMT_UNRLZ ÷ ZUSFL (계산값)</td></tr>
-        <tr><td>이연법인세 적용</td><td><span class="b bc">ZGRAT5200.ZCK_DEFTAX</span></td></tr>
-        <tr><td>상태</td><td><span class="b bc">ZGRAT5200.ZSTATUS</span></td></tr>
+        <tr><td>이연법인세 적용</td><td><span class="b bc">ZCK_DEFTAX</span></td></tr>
+        <tr><td>상태</td><td><span class="b bc">ZSTATUS</span></td></tr>
       </tbody>
     </table>
     <table class="dt" style="font-size:12.5px;">
@@ -286,15 +285,15 @@
       <tbody>
         <tr><td>상각스케줄</td><td>아이콘 (등록 여부 표시)</td></tr>
         <tr><td>추가거래</td><td>아이콘 (손상·처분 여부 표시)</td></tr>
-        <tr><td>회계연도</td><td><span class="b bc">ZGRAT5210.RYEAR</span></td></tr>
-        <tr><td>변동유형</td><td><span class="b bc">ZGRAT5210.ZTYPE_EVE</span></td></tr>
+        <tr><td>회계연도</td><td><span class="b bc">RYEAR</span></td></tr>
+        <tr><td>변동유형</td><td><span class="b bc">ZTYPE_EVE</span></td></tr>
         <tr><td>상각비(LC) / 상각비(LC)-조정</td><td><span class="b bc">ZAMT_DEP_LC / ZAMT_DEP_LC_ADJ</span></td></tr>
         <tr><td>상각비잔액(LC) / 상각누계(LC)</td><td><span class="b bc">ZAMT_REDEP_LC / ZAMT_ACCU_LC</span></td></tr>
         <tr><td>상각비(GC) / 상각누계(GC)</td><td><span class="b bc">ZAMT_DEP_GC / ZAMT_ACCU_GC</span></td></tr>
-        <tr><td>법인세율(%)</td><td><span class="b bc">ZGRAT5210.TAXRT</span></td></tr>
+        <tr><td>법인세율(%)</td><td><span class="b bc">TAXRT</span></td></tr>
         <tr><td>이연법인세(TC/GC)</td><td><span class="b bc">ZAMT_DEF_LC / ZAMT_DEF_GC</span></td></tr>
         <tr><td>법인세비용(TC/GC)</td><td><span class="b bc">ZAMT_TAX_LC / ZAMT_TAX_GC</span></td></tr>
-        <tr><td>전표번호</td><td><span class="b bc">ZGRAT5210.DOCNR</span></td></tr>
+        <tr><td>전표번호</td><td><span class="b bc">DOCNR</span></td></tr>
         <tr><td>메시지</td><td>처리 결과 메시지</td></tr>
       </tbody>
     </table>
@@ -347,18 +346,18 @@
   <table class="ft">
     <thead><tr><th>컬럼명</th><th>편집</th><th>필드</th><th>비고</th></tr></thead>
     <tbody>
-      <tr><td>회계연도</td><td><span class="b bro">조회</span></td><td><code>ZGRAT5210.RYEAR</code></td><td></td></tr>
-      <tr><td>변동일자</td><td><span class="b bro">조회</span></td><td><code>ZGRAT5210.ZDATE_EVE</code></td><td></td></tr>
-      <tr><td>변동유형</td><td><span class="b bro">조회</span></td><td><code>ZGRAT5210.ZTYPE_EVE</code></td><td>A~F 코드 (아래 참고)</td></tr>
+      <tr><td>회계연도</td><td><span class="b bro">조회</span></td><td><code>RYEAR</code></td><td></td></tr>
+      <tr><td>변동일자</td><td><span class="b bro">조회</span></td><td><code>ZDATE_EVE</code></td><td></td></tr>
+      <tr><td>변동유형</td><td><span class="b bro">조회</span></td><td><code>ZTYPE_EVE</code></td><td>A~F 코드 (아래 참고)</td></tr>
       <tr><td>상각비(LC)</td><td><span class="b bro">조회</span></td><td><code>ZAMT_DEP_LC</code></td><td></td></tr>
       <tr><td>상각비(LC)-조정</td><td><span class="b ba">편집 가능</span></td><td><code>ZAMT_DEP_LC_ADJ</code></td><td>수동 조정 가능</td></tr>
       <tr><td>상각비잔액(LC)</td><td><span class="b bro">조회</span></td><td><code>ZAMT_REDEP_LC</code></td><td></td></tr>
       <tr><td>상각누계(LC)</td><td><span class="b bro">조회</span></td><td><code>ZAMT_ACCU_LC</code></td><td></td></tr>
       <tr><td>상각비(GC) / 상각누계(GC)</td><td><span class="b bro">조회</span></td><td><code>ZAMT_DEP_GC / ZAMT_ACCU_GC</code></td><td></td></tr>
-      <tr><td>법인세율(%)</td><td><span class="b ba">편집 가능</span></td><td><code>ZGRAT5210.TAXRT</code></td><td>변경 시 이연법인세·법인세비용 자동 재계산</td></tr>
+      <tr><td>법인세율(%)</td><td><span class="b ba">편집 가능</span></td><td><code>TAXRT</code></td><td>변경 시 이연법인세·법인세비용 자동 재계산</td></tr>
       <tr><td>이연법인세(LC/GC)</td><td><span class="b bro">조회</span></td><td><code>ZAMT_DEF_LC / ZAMT_DEF_GC</code></td><td>법인세율 기반 계산</td></tr>
       <tr><td>법인세비용(LC/GC)</td><td><span class="b bro">조회</span></td><td><code>ZAMT_TAX_LC / ZAMT_TAX_GC</code></td><td>전월 대비 이연법인세 차액</td></tr>
-      <tr><td>전표번호</td><td><span class="b bro">조회</span></td><td><code>ZGRAT5210.DOCNR</code></td><td>전표 생성 후 자동 채번</td></tr>
+      <tr><td>전표번호</td><td><span class="b bro">조회</span></td><td><code>DOCNR</code></td><td>전표 생성 후 자동 채번</td></tr>
     </tbody>
   </table>
 
@@ -402,7 +401,7 @@
   </ul>
 
   <div class="warn">
-    <strong>⚠ 재계산과 저장은 별개:</strong> 재계산 버튼 클릭만으로는 데이터가 저장되지 않습니다. 반드시 재계산 후 <strong>저장 버튼</strong>을 클릭해야 ZGRAT5210 테이블에 반영됩니다.
+    <strong>⚠ 재계산과 저장은 별개:</strong> 재계산 버튼 클릭만으로는 데이터가 저장되지 않습니다. 반드시 재계산 후 <strong>저장 버튼</strong>을 클릭해야 테이블에 반영됩니다.
   </div>
 </div>
 
@@ -475,7 +474,7 @@
       <div class="sdot">3</div>
       <div class="sc">
         <div class="stit">저장 — 기존 스케줄 재계산 후 갱신</div>
-        <div class="sbody">저장 시 해당 거래코드의 ZGRAT5210 기존 스케줄을 삭제하고 재계산하여 다시 저장합니다. 단, <strong>기준월보다 큰 월에 해당하는 스케줄만 삭제</strong> 후 재계산합니다.</div>
+        <div class="sbody">저장 시 해당 거래코드의 기존 스케줄을 삭제하고 재계산하여 다시 저장합니다. 단, <strong>기준월보다 큰 월에 해당하는 스케줄만 삭제</strong> 후 재계산합니다.</div>
       </div>
     </li>
   </ul>
@@ -518,13 +517,13 @@
       <div class="sdot">3</div>
       <div class="sc">
         <div class="stit">저장</div>
-        <div class="sbody"><strong>저장</strong> 버튼을 클릭하면 편집된 내역이 ZGRAT5210 테이블에 저장됩니다. 저장 완료 메시지가 반환됩니다.</div>
+        <div class="sbody"><strong>저장</strong> 버튼을 클릭하면 편집된 내역이 테이블에 저장됩니다. 저장 완료 메시지가 반환됩니다.</div>
       </div>
     </li>
   </ul>
 
   <div class="g2">
-    <div class="card"><div class="ctit"><span class="cico">✏️</span> 편집 가능 필드</div><p>• 상각비(LC)-조정: <span class="b bc">ZAMT_DEP_LC_ADJ</span><br>• 법인세율(%): <span class="b bc">ZGRAT5210.TAXRT</span></p></div>
+    <div class="card"><div class="ctit"><span class="cico">✏️</span> 편집 가능 필드</div><p>• 상각비(LC)-조정: <span class="b bc">ZAMT_DEP_LC_ADJ</span><br>• 법인세율(%): <span class="b bc">TAXRT</span></p></div>
     <div class="card"><div class="ctit"><span class="cico">🔒</span> 편집 불가 필드</div><p>전표번호(DOCNR)가 존재하는 라인의 법인세율은 편집이 제한될 수 있습니다. 전표 생성 후에는 해당 월의 스케줄 수정이 불가합니다.</p></div>
   </div>
 </div>
@@ -544,7 +543,7 @@
       <div class="sdot">1</div>
       <div class="sc">
         <div class="stit">상세 화면에서 삭제 클릭</div>
-        <div class="sbody">상세 화면에서 <strong>삭제</strong> 버튼을 클릭하면 현재 거래코드에 대한 ZGRAT5210의 <strong>전체 스케줄이 삭제</strong>됩니다.</div>
+        <div class="sbody">상세 화면에서 <strong>삭제</strong> 버튼을 클릭하면 현재 거래코드에 대한 <strong>전체 스케줄이 삭제</strong>됩니다.</div>
       </div>
     </li>
   </ul>
@@ -554,7 +553,7 @@
   </div>
 
   <div class="note">
-    <strong>📌 전표 취소 후 재처리:</strong> 전표제출 화면에서 전표를 취소하면 해당 월의 ZGRAT5210.DOCNR가 삭제 처리되어 스케줄 편집이 다시 가능해집니다. 이후 상각자산 전표생성에서 전표를 재생성할 수 있습니다.
+    <strong>📌 전표 취소 후 재처리:</strong> 전표제출 화면에서 전표를 취소하면 해당 월의 DOCNR가 삭제 처리되어 스케줄 편집이 다시 가능해집니다. 이후 상각자산 전표생성에서 전표를 재생성할 수 있습니다.
   </div>
 </div>
 
@@ -564,7 +563,7 @@
     <div class="snum">·</div>
     <div>
       <h2>변동유형 코드 정의</h2>
-      <div class="sdesc">ZGRAT5210.ZTYPE_EVE 필드에서 사용하는 변동유형 코드입니다.</div>
+      <div class="sdesc">ZTYPE_EVE 필드에서 사용하는 변동유형 코드입니다.</div>
     </div>
   </div>
 

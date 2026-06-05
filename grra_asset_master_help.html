@@ -227,7 +227,6 @@
   <div class="overview-meta">
     <div><div class="overview-meta-label">거래유형</div><div class="overview-meta-val">A: 고정자산 미실현 / B: 공정가치 조정</div></div>
     <div><div class="overview-meta-label">UI 기술</div><div class="overview-meta-val">SAP Fiori / SAPUI5 (RAP)</div></div>
-    <div><div class="overview-meta-label">주요 테이블</div><div class="overview-meta-val">ZGRAT5200 / ZGRAT5201</div></div>
   </div>
 </div>
 
@@ -265,8 +264,8 @@
   <table class="data-table">
     <thead><tr><th>필드</th><th>UI 요소</th><th>기본값 / 비고</th><th>테이블/필드</th></tr></thead>
     <tbody>
-      <tr><td>매입(피투자)법인</td><td>도움창</td><td><span class="badge badge-req">필수</span> · 글로벌 매개변수 기본값</td><td><span class="badge badge-code">ZGRAT5200.RBUNIT</span></td></tr>
-      <tr><td>연결계정과목표</td><td>도움창</td><td><span class="badge badge-req">필수</span></td><td><span class="badge badge-code">ZGRAT5202.RITCLG</span></td></tr>
+      <tr><td>매입(피투자)법인</td><td>도움창</td><td><span class="badge badge-req">필수</span> · 글로벌 매개변수 기본값</td><td><span class="badge badge-code">RBUNIT</span></td></tr>
+      <tr><td>연결계정과목표</td><td>도움창</td><td><span class="badge badge-req">필수</span></td><td><span class="badge badge-code">RITCLG</span></td></tr>
       <tr><td>검색조건</td><td>선택 (멀티)</td><td>기본값: A(완료 제외) · B(삭제표시 제외) · C(추가거래)</td><td>—</td></tr>
     </tbody>
   </table>
@@ -532,7 +531,7 @@
       <div class="step-dot">3</div>
       <div class="step-content">
         <div class="step-title">저장</div>
-        <div class="step-body">저장 버튼을 클릭하면 PK 유효성 검증 후 <strong>ZGRAT5201</strong> 테이블에 저장됩니다. 메시지 필드에 검증 결과가 표시됩니다.</div>
+        <div class="step-body">저장 버튼을 클릭하면 PK 유효성 검증 후 테이블에 저장됩니다. 메시지 필드에 검증 결과가 표시됩니다.</div>
       </div>
     </li>
   </ul>
@@ -541,15 +540,15 @@
   <table class="field-table">
     <thead><tr><th>필드명</th><th>입력 방식</th><th>필수</th><th>테이블/필드</th></tr></thead>
     <tbody>
-      <tr><td>자산코드 (거래코드)</td><td>편집불가 (조회조건에서 전달)</td><td>—</td><td><code>ZGRAT5201.ZTRS</code></td></tr>
-      <tr><td>자산명 (거래명)</td><td>편집불가</td><td>—</td><td><code>ZGRAT5201.ZTRS_TXT</code></td></tr>
-      <tr><td>변동유형</td><td>드롭다운</td><td><span class="badge badge-req">필수</span></td><td><code>ZGRAT5201.ZTYPE_EVE</code> — C: 손상, D: 처분</td></tr>
-      <tr><td>변동일자</td><td>날짜형식</td><td><span class="badge badge-req">필수</span></td><td><code>ZGRAT5201.ZDATE_EVE</code> — 유효성 점검 적용</td></tr>
-      <tr><td>당월 상각포함</td><td>체크박스</td><td>—</td><td><code>ZGRAT5201.ZCK_INCLU</code> — 기본값: 체크해제</td></tr>
-      <tr><td>통화키</td><td>편집불가</td><td>—</td><td><code>ZGRAT5201.RHCUR</code></td></tr>
-      <tr><td>장부금액</td><td>숫자형식</td><td><span class="badge badge-req">필수</span></td><td><code>ZGRAT5201.ZAMT_EVE</code></td></tr>
-      <tr><td>거래 적요</td><td>텍스트</td><td><span class="badge badge-req">필수</span></td><td><code>ZGRAT5201.ZEVE_TXT</code></td></tr>
-      <tr><td>전표번호</td><td>편집불가</td><td>—</td><td><code>ZGRAT5201.DOCNR</code></td></tr>
+      <tr><td>자산코드 (거래코드)</td><td>편집불가 (조회조건에서 전달)</td><td>—</td><td><code>ZTRS</code></td></tr>
+      <tr><td>자산명 (거래명)</td><td>편집불가</td><td>—</td><td><code>ZTRS_TXT</code></td></tr>
+      <tr><td>변동유형</td><td>드롭다운</td><td><span class="badge badge-req">필수</span></td><td><code>ZTYPE_EVE</code> — C: 손상, D: 처분</td></tr>
+      <tr><td>변동일자</td><td>날짜형식</td><td><span class="badge badge-req">필수</span></td><td><code>ZDATE_EVE</code> — 유효성 점검 적용</td></tr>
+      <tr><td>당월 상각포함</td><td>체크박스</td><td>—</td><td><code>ZCK_INCLU</code> — 기본값: 체크해제</td></tr>
+      <tr><td>통화키</td><td>편집불가</td><td>—</td><td><code>RHCUR</code></td></tr>
+      <tr><td>장부금액</td><td>숫자형식</td><td><span class="badge badge-req">필수</span></td><td><code>ZAMT_EVE</code></td></tr>
+      <tr><td>거래 적요</td><td>텍스트</td><td><span class="badge badge-req">필수</span></td><td><code>ZEVE_TXT</code></td></tr>
+      <tr><td>전표번호</td><td>편집불가</td><td>—</td><td><code>DOCNR</code></td></tr>
       <tr><td>메시지</td><td>편집불가</td><td>—</td><td>저장 후 PK 유효성 검증 결과 표시</td></tr>
     </tbody>
   </table>
