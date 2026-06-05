@@ -229,7 +229,6 @@
     <div class="nlabel">참고</div>
     <a class="nitem" href="#s9"><span class="nnum">·</span> 전표 생성 조건 및 제약</a>
     <a class="nitem" href="#s10"><span class="nnum">·</span> 조회 조건 및 그리드 필드</a>
-    <a class="nitem" href="#s11"><span class="nnum">·</span> 테이블 구조</a>
   </div>
 </aside>
 
@@ -594,55 +593,6 @@
       <tr><td><span class="b" style="background:var(--green-bg);color:var(--green);">승인자</span></td><td>승인, 반려</td><td>읽기 권한</td><td>본인 앞으로 온 승인요청 건 및 승인 완료 건</td></tr>
     </tbody>
   </table>
-</div>
-
-<!-- S11 테이블 -->
-<div class="sec" id="s11">
-  <div class="shead">
-    <div class="snum">·</div>
-    <div><h2>테이블 구조</h2><div class="sdesc">전표 제출 프로세스에서 사용하는 커스텀 테이블 목록입니다.</div></div>
-  </div>
-  <div class="tech-grid">
-    <div class="tc">
-      <div class="tct">ZGRAT5211 — 전표 관리</div>
-      <div class="ti"><code>ZTRS</code><span class="td2">거래코드 (ZGRAT5200 참조)</span></div>
-      <div class="ti"><code>RYEAR / POPER</code><span class="td2">회계연도 / 전기기간</span></div>
-      <div class="ti"><code>ZNO</code><span class="td2">상세거래코드</span></div>
-      <div class="ti"><code>RMVCT</code><span class="td2">거래유형 (연결거래유형)</span></div>
-      <div class="ti"><code>DOCNR</code><span class="td2">회계 전표번호</span></div>
-      <div class="ti"><code>DOCLN</code><span class="td2">총계정원장 개별 항목</span></div>
-      <div class="ti"><code>CRE/UPD</code><span class="td2">생성·변경 이력</span></div>
-    </div>
-    <div class="tc">
-      <div class="tct">ZGRAT7020 — 결재문서 관리 (Head)</div>
-      <div class="ti"><code>DOC_NUM</code><span class="td2">결재문서번호 (PK)</span></div>
-      <div class="ti"><code>DOC_DATE / DOC_USER</code><span class="td2">기안일 / 기안자</span></div>
-      <div class="ti"><code>APPR_STAT_CD</code><span class="td2">승인구분 (01·02·03)</span></div>
-      <div class="ti"><code>APPR_STATUS</code><span class="td2">요청구분</span></div>
-      <div class="ti"><code>DOC_TITLE / DOC_CONTENT</code><span class="td2">문서제목 / 문서내역</span></div>
-      <div class="ti"><code>DC_KEY</code><span class="td2">중복상신 키 체크</span></div>
-      <div class="ti"><code>APPR_DATE / CAN_DATE</code><span class="td2">완료일 / 취소일</span></div>
-    </div>
-    <div class="tc">
-      <div class="tct">ZGRAT7010 — 결재 관리</div>
-      <div class="ti"><code>DOC_NUM</code><span class="td2">결재문서번호 (FK)</span></div>
-      <div class="ti"><code>APPR_SEQ</code><span class="td2">결재순서 (001 = 기안자 제외)</span></div>
-      <div class="ti"><code>APPR_USER</code><span class="td2">결재자 (승인자)</span></div>
-      <div class="ti"><code>APPR_TYPE_CD</code><span class="td2">승인유형</span></div>
-      <div class="ti"><code>APPR_NOTE</code><span class="td2">결재의견</span></div>
-      <div class="ti"><code>APPR_DATE</code><span class="td2">결재 완료일</span></div>
-    </div>
-    <div class="tc">
-      <div class="tct">참조 테이블</div>
-      <div class="ti"><code>ZGRAT5200</code><span class="td2">기준정보 (일반) — 자산코드 정보</span></div>
-      <div class="ti"><code>ZGRAT5210</code><span class="td2">스케줄 관리 — 월별 상각 스케줄</span></div>
-      <div class="ti"><code>ZGRAT5200A/B</code><span class="td2">변경후/변경전 기준정보 이력</span></div>
-      <div class="ti"><code>ZGRAT7040</code><span class="td2">중복키 검증 관리 테이블</span></div>
-      <div style="margin-top:12px;padding:10px;background:var(--navy-light);border-radius:4px;font-size:12px;color:var(--navy);">
-        <strong>승인 시 연결:</strong> 승인 처리 완료 후 연결모니터 프로그램(Z3010, Z3020)에서 상태 확인 가능하도록 연계됩니다.
-      </div>
-    </div>
-  </div>
 </div>
 
 </main>
