@@ -378,9 +378,6 @@
     <a class="nav-item" href="#s11">
       <span class="nav-num">·</span> 데이터 검증 로직
     </a>
-    <a class="nav-item" href="#s12">
-      <span class="nav-num">·</span> 테이블 구조
-    </a>
   </div>
 </aside>
 
@@ -962,61 +959,6 @@
         </tr>
       </tbody>
     </table>
-  </div>
-
-  <!-- S12: 테이블 구조 -->
-  <div class="section" id="s12">
-    <div class="section-header">
-      <div class="section-num">·</div>
-      <div>
-        <h2>테이블 구조</h2>
-        <div class="section-desc">프로그램에서 사용하는 커스텀 테이블 목록 및 주요 필드입니다.</div>
-      </div>
-    </div>
-
-    <div class="tech-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:20px;">
-      <div class="tech-card">
-        <div class="tech-card-title">ZGRTUPL01</div>
-        <div class="tech-item">Non-SAP TB 업로드 <strong>마스터</strong> 테이블</div>
-        <div class="tech-item"><code>RITCLG</code> 연결 계정과목표</div>
-        <div class="tech-item"><code>RVERS</code> 버전</div>
-        <div class="tech-item"><code>RYEAR / POPER</code> 회계연도/기간</div>
-        <div class="tech-item"><code>RBUNIT</code> 연결단위</div>
-        <div class="tech-item"><code>REVISION</code> 개정</div>
-        <div class="tech-item"><code>WFSTATUS</code> 작업상태</div>
-        <div class="tech-item"><code>DOCNR</code> 승인전표번호</div>
-        <div class="tech-item"><code>RVSDOCNR</code> 취소전표번호</div>
-        <div class="tech-item"><code>HSLT / KSLT</code> 로컬/그룹통화잔액</div>
-      </div>
-      <div class="tech-card">
-        <div class="tech-card-title">ZGRTUPL02</div>
-        <div class="tech-item">TB 업로드 <strong>상태 로그</strong> 테이블</div>
-        <div class="tech-item"><code>RITCLG</code> 연결 계정과목표</div>
-        <div class="tech-item"><code>RVERS</code> 버전</div>
-        <div class="tech-item"><code>RYEAR / POPER</code> 회계연도/기간</div>
-        <div class="tech-item"><code>RBUNIT</code> 연결단위</div>
-        <div class="tech-item"><code>REVISION</code> 개정</div>
-        <div class="tech-item"><code>RACTION</code> 작업상태 이력</div>
-        <div class="tech-item"><code>CREATED_AT/BY</code> 처리일시/처리자</div>
-      </div>
-      <div class="tech-card">
-        <div class="tech-card-title">ZGRTUPL03</div>
-        <div class="tech-item">TB <strong>재무 데이터</strong> 업로드 테이블</div>
-        <div class="tech-item"><code>ZRACCT</code> GL 계정</div>
-        <div class="tech-item"><code>RITEM</code> 재무제표항목</div>
-        <div class="tech-item"><code>HSL</code> 로컬통화금액</div>
-        <div class="tech-item"><code>KSL</code> 그룹통화금액</div>
-        <div class="tech-item"><code>TSL</code> 거래통화금액</div>
-        <div class="tech-item"><code>PRBUPTR</code> 파트너단위</div>
-        <div class="tech-item"><code>SUBIT / SITYP</code> 서브아이템</div>
-        <div class="tech-item"><code>PRCTR / RCNTR</code> 손익/비용센터</div>
-        <div class="tech-item"><code>MESSAGE</code> 오류메시지</div>
-      </div>
-    </div>
-
-    <div class="note">
-      <strong>📌 논리 PK (중복 방지 기준):</strong> <code style="font-family:monospace;background:rgba(0,0,0,0.1);padding:1px 6px;border-radius:3px;">RITCLG + RVERS + RYEAR + POPER + RBUNIT + RITEM + ZRACCT</code> 조합이 동일하면 중복으로 처리됩니다.
-    </div>
   </div>
 
 </main>
