@@ -76,7 +76,6 @@
   <div><div class="nlabel">참고</div>
     <a class="nitem" href="#s5"><span class="nnum">·</span> 진행률 계산 방식</a>
     <a class="nitem" href="#s6"><span class="nnum">·</span> 연결주석모니터와의 관계</a>
-    <a class="nitem" href="#s7"><span class="nnum">·</span> 테이블 구조</a>
   </div>
 </aside>
 <main>
@@ -86,7 +85,6 @@
   <p>주석 메뉴별 법인별 작성 마감 현황을 조회하고, 법인별 또는 일괄로 마감 처리를 수행하는 프로그램입니다. 마감된 메뉴는 개별주석 작성 및 편집이 불가해집니다.</p>
   <div class="ovmeta">
     <div><div class="oml">메뉴 경로</div><div class="omv">ASPN 주석관리 › 개별주석 관리 › 주석작성 모니터</div></div>
-    <div><div class="oml">주요 테이블</div><div class="omv">ZGRADIS05T (개별 마감관리)</div></div>
   </div>
 </div>
 
@@ -114,12 +112,12 @@
   <table class="dt">
     <thead><tr><th>컬럼</th><th>필드</th><th>설명</th></tr></thead>
     <tbody>
-      <tr><td>메뉴 트리</td><td><span class="b bc">ZGDT0011.MENU_ID</span></td><td>계층 구조 트리 형태로 표시</td></tr>
+      <tr><td>메뉴 트리</td><td><span class="b bc">MENU_ID</span></td><td>계층 구조 트리 형태로 표시</td></tr>
       <tr><td>메뉴 구분</td><td><span class="b bc">MENUGUBUN</span></td><td>0: 노드 / 1: 양식</td></tr>
-      <tr><td>명칭</td><td><span class="b bc">ZGDT0012.FORMTEXT</span></td><td>메뉴 텍스트</td></tr>
+      <tr><td>명칭</td><td><span class="b bc">FORMTEXT</span></td><td>메뉴 텍스트</td></tr>
       <tr><td>마감 버튼</td><td>—</td><td>진행률 100%이면 [마감취소], 미만이면 [마감] 버튼 활성</td></tr>
       <tr><td>작성대상</td><td>CDS뷰 COUNT</td><td>회계기간 유효 연결단위 수 (I_CnsldtnGroupStructureEnhcd)</td></tr>
-      <tr><td>작성완료</td><td><span class="b bc">ZGRADIS05T.CSTAT='Y'</span></td><td>마감된 법인 수</td></tr>
+      <tr><td>작성완료</td><td><span class="b bc">CSTAT='Y'</span></td><td>마감된 법인 수</td></tr>
       <tr><td>진행률</td><td>계산값</td><td>(작성완료 / 작성대상) × 100, 소수 둘째자리까지 표시</td></tr>
     </tbody>
   </table>
@@ -130,7 +128,7 @@
   <div class="shead"><div class="snum">2</div><div><h2>법인별 마감 처리 (상세 화면)</h2><div class="sdesc">개별 법인 단위로 마감 또는 마감 취소를 처리합니다.</div></div></div>
   <ul class="steps">
     <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">상세 화면 진입</div><div class="sbody">메인 그리드에서 &gt; 버튼을 클릭하면 해당 메뉴의 법인별 마감 상세 화면이 표시됩니다. 연결단위 목록과 각 법인의 마감 상태, 작성자, 작성일자가 표시됩니다.</div></div></li>
-    <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">법인 마감 클릭</div><div class="sbody">미마감 법인의 <strong>[마감]</strong> 버튼을 클릭하면 해당 법인의 ZGRADIS05T.CSTAT가 Y로 변경됩니다.</div></div></li>
+    <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">법인 마감 클릭</div><div class="sbody">미마감 법인의 <strong>[마감]</strong> 버튼을 클릭하면 해당 법인의 CSTAT가 Y로 변경됩니다.</div></div></li>
     <li class="si"><div class="sdot">3</div><div class="sc"><div class="stit">법인 마감 취소</div><div class="sbody">마감된 법인의 <strong>[마감취소]</strong> 버튼을 클릭하면 CSTAT가 공란으로 변경됩니다.</div></div></li>
   </ul>
 
@@ -138,7 +136,7 @@
   <table class="dt">
     <thead><tr><th>컬럼</th><th>필드</th></tr></thead>
     <tbody>
-      <tr><td>연결단위</td><td><span class="b bc">ZGRADIS05T.RBUNIT</span></td></tr>
+      <tr><td>연결단위</td><td><span class="b bc">RBUNIT</span></td></tr>
       <tr><td>연결단위 명</td><td>I_CnsldtnUnitText_3.ConsolidationUnitText</td></tr>
       <tr><td>작성상태</td><td>CSTAT='Y'이면 작성완료 표시, null이면 공란</td></tr>
       <tr><td>작성자</td><td>UPD_USER (없으면 CRE_USER)</td></tr>
@@ -161,7 +159,7 @@
 <div class="sec" id="s4">
   <div class="shead"><div class="snum">4</div><div><h2>일괄마감 / 일괄마감 취소</h2><div class="sdesc">조회된 모든 메뉴에 대해 전체 법인을 한 번에 처리합니다.</div></div></div>
   <div class="g2">
-    <div class="card"><div class="ctit">🔒 일괄마감</div><p>조회된 모든 메뉴에 대해 해당 회계연도·기간의 전체 연결단위를 일괄 마감합니다. ZGRADIS05T.CSTAT를 Y로 일괄 업데이트합니다.</p></div>
+    <div class="card"><div class="ctit">🔒 일괄마감</div><p>조회된 모든 메뉴에 대해 해당 회계연도·기간의 전체 연결단위를 일괄 마감합니다. CSTAT를 Y로 일괄 업데이트합니다.</p></div>
     <div class="card"><div class="ctit">🔓 일괄마감 취소</div><p>조회된 모든 메뉴의 마감을 일괄 취소합니다. CSTAT를 공란으로 일괄 변경합니다.</p><p class="cond">연결주석모니터에서 마감된 메뉴는 취소 불가</p></div>
   </div>
 </div>
@@ -199,21 +197,9 @@
     <thead><tr><th>주석작성모니터 (개별법인)</th><th>연결주석모니터 (연결담당자)</th></tr></thead>
     <tbody>
       <tr><td>개별 법인이 메뉴별 마감/취소</td><td>연결담당자가 전체 집계·환산·마감 수행</td></tr>
-      <tr><td>ZGRADIS05T.CSTAT 관리</td><td>ZGRADIS07T.CSTAT 관리</td></tr>
+      <tr><td>CSTAT 관리</td><td>CSTAT 관리</td></tr>
       <tr><td>연결주석모니터 마감 시 취소 불가</td><td>개별주석작성모니터 마감 취소 가능</td></tr>
       <tr><td>마감 상태: 개별법인 작성 잠금</td><td>마감 상태: 집계·환산 불가</td></tr>
-    </tbody>
-  </table>
-</div>
-
-<!-- S7 -->
-<div class="sec" id="s7">
-  <div class="shead"><div class="snum">·</div><div><h2>테이블 구조</h2></div></div>
-  <table class="dt">
-    <thead><tr><th>테이블</th><th>설명</th><th>주요 필드</th></tr></thead>
-    <tbody>
-      <tr><td><span class="b bc">ZGRADIS05T</span></td><td>개별 마감관리</td><td>FORM_ID, MENU_ID, RBUNIT, FYEAR, FPERIOD(PK), CSTAT(마감상태: Y/공란), CRE/UPD 로그</td></tr>
-      <tr><td><span class="b bc">ZGDT0011</span></td><td>주석작성메뉴</td><td>FORM_ID, MENU_ID, MENUGUBUN</td></tr>
     </tbody>
   </table>
 </div>

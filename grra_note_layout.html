@@ -116,7 +116,6 @@
     <a class="nitem" href="#s6"><span class="nnum">·</span> 환산구분 코드 정의</a>
     <a class="nitem" href="#s7"><span class="nnum">·</span> 필드타입 정의</a>
     <a class="nitem" href="#s8"><span class="nnum">·</span> 표시여부 / 자료구분</a>
-    <a class="nitem" href="#s9"><span class="nnum">·</span> 테이블 구조</a>
   </div>
 </aside>
 <main>
@@ -126,7 +125,6 @@
   <p>양식 및 메뉴관리에서 생성된 <strong>양식 메뉴(L)</strong>의 주석 입력·조회 레이아웃을 구성하는 화면입니다. 행(ROW)과 열(COL)을 정의하고 각 항목의 환산구분·필드타입·표시여부 등 속성을 설정합니다. 수식 셀을 지정하여 다른 행/열 값의 계산 결과를 자동 산출할 수 있습니다.</p>
   <div class="ovmeta">
     <div><div class="oml">메뉴 경로</div><div class="omv">ASPN 주석관리 > 주석관리-양식 및 메뉴관리 > 주석 레이아웃관리</div></div>
-    <div><div class="oml">주요 테이블</div><div class="omv">ZGRADIS03R / ZGRADIS03C / ZGRADIS03F</div></div>
   </div>
 </div>
 
@@ -146,10 +144,10 @@
 <div class="sec" id="s1">
   <div class="shead"><div class="snum">1</div><div><h2>실행 및 조회</h2><div class="sdesc">주석양식 ID와 메뉴 ID를 선택하여 레이아웃 화면을 실행합니다.</div></div></div>
   <ul class="steps">
-    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">주석양식ID 선택</div><div class="sbody">도움창(F4)으로 ZGDT0010에 등록된 주석양식ID를 선택합니다.</div></div></li>
+    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">주석양식ID 선택</div><div class="sbody">도움창(F4)으로 등록된 주석양식ID를 선택합니다.</div></div></li>
     <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">메뉴ID 선택 → [실행]</div><div class="sbody">해당 양식의 메뉴ID를 선택하고 [실행]을 클릭합니다. 이미 레이아웃이 있으면 기존 행·열 구성이 표시됩니다.</div></div></li>
   </ul>
-  <div class="note"><strong>📌 레이아웃 조회 방식:</strong> ZGRADIS03C(열)와 ZGRADIS03R(행)을 UNION하여 조회합니다. 행/열 구분 컬럼은 테이블에 없으므로 화면에서 구분하여 표시합니다.</div>
+  <div class="note"><strong>📌 레이아웃 조회 방식:</strong> (열)와 (행)을 UNION하여 조회합니다. 행/열 구분 컬럼은 테이블에 없으므로 화면에서 구분하여 표시합니다.</div>
 </div>
 
 <!-- S2 행 -->
@@ -159,11 +157,11 @@
     <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">[ROWS ADD] 클릭</div><div class="sbody">새로운 행이 추가됩니다. 행ID(ROW_ID)가 자동 부여됩니다.</div></div></li>
     <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">행 속성 설정 팝업</div><div class="sbody">해당 행의 속성을 설정합니다. 다국어[A↔文] 버튼으로 행 레이블(명칭)을 언어별로 입력합니다.</div></div></li>
   </ul>
-  <h3 class="sub">행 속성 항목 (ZGRADIS03R)</h3>
+  <h3 class="sub">행 속성 항목</h3>
   <table class="dt">
     <thead><tr><th>속성명</th><th>필드</th><th>값/설명</th></tr></thead>
     <tbody>
-      <tr><td>레이블(명칭)</td><td><span class="b bc">ZGRADIS03R_LAN.ROWDE</span></td><td>다국어 텍스트 (최대 200자)</td></tr>
+      <tr><td>레이블(명칭)</td><td><span class="b bc">ROWDE</span></td><td>다국어 텍스트 (최대 200자)</td></tr>
       <tr><td>사용여부</td><td><span class="b bc">ACTIVE</span></td><td>Y: 사용자 화면에 해당 행 표시</td></tr>
       <tr><td>표시여부</td><td><span class="b bc">VISIBLE</span></td><td>A: 모두 표시 / G: 연결주석조회만 / I: 개별주석조회만</td></tr>
       <tr><td>자료구분</td><td><span class="b bc">DATATYPE</span></td><td>A: 자동조정 / G: 총금액 / M: 매뉴얼 조정</td></tr>
@@ -181,11 +179,11 @@
     <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">[COLUMNS ADD] 클릭</div><div class="sbody">새로운 열이 추가됩니다. 열ID(COL_ID)가 자동 부여됩니다.</div></div></li>
     <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">열 속성 설정 팝업</div><div class="sbody">열 레이블과 속성을 설정합니다. 행 속성과 대부분 동일하나 <strong>필드타입(FIELDTYPE)</strong>이 추가됩니다.</div></div></li>
   </ul>
-  <h3 class="sub">열 전용 추가 속성 (ZGRADIS03C)</h3>
+  <h3 class="sub">열 전용 추가 속성</h3>
   <table class="dt">
     <thead><tr><th>속성명</th><th>필드</th><th>값/설명</th></tr></thead>
     <tbody>
-      <tr><td>레이블(명칭)</td><td><span class="b bc">ZGRADIS03C_LAN.COLDE</span></td><td>다국어 텍스트 (최대 200자)</td></tr>
+      <tr><td>레이블(명칭)</td><td><span class="b bc">COLDE</span></td><td>다국어 텍스트 (최대 200자)</td></tr>
       <tr><td>필드타입</td><td><span class="b bc">FIELDTYPE</span></td><td>AMT01~10 / TXT01~16 / DATE / NUM / QUAN / VALID</td></tr>
       <tr><td>통화구분</td><td><span class="b bc">CURR</span></td><td>L: 로컬통화 / T: 거래통화</td></tr>
       <tr><td>단위값</td><td><span class="b bc">UOM</span></td><td>수량 단위 (KG, EA 등)</td></tr>
@@ -203,7 +201,7 @@
   <ul class="steps">
     <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">수식을 적용할 셀 선택</div><div class="sbody">그리드에서 수식을 입력할 셀(행·열 교차 지점)을 클릭합니다.</div></div></li>
     <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">[서식 편집] 클릭</div><div class="sbody">[서식 편집] 버튼을 클릭하면 수식 입력 팝업이 열립니다.</div></div></li>
-    <li class="si"><div class="sdot">3</div><div class="sc"><div class="stit">수식 입력 → [저장]</div><div class="sbody">함수 및 변수 입력창에서 사칙연산(+, -, *, /)으로 계산식을 작성합니다. 완료 후 [저장]을 클릭합니다. ZGRADIS03F(수식 테이블)에 저장됩니다.</div></div></li>
+    <li class="si"><div class="sdot">3</div><div class="sc"><div class="stit">수식 입력 → [저장]</div><div class="sbody">함수 및 변수 입력창에서 사칙연산(+, -, *, /)으로 계산식을 작성합니다. 완료 후 [저장]을 클릭합니다. (수식 테이블)에 저장됩니다.</div></div></li>
   </ul>
   <div class="note"><strong>📌 수식 우선 적용:</strong> 행·열 레이아웃의 CONV(환산구분)를 FORMULA로 설정한 후 이 수식 설정을 통해 환산수식관리(3.3.3)에서 구체적인 수식 멤버를 정의합니다.</div>
 </div>
@@ -212,7 +210,7 @@
 <div class="sec" id="s5">
   <div class="shead"><div class="snum">5</div><div><h2>레이아웃 저장</h2><div class="sdesc">구성한 레이아웃을 확정 저장합니다.</div></div></div>
   <ul class="steps">
-    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">[레이아웃 저장] 클릭</div><div class="sbody">레이아웃 구성을 완료한 후 [레이아웃 저장] 버튼을 클릭합니다. 행 데이터는 ZGRADIS03R, 열 데이터는 ZGRADIS03C, 수식은 ZGRADIS03F에 저장됩니다.</div></div></li>
+    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">[레이아웃 저장] 클릭</div><div class="sbody">레이아웃 구성을 완료한 후 [레이아웃 저장] 버튼을 클릭합니다.</div></div></li>
   </ul>
   <div class="warn"><strong>⚠ 저장 전 확인사항:</strong> 레이아웃 저장 후 개별주석 데이터가 입력된 상태에서 행·열을 추가/삭제하면 기존 데이터와의 정합성이 깨질 수 있습니다. 운영 중에는 레이아웃 변경을 최소화하십시오.</div>
 </div>
@@ -231,7 +229,7 @@
 
 <!-- S7 필드타입 -->
 <div class="sec" id="s7">
-  <div class="shead"><div class="snum">·</div><div><h2>필드타입 정의</h2><div class="sdesc">열(COL)의 FIELDTYPE 값 및 ZGRADIS04T 저장 필드와의 매핑입니다.</div></div></div>
+  <div class="shead"><div class="snum">·</div><div><h2>필드타입 정의</h2><div class="sdesc">열(COL)의 FIELDTYPE 값 및 저장 필드와의 매핑입니다.</div></div></div>
   <div class="ft-grid">
     <div class="ft-item"><div class="ft-code">AMT01 ~ AMT10</div><div class="ft-desc">금액 필드. 대응 통화: CURR01~CURR10</div></div>
     <div class="ft-item"><div class="ft-code">TXT01 ~ TXT16</div><div class="ft-desc">텍스트 필드. 거래통화(T) 입력 시 통화코드 보관에도 사용</div></div>
@@ -273,45 +271,6 @@
   </div>
 </div>
 
-<!-- S9 테이블 -->
-<div class="sec" id="s9">
-  <div class="shead"><div class="snum">·</div><div><h2>테이블 구조</h2><div class="sdesc">레이아웃관리에서 사용하는 커스텀 테이블입니다.</div></div></div>
-  <div class="g2">
-    <div class="tc2">
-      <div class="tct">ZGRADIS03R — 행 레이아웃</div>
-      <div class="ti"><code>DISCID / MENUID / ROWID</code><span class="td2">복합 PK</span></div>
-      <div class="ti"><code>VISIBLE</code><span class="td2">표시여부</span></div>
-      <div class="ti"><code>ACTIVE</code><span class="td2">사용여부</span></div>
-      <div class="ti"><code>SEQ</code><span class="td2">출력순서</span></div>
-      <div class="ti"><code>CONV</code><span class="td2">환산구분</span></div>
-      <div class="ti"><code>SELECTION / GSELECTION</code><span class="td2">입력참조 / 연결참조</span></div>
-      <div class="ti"><code>CURR / UOM</code><span class="td2">통화값 / 단위값</span></div>
-      <div class="ti"><code>DATATYPE</code><span class="td2">자료구분</span></div>
-    </div>
-    <div class="tc2">
-      <div class="tct">ZGRADIS03C — 열 레이아웃</div>
-      <div class="ti"><code>DISCID / MENUID / COLID</code><span class="td2">복합 PK</span></div>
-      <div class="ti"><code>FIELDTYPE</code><span class="td2">필드타입 (AMT/TXT/DATE 등)</span></div>
-      <div class="ti"><code>ACTIVE</code><span class="td2">사용여부</span></div>
-      <div class="ti"><code>SEQ</code><span class="td2">출력순서</span></div>
-      <div class="ti"><code>CONV</code><span class="td2">환산구분</span></div>
-      <div class="ti"><code>CURR / UOM</code><span class="td2">통화구분 / 단위</span></div>
-      <div class="ti"><code>DATATYPE</code><span class="td2">자료구분</span></div>
-      <div class="ti"><code>LDESC / GDESC</code><span class="td2">컬럼명(로컬) / 컬럼명(그룹)</span></div>
-    </div>
-    <div class="tc2">
-      <div class="tct">ZGRADIS03F — 수식 레이아웃</div>
-      <div class="ti"><code>DISCID / MENUID</code><span class="td2">양식ID / 메뉴ID</span></div>
-      <div class="ti"><code>ROW_ID / COL_ID</code><span class="td2">행ID / 열ID (좌표 기준)</span></div>
-      <div class="ti"><code>수식 내용</code><span class="td2">해당 좌표 셀의 계산 수식</span></div>
-    </div>
-    <div class="tc2">
-      <div class="tct">텍스트 테이블</div>
-      <div class="ti"><code>ZGRADIS03R_LAN</code><span class="td2">행 레이아웃 명칭 텍스트 (ROWDE, 최대 200자)</span></div>
-      <div class="ti"><code>ZGRADIS03C_LAN</code><span class="td2">열 레이아웃 명칭 텍스트 (COLDE, 최대 200자)</span></div>
-    </div>
-  </div>
-</div>
 </main>
 <script>
   const ids=['overview','s1','s2','s3','s4','s5','s6','s7','s8','s9'];

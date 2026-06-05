@@ -115,7 +115,6 @@
   <div><div class="nlabel">참고</div>
     <a class="nitem" href="#s5"><span class="nnum">·</span> 주석입력상태 판별 기준</a>
     <a class="nitem" href="#s6"><span class="nnum">·</span> 데이터 저장 로직</a>
-    <a class="nitem" href="#s7"><span class="nnum">·</span> 테이블 구조</a>
   </div>
 </aside>
 <main>
@@ -125,7 +124,6 @@
   <p>주석양식의 메뉴를 트리 계층구조로 조회하고, 각 메뉴(양식 L)의 개별주석 입력화면으로 이동하는 진입점 화면입니다. 주석입력상태 아이콘으로 각 메뉴의 데이터 입력 현황을 한눈에 파악할 수 있습니다.</p>
   <div class="ovmeta">
     <div><div class="oml">메뉴 경로</div><div class="omv">ASPN 주석관리 > 개별주석 관리 > 개별주석작성 리스트</div></div>
-    <div><div class="oml">주요 테이블</div><div class="omv">ZGDT0011 / ZGRADIS04T / ZGDT0012</div></div>
   </div>
 </div>
 
@@ -146,11 +144,11 @@
   <table class="dt">
     <thead><tr><th>필드</th><th>UI 요소</th><th>기본값</th><th>비고</th></tr></thead>
     <tbody>
-      <tr><td>주석양식ID</td><td>도움창 (싱글)</td><td>공란</td><td>ZGDT0010.FORM_ID 선택, <span class="b" style="background:#fde8e8;color:#c0392b;font-size:11px;">필수</span></td></tr>
+      <tr><td>주석양식ID</td><td>도움창 (싱글)</td><td>공란</td><td>FORM_ID 선택, <span class="b" style="background:#fde8e8;color:#c0392b;font-size:11px;">필수</span></td></tr>
       <tr><td>메뉴ID</td><td>도움창 (멀티)</td><td>공란 (ALL)</td><td>공란 시 전체 메뉴 조회</td></tr>
       <tr><td>회계연도</td><td>도움창</td><td>글로벌 파라미터</td><td><span class="b" style="background:#fde8e8;color:#c0392b;font-size:11px;">필수</span></td></tr>
       <tr><td>회계기간</td><td>도움창</td><td>글로벌 파라미터</td><td><span class="b" style="background:#fde8e8;color:#c0392b;font-size:11px;">필수</span></td></tr>
-      <tr><td>연결단위</td><td>도움창</td><td>글로벌 파라미터</td><td><span class="b" style="background:#fde8e8;color:#c0392b;font-size:11px;">필수</span> · CDS뷰 ZGVD_VH_0033 사용 (연결그룹+버전 기준 유효 법인)</td></tr>
+      <tr><td>연결단위</td><td>도움창</td><td>글로벌 파라미터</td><td><span class="b" style="background:#fde8e8;color:#c0392b;font-size:11px;">필수</span> · CDS뷰 사용 (연결그룹+버전 기준 유효 법인)</td></tr>
     </tbody>
   </table>
   <div class="note"><strong>📌 초기 화면:</strong> 최초 진입 시 주석양식ID와 메뉴ID가 공란으로 표시됩니다. [실행] 클릭 후 데이터가 조회됩니다.</div>
@@ -171,18 +169,18 @@
   <table class="dt">
     <thead><tr><th>컬럼명</th><th>테이블/필드</th><th>비고</th></tr></thead>
     <tbody>
-      <tr><td>메뉴ID</td><td><span class="b bc">ZGDT0011.MENU_ID</span></td><td></td></tr>
-      <tr><td>메뉴명</td><td><span class="b bc">ZGDT0013.MENUTEXT</span></td><td>언어별 텍스트</td></tr>
-      <tr><td>상위메뉴</td><td><span class="b bc">ZGDT0011.PARENT_MENU</span></td><td></td></tr>
-      <tr><td>상위메뉴명</td><td><span class="b bc">ZGDT0013.MENUTEXT</span></td><td></td></tr>
-      <tr><td>주석입력상태</td><td>계산값</td><td>ZGRADIS04T 데이터 존재 여부로 판별</td></tr>
+      <tr><td>메뉴ID</td><td><span class="b bc">MENU_ID</span></td><td></td></tr>
+      <tr><td>메뉴명</td><td><span class="b bc">MENUTEXT</span></td><td>언어별 텍스트</td></tr>
+      <tr><td>상위메뉴</td><td><span class="b bc">PARENT_MENU</span></td><td></td></tr>
+      <tr><td>상위메뉴명</td><td><span class="b bc">MENUTEXT</span></td><td></td></tr>
+      <tr><td>주석입력상태</td><td>계산값</td><td>데이터 존재 여부로 판별</td></tr>
       <tr><td>개별주석입력</td><td>링크 버튼</td><td>양식(L) 메뉴만 활성화. 노드(P) 메뉴는 링크 없음</td></tr>
     </tbody>
   </table>
   <h3 class="sub">주석입력상태 아이콘</h3>
   <div class="status-row">
-    <div class="status-item"><div class="si2-icon">●</div><div><div class="si2-label">입력됨</div><div class="si2-val">ZGRADIS04T에 DATATYPE='I' 데이터 존재</div></div></div>
-    <div class="status-item"><div class="si2-icon" style="color:#ccc;">○</div><div><div class="si2-label">미입력</div><div class="si2-val">ZGRADIS04T에 해당 조건의 데이터 없음</div></div></div>
+    <div class="status-item"><div class="si2-icon">●</div><div><div class="si2-label">입력됨</div><div class="si2-val">DATATYPE='I' 데이터 존재</div></div></div>
+    <div class="status-item"><div class="si2-icon" style="color:#ccc;">○</div><div><div class="si2-label">미입력</div><div class="si2-val">해당 조건의 데이터 없음</div></div></div>
   </div>
 </div>
 
@@ -203,7 +201,7 @@
     <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">입력 화면 진입 시 자동 조회</div><div class="sbody">첫 화면 진입 시 기존 데이터가 자동 조회됩니다. 레이아웃관리에서 구성한 행·열 구조로 그리드가 표시됩니다.</div></div></li>
     <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">데이터 입력</div><div class="sbody">그리드 셀에 주석 내용을 입력합니다. <strong>Ctrl+셀 선택 후 Ctrl+V</strong>로 엑셀 복사·붙여넣기가 가능합니다. 그리드 구성(행/열) 변경은 이 화면에서 불가하며 레이아웃관리 앱에서만 수정 가능합니다.</div></div></li>
     <li class="si"><div class="sdot">3</div><div class="sc"><div class="stit">검증 (선택)</div><div class="sbody">레이아웃관리에서 입력참조(SELECTION)를 설정한 경우, 해당 재무제표 항목의 전표 내역을 기반으로 입력값을 검증합니다.</div></div></li>
-    <li class="si"><div class="sdot">4</div><div class="sc"><div class="stit">[데이터 저장] 클릭</div><div class="sbody">입력된 데이터가 ZGRADIS04T(개별주석입력 테이블)에 DATATYPE='I'로 저장됩니다.</div></div></li>
+    <li class="si"><div class="sdot">4</div><div class="sc"><div class="stit">[데이터 저장] 클릭</div><div class="sbody">입력된 데이터가 (개별주석입력 테이블)에 DATATYPE='I'로 저장됩니다.</div></div></li>
     <li class="si"><div class="sdot">5</div><div class="sc"><div class="stit">[엑셀 익스포트] (선택)</div><div class="sbody">입력된 주석 내용을 엑셀 파일로 다운로드할 수 있습니다.</div></div></li>
   </ul>
   <div class="note"><strong>📌 열 숨김 적용:</strong> 양식 및 메뉴관리에서 HIDE_COL='Y'로 설정된 메뉴는 입력 화면에서 첫 번째 열이 자동으로 숨겨집니다.</div>
@@ -213,7 +211,7 @@
 <!-- S5 주석입력상태 -->
 <div class="sec" id="s5">
   <div class="shead"><div class="snum">·</div><div><h2>주석입력상태 판별 기준</h2><div class="sdesc">리스트 화면의 주석입력상태 필드 산출 로직입니다.</div></div></div>
-  <div class="note"><strong>판별 방식:</strong> ZGRADIS04T(개별주석입력 테이블)에서 아래 조건의 레코드 COUNT로 판별합니다. 1건 이상이면 ● (입력됨), 0건이면 공란(미입력)으로 표시합니다.</div>
+  <div class="note"><strong>판별 방식:</strong> (개별주석입력 테이블)에서 아래 조건의 레코드 COUNT로 판별합니다. 1건 이상이면 ● (입력됨), 0건이면 공란(미입력)으로 표시합니다.</div>
   <table class="dt">
     <thead><tr><th>WHERE 조건 필드</th><th>값</th></tr></thead>
     <tbody>
@@ -229,7 +227,7 @@
 
 <!-- S6 저장 로직 -->
 <div class="sec" id="s6">
-  <div class="shead"><div class="snum">·</div><div><h2>데이터 저장 로직</h2><div class="sdesc">개별주석 입력 데이터의 ZGRADIS04T 저장 방식입니다.</div></div></div>
+  <div class="shead"><div class="snum">·</div><div><h2>데이터 저장 로직</h2><div class="sdesc">개별주석 입력 데이터의 저장 방식입니다.</div></div></div>
   <div class="g2">
     <div class="card">
       <div class="ctit">📋 저장 시 적용 규칙</div>
@@ -242,37 +240,6 @@
       <div class="ctit">💱 거래통화(T) 저장 로직</div>
       <p>통화구분='T'인 열은 TXT 타입 열의 값(통화코드)을 REF_TXT 설정에 따라 CURR 필드에 반영합니다.<br>
       예: AMT01의 REF_TXT=TXT03이면, TXT03에 입력된 'USD'를 CURR01에 저장한 후 금액을 AMT01에 저장합니다.</p>
-    </div>
-  </div>
-</div>
-
-<!-- S7 테이블 -->
-<div class="sec" id="s7">
-  <div class="shead"><div class="snum">·</div><div><h2>테이블 구조</h2></div></div>
-  <div class="g2">
-    <div class="tc2">
-      <div class="tct">ZGRADIS04T — 개별주석입력</div>
-      <div class="ti"><code>DISCID / MENUID</code><span class="td2">양식ID / 메뉴ID (PK)</span></div>
-      <div class="ti"><code>CGROUP / RBUNIT</code><span class="td2">연결그룹 / 연결단위 (PK)</span></div>
-      <div class="ti"><code>FYEAR / FPERIOD</code><span class="td2">결산연도 / 결산기간 (PK)</span></div>
-      <div class="ti"><code>FSITEM</code><span class="td2">재무제표항목 (PK)</span></div>
-      <div class="ti"><code>DATATYPE</code><span class="td2">자료구분 I/M/A/G (PK)</span></div>
-      <div class="ti"><code>ROW_ID / COL_ID</code><span class="td2">행 아이템 / 열 아이디</span></div>
-      <div class="ti"><code>AMT01~AMT10</code><span class="td2">금액 필드 (CURR01~10 참조)</span></div>
-      <div class="ti"><code>TXT01~TXT16</code><span class="td2">텍스트 필드</span></div>
-      <div class="ti"><code>QUAN01~QUAN10</code><span class="td2">수량 필드 (UNIT01~10 참조)</span></div>
-      <div class="ti"><code>DATE</code><span class="td2">일자 필드</span></div>
-      <div class="ti"><code>NUM</code><span class="td2">숫자 필드</span></div>
-    </div>
-    <div class="tc2">
-      <div class="tct">참조 테이블</div>
-      <div class="ti"><code>ZGDT0011</code><span class="td2">주석작성메뉴 — 메뉴 계층구조</span></div>
-      <div class="ti"><code>ZGRADIS03C</code><span class="td2">열 레이아웃 — FIELDTYPE 기준</span></div>
-      <div class="ti"><code>ZGRADIS03R</code><span class="td2">행 레이아웃 — ROW_ID 기준</span></div>
-      <div class="ti"><code>ZGRADIS05T</code><span class="td2">개별 마감관리 — CSTAT 마감 확인</span></div>
-      <div style="margin-top:12px;padding:10px;background:var(--navy-light);border-radius:4px;font-size:12px;color:var(--navy);">
-        <strong>CDS 뷰:</strong> 연결단위 도움창은 <code style="font-family:monospace;">ZGVD_VH_0033</code> / <code style="font-family:monospace;">I_CnsldtnUnitByTime_2</code> 사용 (연결그룹+버전 기준 유효 법인 조회)
-      </div>
     </div>
   </div>
 </div>

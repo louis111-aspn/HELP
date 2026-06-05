@@ -69,7 +69,6 @@
   </div>
   <div><div class="nlabel">참고</div>
     <a class="nitem" href="#s6"><span class="nnum">·</span> 자료구분(DATATYPE) 조회 방식</a>
-    <a class="nitem" href="#s7"><span class="nnum">·</span> 테이블 구조</a>
   </div>
 </aside>
 <main>
@@ -79,7 +78,6 @@
   <p>연결주석모니터에서 집계·환산된 연결주석 데이터를 연결그룹 기준으로 합산 또는 법인별로 조회하는 프로그램입니다. 양식 및 메뉴관리에서 설정한 조회구분(합산/법인별)에 따라 기본 조회 방식이 결정되며, 수작업 조정도 지원합니다.</p>
   <div class="ovmeta">
     <div><div class="oml">메뉴 경로</div><div class="omv">ASPN 주석관리 › 연결주석 관리 › 연결주석 조회</div></div>
-    <div><div class="oml">주요 테이블</div><div class="omv">ZGRADIS06T (연결주석조회)</div></div>
   </div>
 </div>
 
@@ -98,7 +96,7 @@
   <div class="shead"><div class="snum">1</div><div><h2>초기 화면 조회 및 조회링크</h2><div class="sdesc">조회 조건을 입력하고 메뉴 트리에서 조회링크를 클릭합니다.</div></div></div>
   <ul class="steps">
     <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">조회 조건 입력 후 실행</div><div class="sbody">주석양식ID, 연결그룹, 연결버전을 입력합니다. 글로벌 파라미터 기본값이 적용됩니다.</div></div></li>
-    <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">메뉴 트리에서 조회링크 클릭</div><div class="sbody">양식(L) 메뉴에 <strong>[조회링크]</strong>가 활성화됩니다. 클릭하면 <strong>새 탭</strong>에서 해당 메뉴의 주석 조회 화면이 열립니다. 기본 조회 방식(합산/법인별)은 ZGDT0011.VIEWGUBUN 설정에 따라 결정됩니다.</div></div></li>
+    <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">메뉴 트리에서 조회링크 클릭</div><div class="sbody">양식(L) 메뉴에 <strong>[조회링크]</strong>가 활성화됩니다. 클릭하면 <strong>새 탭</strong>에서 해당 메뉴의 주석 조회 화면이 열립니다. 기본 조회 방식(합산/법인별)은 VIEWGUBUN 설정에 따라 결정됩니다.</div></div></li>
   </ul>
   <div class="note"><strong>📌 조회링크 활성화 조건:</strong> 메뉴구분이 양식(L)인 메뉴에만 조회링크가 표시됩니다. 노드(P) 메뉴에는 링크가 없습니다.</div>
 </div>
@@ -126,7 +124,7 @@
 <div class="sec" id="s4">
   <div class="shead"><div class="snum">4</div><div><h2>수작업 조정</h2><div class="sdesc">양식 및 메뉴관리에서 설정한 조정타입에 따라 데이터를 수동 조정합니다.</div></div></div>
   <div class="g2">
-    <div class="card"><div class="ctit">📊 합계조정 (T)</div><p>합산조회 화면에서 수작업 조정 컬럼에 직접 값을 입력합니다. 입력한 데이터는 ZGRADIS06T에 DATATYPE=M으로 저장됩니다.</p></div>
+    <div class="card"><div class="ctit">📊 합계조정 (T)</div><p>합산조회 화면에서 수작업 조정 컬럼에 직접 값을 입력합니다. 입력한 데이터는 DATATYPE=M으로 저장됩니다.</p></div>
     <div class="card"><div class="ctit">🔬 셀단위 조정 (C)</div><p>상단에 DATATYPE 선택 도움창이 활성화됩니다. 입력내역(I) / 수작업조정(M) / 자동조정(A) 중 선택하여 각 데이터 유형의 그리드를 전환 조회합니다.</p></div>
   </div>
 </div>
@@ -145,25 +143,13 @@
   <table class="dt">
     <thead><tr><th>DATATYPE</th><th>의미</th><th>데이터 소스</th><th>편집 가능</th></tr></thead>
     <tbody>
-      <tr><td><span class="b bc">I</span></td><td>일반 입력</td><td>ZGRADIS06T 저장 데이터</td><td>레이아웃 속성에 따라</td></tr>
-      <tr><td><span class="b bc">M</span></td><td>수작업 조정</td><td>ZGRADIS06T.DATATYPE=M</td><td>합산조회(S) 시 편집 가능</td></tr>
-      <tr><td><span class="b bc">A</span></td><td>자동 조정</td><td>조정 CDS 뷰 참조 후 ZGRADIS06T에 저장</td><td>편집 불가</td></tr>
-      <tr><td><span class="b bc">G</span></td><td>GR 총금액</td><td>레이아웃 앱에서 DATATYPE="G" 설정 시 GR총금액 CDS뷰 실시간 참조 (ZGRADIS06T 저장 안 함)</td><td>편집 불가</td></tr>
+      <tr><td><span class="b bc">I</span></td><td>일반 입력</td><td>저장 데이터</td><td>레이아웃 속성에 따라</td></tr>
+      <tr><td><span class="b bc">M</span></td><td>수작업 조정</td><td>DATATYPE=M</td><td>합산조회(S) 시 편집 가능</td></tr>
+      <tr><td><span class="b bc">A</span></td><td>자동 조정</td><td>조정 CDS 뷰 참조 후 저장</td><td>편집 불가</td></tr>
+      <tr><td><span class="b bc">G</span></td><td>GR 총금액</td><td>레이아웃 앱에서 DATATYPE="G" 설정 시 GR총금액 CDS뷰 실시간 참조 (저장 안 함)</td><td>편집 불가</td></tr>
     </tbody>
   </table>
-  <div class="note"><strong>📌 행 환산 적용(ROW_CONV=Y) 시:</strong> ZGRADIS06T.DATATYPE은 행 레이아웃(ZGRADIS03R)의 DATATYPE을 기준으로 적용됩니다.</div>
-</div>
-
-<!-- S7 -->
-<div class="sec" id="s7">
-  <div class="shead"><div class="snum">·</div><div><h2>테이블 구조</h2></div></div>
-  <table class="dt">
-    <thead><tr><th>테이블</th><th>설명</th><th>주요 필드</th></tr></thead>
-    <tbody>
-      <tr><td><span class="b bc">ZGRADIS06T</span></td><td>연결주석조회</td><td>DISCID, MENUID, CGROUP, RVERS, RBUNIT, RBUPTR, FYEAR, FPERIOD, FSITEM, DATATYPE, ROW_ID, CONVTYPE(LC/GC), CURR01~05, AMT01~10, TXT01~16</td></tr>
-      <tr><td><span class="b bc">ZGDT0011</span></td><td>주석작성메뉴</td><td>VIEWGUBUN(합산S/법인별Y), ADJ_TYPE(합계T/셀단위C), ROW_CONV</td></tr>
-    </tbody>
-  </table>
+  <div class="note"><strong>📌 행 환산 적용(ROW_CONV=Y) 시:</strong> DATATYPE은 행 레이아웃의 DATATYPE을 기준으로 적용됩니다.</div>
 </div>
 </main>
 <script>

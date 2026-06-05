@@ -128,7 +128,6 @@
   <div><div class="nlabel">참고</div>
     <a class="nitem" href="#s5"><span class="nnum">·</span> 구분(CATEGORY) 코드</a>
     <a class="nitem" href="#s6"><span class="nnum">·</span> 수식 계산 예시</a>
-    <a class="nitem" href="#s7"><span class="nnum">·</span> 테이블 구조</a>
   </div>
 </aside>
 
@@ -140,7 +139,6 @@
   <p>연결주석 환산 시 환산구분이 <strong>FORMULA</strong>로 설정된 행 또는 열에 적용할 사칙연산 수식을 정의하는 프로그램입니다. 수식멤버(결과값이 될 행/열)와 구성멤버(계산에 사용할 행/열), 연산자, 계산순서를 설정하여 환산 계산을 자동화합니다.</p>
   <div class="ovmeta">
     <div><div class="oml">메뉴 경로</div><div class="omv">ASPN 주석관리 › 연결주석 관리 › 환산수식관리</div></div>
-    <div><div class="oml">주요 테이블</div><div class="omv">ZGRADIS08T (환산수식입력)</div></div>
   </div>
 </div>
 
@@ -176,7 +174,7 @@
     </div></li>
     <li class="si"><div class="sdot">3</div><div class="sc">
       <div class="stit">레이아웃 저장</div>
-      <div class="sbody">설정 완료 후 <strong>레이아웃 저장</strong>을 클릭하여 ZGRADIS03R 또는 ZGRADIS03C 테이블에 CONV='FORMULA'로 저장합니다.</div>
+      <div class="sbody">설정 완료 후 <strong>레이아웃 저장</strong>을 클릭하여 테이블에 CONV='FORMULA'로 저장합니다.</div>
     </div></li>
   </ul>
   <div class="note">
@@ -206,11 +204,11 @@
   <table class="dt">
     <thead><tr><th>컬럼</th><th>필드</th><th>설명</th></tr></thead>
     <tbody>
-      <tr><td>메뉴ID</td><td><span class="b bc">ZGDT0011.MENU_ID</span></td><td></td></tr>
-      <tr><td>메뉴명</td><td><span class="b bc">ZGRADIS03R_LAN.ROWDE / ZGRADIS03C_LAN.COLDE</span></td><td></td></tr>
+      <tr><td>메뉴ID</td><td><span class="b bc">MENU_ID</span></td><td></td></tr>
+      <tr><td>메뉴명</td><td><span class="b bc">ROWDE / COLDE</span></td><td></td></tr>
       <tr><td>환산기준</td><td>행/열 구분</td><td>ROW_CONV=Y 이면 행, N 이면 열</td></tr>
       <tr><td>수식멤버</td><td><span class="b bc">ROW_ID / COL_ID</span></td><td>수식의 결과가 채워질 행 또는 열 ID</td></tr>
-      <tr><td>수식입력상태</td><td>ZGRADIS08T COUNT 기반</td><td>● = 수식 있음 / 공란 = 미입력</td></tr>
+      <tr><td>수식입력상태</td><td>COUNT 기반</td><td>● = 수식 있음 / 공란 = 미입력</td></tr>
       <tr><td>&gt; 버튼</td><td>—</td><td>클릭 시 해당 수식멤버의 입력 화면으로 이동</td></tr>
     </tbody>
   </table>
@@ -250,12 +248,12 @@
   <table class="dt">
     <thead><tr><th>컬럼</th><th>필드</th><th>값</th></tr></thead>
     <tbody>
-      <tr><td>구분 (CATEGORY)</td><td><span class="b bc">ZGRADIS08T.CATEGORY</span></td><td>ALL / COL1, COL2... / ROW1, ROW2... (Possible Entry)</td></tr>
-      <tr><td>수식멤버 (FML_MEM)</td><td><span class="b bc">ZGRADIS08T.FML_MEM</span></td><td>CONV=FORMULA인 행/열 ID. 상단 정보에서 고정, 변경 불가</td></tr>
-      <tr><td>연산자 (OPERATOR)</td><td><span class="b bc">ZGRADIS08T.OPERATOR</span></td><td>+, -, *, / (Possible Entry)</td></tr>
-      <tr><td>구성멤버 (BASE_MEM)</td><td><span class="b bc">ZGRADIS08T.BASE_MEM</span></td><td>수식멤버를 제외한 메뉴의 행/열 ID (Possible Entry)</td></tr>
-      <tr><td>Description</td><td>텍스트 테이블 참조</td><td>ZGRADIS03C_LAN.COLDE 또는 ZGRADIS03R_LAN.ROWDE</td></tr>
-      <tr><td>계산순서 (CALC_SEQ)</td><td><span class="b bc">ZGRADIS08T.CALC_SEQ</span></td><td>숫자. 동일 구분·수식멤버 내 계산 우선순위</td></tr>
+      <tr><td>구분 (CATEGORY)</td><td><span class="b bc">CATEGORY</span></td><td>ALL / COL1, COL2... / ROW1, ROW2... (Possible Entry)</td></tr>
+      <tr><td>수식멤버 (FML_MEM)</td><td><span class="b bc">FML_MEM</span></td><td>CONV=FORMULA인 행/열 ID. 상단 정보에서 고정, 변경 불가</td></tr>
+      <tr><td>연산자 (OPERATOR)</td><td><span class="b bc">OPERATOR</span></td><td>+, -, *, / (Possible Entry)</td></tr>
+      <tr><td>구성멤버 (BASE_MEM)</td><td><span class="b bc">BASE_MEM</span></td><td>수식멤버를 제외한 메뉴의 행/열 ID (Possible Entry)</td></tr>
+      <tr><td>Description</td><td>텍스트 테이블 참조</td><td>COLDE 또는 ROWDE</td></tr>
+      <tr><td>계산순서 (CALC_SEQ)</td><td><span class="b bc">CALC_SEQ</span></td><td>숫자. 동일 구분·수식멤버 내 계산 우선순위</td></tr>
     </tbody>
   </table>
 </div>
@@ -265,12 +263,12 @@
   <div class="shead">
     <div class="snum">4</div>
     <div><h2>저장</h2>
-    <div class="sdesc">입력된 수식 내용을 ZGRADIS08T 테이블에 저장합니다.</div></div>
+    <div class="sdesc">입력된 수식 내용을 테이블에 저장합니다.</div></div>
   </div>
   <ul class="steps">
     <li class="si"><div class="sdot">1</div><div class="sc">
       <div class="stit">저장 클릭</div>
-      <div class="sbody"><strong>저장</strong> 버튼을 클릭합니다. 변경된 사항이 없으면 저장 버튼이 비활성화됩니다. "저장하시겠습니까?" 확인 후 ZGRADIS08T 테이블에 CATEGORY, FML_MEM, BASE_MEM, OPERATOR, CALC_SEQ가 저장됩니다.</div>
+      <div class="sbody"><strong>저장</strong> 버튼을 클릭합니다. 변경된 사항이 없으면 저장 버튼이 비활성화됩니다. "저장하시겠습니까?" 확인 후 테이블에 CATEGORY, FML_MEM, BASE_MEM, OPERATOR, CALC_SEQ가 저장됩니다.</div>
     </div></li>
   </ul>
   <div class="note">
@@ -374,23 +372,6 @@
       </table>
     </div>
   </div>
-</div>
-
-<!-- S7 -->
-<div class="sec" id="s7">
-  <div class="shead">
-    <div class="snum">·</div>
-    <div><h2>테이블 구조</h2></div>
-  </div>
-  <table class="dt">
-    <thead><tr><th>테이블</th><th>설명</th><th>주요 필드</th></tr></thead>
-    <tbody>
-      <tr><td><span class="b bc">ZGRADIS08T</span></td><td>환산수식입력</td><td>DISCID(PK), MENUID(PK), CATEGORY, FML_MEM, BASE_MEM, OPERATOR(+/-/*/÷), CALC_SEQ(계산순서), CRE/UPD 로그</td></tr>
-      <tr><td><span class="b bc">ZGRADIS03R</span></td><td>레이아웃 행</td><td>CONV='FORMULA' 설정된 ROW_ID → 이 화면 리스트의 소스</td></tr>
-      <tr><td><span class="b bc">ZGRADIS03C</span></td><td>레이아웃 열</td><td>CONV='FORMULA' 설정된 COL_ID → 이 화면 리스트의 소스</td></tr>
-      <tr><td><span class="b bc">ZGDT0011</span></td><td>주석작성메뉴</td><td>ROW_CONV — 행 우선 환산 여부 결정</td></tr>
-    </tbody>
-  </table>
 </div>
 
 </main>

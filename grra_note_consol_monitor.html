@@ -80,7 +80,6 @@
   <div><div class="nlabel">참고</div>
     <a class="nitem" href="#s6"><span class="nnum">·</span> 집계·환산·마감 상태 코드</a>
     <a class="nitem" href="#s7"><span class="nnum">·</span> 조회 조건 필드</a>
-    <a class="nitem" href="#s8"><span class="nnum">·</span> 테이블 구조</a>
   </div>
 </aside>
 <main>
@@ -90,7 +89,6 @@
   <p>개별 법인이 입력·마감한 주석 데이터를 연결그룹 기준으로 집계하고, 그룹통화로 환산하여 마감 처리하는 연결담당자용 프로그램입니다. 마감 처리된 메뉴는 집계·환산이 불가하며, 개별주석작성 모니터에도 마감이 반영됩니다.</p>
   <div class="ovmeta">
     <div><div class="oml">메뉴 경로</div><div class="omv">ASPN 주석관리 › 연결주석 관리 › 연결주석 모니터</div></div>
-    <div><div class="oml">주요 테이블</div><div class="omv">ZGRADIS07T (연결마감 관리)</div></div>
   </div>
 </div>
 
@@ -135,21 +133,21 @@
   <div class="shead"><div class="snum">3</div><div><h2>환산</h2><div class="sdesc">집계된 로컬통화 데이터를 그룹통화로 환산합니다.</div></div></div>
   <ul class="steps">
     <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">환산 클릭</div><div class="sbody">집계 완료(Y) 상태에서 <strong>환산</strong> 버튼을 클릭합니다. 레이아웃관리에서 설정한 CONV(환산구분) 기준(OPE·AVG·CLO·COPY·FORMULA)으로 그룹통화 금액이 산출됩니다.</div></div></li>
-    <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">환산 상태 확인</div><div class="sbody">환산 완료 시 환산 컬럼에 <strong>Y</strong>가 표시됩니다. ZGRADIS07T.VSTAT 필드에 Y로 저장됩니다.</div></div></li>
+    <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">환산 상태 확인</div><div class="sbody">환산 완료 시 환산 컬럼에 <strong>Y</strong>가 표시됩니다. VSTAT 필드에 Y로 저장됩니다.</div></div></li>
   </ul>
 </div>
 
 <!-- S4 -->
 <div class="sec" id="s4">
   <div class="shead"><div class="snum">4</div><div><h2>조정</h2><div class="sdesc">레이아웃의 연결참조(GSELECTION)를 기반으로 조정 데이터를 불러옵니다.</div></div></div>
-  <div class="note"><strong>📌 조정 기능:</strong> 레이아웃 구성 시 연결참조를 설정한 항목의 조정 데이터(자동조정 CDS, GR총금액 CDS)를 불러와 ZGRADIS06T(연결주석조회 테이블)에 저장합니다. 연결주석조회 화면에서 해당 데이터를 확인할 수 있습니다.</div>
+  <div class="note"><strong>📌 조정 기능:</strong> 레이아웃 구성 시 연결참조를 설정한 항목의 조정 데이터(자동조정 CDS, GR총금액 CDS)를 불러와 (연결주석조회 테이블)에 저장합니다. 연결주석조회 화면에서 해당 데이터를 확인할 수 있습니다.</div>
 </div>
 
 <!-- S5 -->
 <div class="sec" id="s5">
   <div class="shead"><div class="snum">5</div><div><h2>마감 / 일괄마감</h2><div class="sdesc">메뉴의 집계·환산·조정 작업을 마감합니다.</div></div></div>
   <div class="g2">
-    <div class="card"><div class="ctit">🔒 마감</div><p>선택한 메뉴의 마감 처리. ZGRADIS07T.CSTAT를 Y로 변경. 마감 후 집계·환산 불가. 개별주석작성모니터 메뉴도 자동 마감됨.</p></div>
+    <div class="card"><div class="ctit">🔒 마감</div><p>선택한 메뉴의 마감 처리. CSTAT를 Y로 변경. 마감 후 집계·환산 불가. 개별주석작성모니터 메뉴도 자동 마감됨.</p></div>
     <div class="card"><div class="ctit">🔒 일괄마감 / 일괄마감 취소</div><p>조회된 모든 메뉴를 일괄 마감하거나 일괄 취소합니다.</p></div>
   </div>
   <div class="danger"><strong>🚫 마감 후 제한:</strong> 마감 상태에서는 집계·환산이 불가합니다. 개별주석작성모니터에서도 해당 메뉴의 마감 취소가 불가능해집니다.</div>
@@ -161,9 +159,9 @@
   <table class="dt">
     <thead><tr><th>구분</th><th>필드</th><th>코드</th><th>의미</th></tr></thead>
     <tbody>
-      <tr><td>집계 상태</td><td><span class="b bc">ZGRADIS07T.ASTAT</span></td><td>공란 / N / Y</td><td>공란: 미집계 / N: 재집계 필요 / Y: 집계 완료</td></tr>
-      <tr><td>환산 상태</td><td><span class="b bc">ZGRADIS07T.VSTAT</span></td><td>공란 / Y</td><td>공란: 미환산 / Y: 환산 완료</td></tr>
-      <tr><td>마감 상태</td><td><span class="b bc">ZGRADIS07T.CSTAT</span></td><td>공란 / Y</td><td>공란: 미마감 / Y: 마감 완료</td></tr>
+      <tr><td>집계 상태</td><td><span class="b bc">ASTAT</span></td><td>공란 / N / Y</td><td>공란: 미집계 / N: 재집계 필요 / Y: 집계 완료</td></tr>
+      <tr><td>환산 상태</td><td><span class="b bc">VSTAT</span></td><td>공란 / Y</td><td>공란: 미환산 / Y: 환산 완료</td></tr>
+      <tr><td>마감 상태</td><td><span class="b bc">CSTAT</span></td><td>공란 / Y</td><td>공란: 미마감 / Y: 마감 완료</td></tr>
     </tbody>
   </table>
 </div>
@@ -180,18 +178,6 @@
       <tr><td>연결버전</td><td>도움창</td><td><span class="b br">필수</span></td><td>Single Parameter</td></tr>
       <tr><td>회계연도</td><td>도움창</td><td><span class="b br">필수</span></td><td>글로벌 파라미터 기본값</td></tr>
       <tr><td>회계기간</td><td>도움창</td><td><span class="b br">필수</span></td><td>글로벌 파라미터 기본값</td></tr>
-    </tbody>
-  </table>
-</div>
-
-<!-- S8 -->
-<div class="sec" id="s8">
-  <div class="shead"><div class="snum">·</div><div><h2>테이블 구조</h2></div></div>
-  <table class="dt">
-    <thead><tr><th>테이블</th><th>설명</th><th>주요 필드</th></tr></thead>
-    <tbody>
-      <tr><td><span class="b bc">ZGRADIS07T</span></td><td>연결마감 관리</td><td>FORM_ID, MENU_ID, CGROUP, RVERS, FYEAR, FPERIOD(PK), ASTAT(집계), ATIME(집계시간), VSTAT(환산), CSTAT(마감), CRE/UPD 로그</td></tr>
-      <tr><td><span class="b bc">ZGRADIS06T</span></td><td>연결주석조회</td><td>DISCID, MENUID, CGROUP, RVERS, RBUNIT, FYEAR, FPERIOD, DATATYPE, ROW_ID, CONVTYPE, AMT01~10, CURR01~10</td></tr>
     </tbody>
   </table>
 </div>

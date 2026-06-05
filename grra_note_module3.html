@@ -191,12 +191,10 @@
       <div class="fl-step">
         <div class="fl-step-num">3.1.1</div>
         <div class="fl-step-title">양식·메뉴 생성</div>
-        <div class="fl-step-sub">ZGDT0010·0011·0012</div>
       </div>
       <div class="fl-step">
         <div class="fl-step-num">3.1.2</div>
         <div class="fl-step-title">레이아웃 설정</div>
-        <div class="fl-step-sub">행·열·수식 ZGRADIS03R/C/F</div>
       </div>
     </div>
     <div class="fl fl-2">
@@ -204,12 +202,10 @@
       <div class="fl-step" style="margin-top:24px;">
         <div class="fl-step-num">3.2.1</div>
         <div class="fl-step-title">주석 입력</div>
-        <div class="fl-step-sub">ZGRADIS04T</div>
       </div>
       <div class="fl-step">
         <div class="fl-step-num">3.2.2</div>
         <div class="fl-step-title">법인별 마감</div>
-        <div class="fl-step-sub">ZGRADIS05T</div>
       </div>
     </div>
     <div class="fl fl-3">
@@ -217,12 +213,10 @@
       <div class="fl-step" style="margin-top:48px;">
         <div class="fl-step-num">3.3.1</div>
         <div class="fl-step-title">집계 → 환산</div>
-        <div class="fl-step-sub">ZGRADIS07T</div>
       </div>
       <div class="fl-step">
         <div class="fl-step-num">3.3.1</div>
         <div class="fl-step-title">연결 마감</div>
-        <div class="fl-step-sub">ZGRADIS07T.CSTAT</div>
       </div>
     </div>
     <div class="fl fl-n">
@@ -238,39 +232,16 @@
       <div class="fl-step" style="margin-top:24px;">
         <div class="fl-step-num">사전</div>
         <div class="fl-step-title">레이아웃 FORMULA</div>
-        <div class="fl-step-sub">ZGRADIS03R/C</div>
       </div>
       <div class="fl-step">
         <div class="fl-step-num">3.3.3</div>
         <div class="fl-step-title">환산수식 정의</div>
-        <div class="fl-step-sub">ZGRADIS08T</div>
       </div>
     </div>
   </div>
   <div class="note" style="margin-top:20px;">
     <strong>프로세스 순서:</strong> 마스터 설정(양식·레이아웃) → 개별 법인 입력·마감 → 연결담당자 집계·환산·마감 → 연결주석조회. 환산수식은 레이아웃 설정 직후, 집계·환산 전에 정의합니다.
   </div>
-</div>
-
-<!-- ARCH -->
-<div class="sec" id="arch">
-  <div class="sec-title">🗄️ 주요 테이블 구조 및 연관 관계</div>
-  <table class="proc-table">
-    <thead><tr><th>테이블</th><th>설명</th><th>연관 프로그램</th></tr></thead>
-    <tbody>
-      <tr><td><span class="b bc">ZGDT0010</span></td><td>주석양식 (Form ID, 작성주기)</td><td>3.1.1</td></tr>
-      <tr><td><span class="b bc">ZGDT0012</span></td><td>주석양식 텍스트 (다국어 양식명)</td><td>3.1.1</td></tr>
-      <tr><td><span class="b bc">ZGDT0011</span></td><td>주석메뉴 (트리 구조, 조회구분, 조정타입, 행우선환산)</td><td>3.1.1, 3.2.1, 3.2.2, 3.3.1~3</td></tr>
-      <tr><td><span class="b bc">ZGRADIS01_LAN</span></td><td>주석메뉴 텍스트 (다국어 메뉴명)</td><td>3.1.1</td></tr>
-      <tr><td><span class="b bc">ZGRADIS03R / 03C</span></td><td>레이아웃 행·열 (CONV, VISIBLE, DATATYPE, FIELDTYPE 등)</td><td>3.1.2, 3.2.1, 3.3.3</td></tr>
-      <tr><td><span class="b bc">ZGRADIS03F</span></td><td>레이아웃 수식 (셀 단위 수식)</td><td>3.1.2</td></tr>
-      <tr><td><span class="b bc">ZGRADIS04T</span></td><td>개별주석입력 (ROW_ID, COL_ID, AMT/TXT/QUAN, DATATYPE=I)</td><td>3.2.1</td></tr>
-      <tr><td><span class="b bc">ZGRADIS05T</span></td><td>개별마감관리 (법인별 CSTAT: Y/공란)</td><td>3.2.2</td></tr>
-      <tr><td><span class="b bc">ZGRADIS07T</span></td><td>연결마감관리 (ASTAT 집계, VSTAT 환산, CSTAT 마감)</td><td>3.3.1</td></tr>
-      <tr><td><span class="b bc">ZGRADIS06T</span></td><td>연결주석조회 (집계·환산된 최종 데이터, CONVTYPE: LC/GC)</td><td>3.3.2</td></tr>
-      <tr><td><span class="b bc">ZGRADIS08T</span></td><td>환산수식입력 (CATEGORY, FML_MEM, BASE_MEM, OPERATOR, CALC_SEQ)</td><td>3.3.3</td></tr>
-    </tbody>
-  </table>
 </div>
 
 <!-- 3.1 GROUP -->
@@ -293,7 +264,6 @@
         <div>
           <div style="font-size:10px;color:var(--text-muted);font-weight:700;letter-spacing:0.5px;margin-bottom:3px;">3.1.1</div>
           <div style="font-size:15px;font-weight:700;color:var(--navy);">양식 및 메뉴관리</div>
-          <div style="font-size:12px;color:var(--text-muted);">ZGDT0010 / ZGDT0011 / ZGDT0012 / ZGRADIS01_LAN</div>
         </div>
       </div>
       <table class="proc-table" style="margin:0;">
@@ -316,7 +286,6 @@
         <div>
           <div style="font-size:10px;color:var(--text-muted);font-weight:700;letter-spacing:0.5px;margin-bottom:3px;">3.1.2</div>
           <div style="font-size:15px;font-weight:700;color:var(--navy);">주석 레이아웃관리</div>
-          <div style="font-size:12px;color:var(--text-muted);">ZGRADIS03R / ZGRADIS03C / ZGRADIS03F</div>
         </div>
       </div>
       <table class="proc-table" style="margin:0;">
@@ -324,7 +293,7 @@
         <tbody>
           <tr><td>행(ROW) 추가</td><td>명칭(다국어), 사용여부, 표시여부(A/G/I), 자료구분, 환산구분(OPE/AVG/CLO/COPY/FORMULA), 입력참조, 연결참조</td></tr>
           <tr><td>열(COL) 추가</td><td>필드타입(AMT/TXT/DATE/NUM/QUAN/VALID), 통화구분(L/T), 통화단위참조, 단위(UOM)</td></tr>
-          <tr><td>서식(수식) 편집</td><td>셀 선택 → 사칙연산 수식 지정 (ZGRADIS03F 저장)</td></tr>
+          <tr><td>서식(수식) 편집</td><td>셀 선택 → 사칙연산 수식 지정</td></tr>
           <tr><td>행·열 우선순위</td><td>ROW_CONV=Y이면 행 CONV 우선, N이면 열 CONV 우선</td></tr>
         </tbody>
       </table>
@@ -356,7 +325,6 @@
         <div>
           <div style="font-size:10px;color:var(--text-muted);font-weight:700;letter-spacing:0.5px;margin-bottom:3px;">3.2.1</div>
           <div style="font-size:15px;font-weight:700;color:var(--navy);">개별주석작성리스트</div>
-          <div style="font-size:12px;color:var(--text-muted);">ZGDT0011 / ZGRADIS04T</div>
         </div>
       </div>
       <table class="proc-table" style="margin:0;">
@@ -380,7 +348,6 @@
         <div>
           <div style="font-size:10px;color:var(--text-muted);font-weight:700;letter-spacing:0.5px;margin-bottom:3px;">3.2.2</div>
           <div style="font-size:15px;font-weight:700;color:var(--navy);">주석작성 모니터</div>
-          <div style="font-size:12px;color:var(--text-muted);">ZGRADIS05T</div>
         </div>
       </div>
       <table class="proc-table" style="margin:0;">
@@ -421,16 +388,15 @@
         <div>
           <div style="font-size:10px;color:var(--text-muted);font-weight:700;letter-spacing:0.5px;margin-bottom:3px;">3.3.1</div>
           <div style="font-size:15px;font-weight:700;color:var(--navy);">연결주석모니터</div>
-          <div style="font-size:12px;color:var(--text-muted);">ZGRADIS07T / ZGRADIS06T</div>
         </div>
       </div>
       <table class="proc-table" style="margin:0;">
         <thead><tr><th>주요 기능</th><th>핵심 내용</th></tr></thead>
         <tbody>
-          <tr><td>집계</td><td>마감된 법인 데이터 → ZGRADIS06T 취합. ASTAT: 공란→N→Y</td></tr>
+          <tr><td>집계</td><td>마감된 법인 데이터 → 취합. ASTAT: 공란→N→Y</td></tr>
           <tr><td>환산</td><td>집계 데이터를 CONV(OPE/AVG/CLO/COPY/FORMULA)에 따라 GC 환산. VSTAT: 공란→Y</td></tr>
           <tr><td>조정</td><td>연결참조(GSELECTION) 기반 자동조정(A)/GR총금액(G) 데이터 불러오기</td></tr>
-          <tr><td>마감</td><td>ZGRADIS07T.CSTAT=Y. 마감 후 집계·환산 불가. 개별주석모니터 마감 취소도 불가</td></tr>
+          <tr><td>마감</td><td>CSTAT=Y. 마감 후 집계·환산 불가. 개별주석모니터 마감 취소도 불가</td></tr>
         </tbody>
       </table>
       <div style="margin-top:12px;">
@@ -444,7 +410,6 @@
         <div>
           <div style="font-size:10px;color:var(--text-muted);font-weight:700;letter-spacing:0.5px;margin-bottom:3px;">3.3.2</div>
           <div style="font-size:15px;font-weight:700;color:var(--navy);">연결주석조회</div>
-          <div style="font-size:12px;color:var(--text-muted);">ZGRADIS06T / ZGDT0011</div>
         </div>
       </div>
       <table class="proc-table" style="margin:0;">
@@ -468,7 +433,6 @@
         <div>
           <div style="font-size:10px;color:var(--text-muted);font-weight:700;letter-spacing:0.5px;margin-bottom:3px;">3.3.3</div>
           <div style="font-size:15px;font-weight:700;color:var(--navy);">환산수식관리</div>
-          <div style="font-size:12px;color:var(--text-muted);">ZGRADIS08T / ZGRADIS03R / ZGRADIS03C</div>
         </div>
       </div>
       <table class="proc-table" style="margin:0;">

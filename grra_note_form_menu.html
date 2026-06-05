@@ -126,7 +126,6 @@
   <div><div class="nlabel">참고</div>
     <a class="nitem" href="#s9"><span class="nnum">·</span> 메뉴 속성 정의</a>
     <a class="nitem" href="#s10"><span class="nnum">·</span> 유효성 검증 규칙</a>
-    <a class="nitem" href="#s11"><span class="nnum">·</span> 테이블 구조</a>
   </div>
 </aside>
 <main>
@@ -136,7 +135,6 @@
   <p>연결주석 작성에 사용할 <strong>주석양식</strong>을 생성하고, 양식 내에 <strong>주석메뉴</strong>를 트리 계층구조로 정의·관리하는 마스터 데이터 관리 화면입니다. 양식은 공시 세트 단위로 관리되며, 메뉴는 노드(그룹)와 양식(입력대상)으로 구분됩니다.</p>
   <div class="ovmeta">
     <div><div class="oml">메뉴 경로</div><div class="omv">ASPN 주석관리 > 주석관리-양식 및 메뉴관리</div></div>
-    <div><div class="oml">주요 테이블</div><div class="omv">ZGDT0010 / ZGDT0011 / ZGDT0012 / ZGRADIS01_LAN</div></div>
   </div>
 </div>
 
@@ -157,16 +155,16 @@
 <div class="sec" id="s1">
   <div class="shead"><div class="snum">1</div><div><h2>양식 조회</h2><div class="sdesc">등록된 주석양식 목록을 조회합니다.</div></div></div>
   <ul class="steps">
-    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">실행 버튼 클릭</div><div class="sbody">초기 화면에서 <strong>[실행]</strong> 버튼을 클릭하면 ZGDT0010(주석작성양식) 테이블을 조회하여 등록된 양식 목록이 표시됩니다. ZGDT0012(텍스트 테이블)와 JOIN하여 양식명을 함께 표시합니다.</div></div></li>
+    <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">실행 버튼 클릭</div><div class="sbody">초기 화면에서 <strong>[실행]</strong> 버튼을 클릭하면 주석작성양식 테이블을 조회하여 등록된 양식 목록이 표시됩니다. 텍스트 테이블과 JOIN하여 양식명을 함께 표시합니다.</div></div></li>
     <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">양식 세부사항 확인</div><div class="sbody">양식을 선택하면 하단에 해당 양식에 등록된 메뉴 목록이 트리 구조로 표시됩니다. 양식명, 작성주기, 생성된 메뉴 정보를 확인할 수 있습니다.</div></div></li>
   </ul>
   <h3 class="sub">그리드 표시 항목</h3>
   <table class="dt">
     <thead><tr><th>컬럼명</th><th>테이블/필드</th><th>비고</th></tr></thead>
     <tbody>
-      <tr><td>양식ID</td><td><span class="b bc">ZGDT0010.FORM_ID</span></td><td>최초 생성 시만 입력, 이후 ReadOnly</td></tr>
-      <tr><td>양식명칭</td><td><span class="b bc">ZGDT0012.FROMTEXT</span></td><td>언어별 텍스트 테이블 참조</td></tr>
-      <tr><td>작성주기</td><td><span class="b bc">ZGDT0010.CYCLE</span></td><td>Y:연간 / H:반기 / Q:분기 / M:월간</td></tr>
+      <tr><td>양식ID</td><td><span class="b bc">FORM_ID</span></td><td>최초 생성 시만 입력, 이후 ReadOnly</td></tr>
+      <tr><td>양식명칭</td><td><span class="b bc">FROMTEXT</span></td><td>언어별 텍스트 테이블 참조</td></tr>
+      <tr><td>작성주기</td><td><span class="b bc">CYCLE</span></td><td>Y:연간 / H:반기 / Q:분기 / M:월간</td></tr>
     </tbody>
   </table>
 </div>
@@ -176,7 +174,7 @@
   <div class="shead"><div class="snum">2</div><div><h2>양식 신규 생성</h2><div class="sdesc">새로운 주석양식을 생성합니다.</div></div></div>
   <ul class="steps">
     <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">[생성] 버튼 클릭 → 신규 오브젝트 팝업</div><div class="sbody"><strong>양식ID</strong>(FORM_ID, 최대 10자, 중복 불가)와 <strong>작성주기</strong>를 입력합니다. [계속] 버튼을 클릭합니다.</div></div></li>
-    <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">양식명 텍스트 생성</div><div class="sbody"><strong>언어구분</strong>(KO/EN 등)을 선택하고 <strong>양식명칭</strong>을 입력합니다. [계속] → [적용]을 클릭하여 양식명을 확정합니다. ZGDT0012(텍스트 테이블)에 저장됩니다.</div></div></li>
+    <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">양식명 텍스트 생성</div><div class="sbody"><strong>언어구분</strong>(KO/EN 등)을 선택하고 <strong>양식명칭</strong>을 입력합니다. [계속] → [적용]을 클릭하여 양식명을 확정합니다. 텍스트 테이블에 저장됩니다.</div></div></li>
     <li class="si"><div class="sdot">3</div><div class="sc"><div class="stit">메뉴 구성 → 저장</div><div class="sbody">양식명 설정 후 메뉴를 생성합니다(→ 메뉴 신규 생성 참조). 구성 완료 후 <strong>[생성]</strong> 또는 <strong>[저장]</strong> 버튼을 클릭합니다.</div></div></li>
   </ul>
   <div class="warn"><strong>⚠ 양식ID 제약:</strong> 양식ID(FORM_ID)는 최대 10자(공백 포함)이며, 생성 후에는 편집이 불가능합니다. 중복 입력 시 "키 값이 이미 사용 중입니다" 메시지가 표시됩니다.</div>
@@ -188,14 +186,14 @@
   <div class="g2">
     <div class="card">
       <div class="ctit">✏️ 양식 편집</div>
-      <p>[편집] 버튼 클릭 시 양식명 편집이 활성화됩니다. 양식ID(FORM_ID)는 편집 불가(ReadOnly)입니다. 양식명은 텍스트 테이블(ZGDT0012)에서 언어별로 관리됩니다.</p>
+      <p>[편집] 버튼 클릭 시 양식명 편집이 활성화됩니다. 양식ID(FORM_ID)는 편집 불가(ReadOnly)입니다. 양식명은 텍스트 테이블에서 언어별로 관리됩니다.</p>
     </div>
     <div class="card">
       <div class="ctit">🗑️ 양식 삭제</div>
       <p>양식을 선택하고 [삭제]를 클릭합니다. 해당 양식에 속한 <strong>모든 메뉴 및 연결 데이터(레이아웃·주석 데이터 포함)가 연쇄 삭제</strong>됩니다. 경고 팝업 확인 후 진행합니다.</p>
     </div>
   </div>
-  <div class="danger"><strong>🚫 양식 삭제 시 연쇄 삭제 범위:</strong> ZGDT0010(양식) → ZGDT0011(메뉴) → ZGRADIS03C/R/F(레이아웃) → ZGRADIS04T(개별주석입력) → ZGRADIS05T(개별마감) → ZGRADIS06T(연결주석조회) → ZGRADIS07T(연결마감) → ZGRADIS08T(환산수식관리) → 각 텍스트 테이블이 모두 삭제됩니다.</div>
+  <div class="danger"><strong>🚫 양식 삭제 시 연쇄 삭제 범위:</strong> (양식) → (메뉴) → (레이아웃) → (개별주석입력) → (개별마감) → (연결주석조회) → (연결마감) → (환산수식관리) → 각 텍스트 테이블이 모두 삭제됩니다.</div>
 </div>
 
 <!-- S4 메뉴 구조 조회 -->
@@ -214,14 +212,14 @@
   <table class="dt">
     <thead><tr><th>컬럼명</th><th>테이블/필드</th><th>비고</th></tr></thead>
     <tbody>
-      <tr><td>메뉴ID</td><td><span class="b bc">ZGDT0011.MENU_ID</span></td><td>중복 불가</td></tr>
-      <tr><td>메뉴명칭</td><td><span class="b bc">ZGRADIS01_LAN.MENUTEXT</span></td><td>언어별 텍스트 테이블</td></tr>
-      <tr><td>상위메뉴ID</td><td><span class="b bc">ZGDT0011.PARENT_MENU</span></td><td>P 타입 메뉴만 지정 가능</td></tr>
-      <tr><td>메뉴구분</td><td><span class="b bc">ZGDT0011.MENUGUBUN</span></td><td>0:노드(P) / 1:양식(L)</td></tr>
-      <tr><td>행우선환산</td><td><span class="b bc">ZGDT0011.ROW_CONV</span></td><td>환산 시 행 우선 환산</td></tr>
-      <tr><td>메뉴순서</td><td><span class="b bc">ZGDT0011.MENU_SEQ</span></td><td>연속된 숫자. Drag&amp;Drop 정렬 가능</td></tr>
-      <tr><td>조회구분</td><td><span class="b bc">ZGDT0011.VIEWGUBUN</span></td><td>S:합산조회, Y:법인별조회</td></tr>
-      <tr><td>조정타입</td><td><span class="b bc">ZGDT0011.ADJ_TYPE</span></td><td>T:합계조정, C:셀단위 조정</td></tr>
+      <tr><td>메뉴ID</td><td><span class="b bc">MENU_ID</span></td><td>중복 불가</td></tr>
+      <tr><td>메뉴명칭</td><td><span class="b bc">MENUTEXT</span></td><td>언어별 텍스트 테이블</td></tr>
+      <tr><td>상위메뉴ID</td><td><span class="b bc">PARENT_MENU</span></td><td>P 타입 메뉴만 지정 가능</td></tr>
+      <tr><td>메뉴구분</td><td><span class="b bc">MENUGUBUN</span></td><td>0:노드(P) / 1:양식(L)</td></tr>
+      <tr><td>행우선환산</td><td><span class="b bc">ROW_CONV</span></td><td>환산 시 행 우선 환산</td></tr>
+      <tr><td>메뉴순서</td><td><span class="b bc">MENU_SEQ</span></td><td>연속된 숫자. Drag&amp;Drop 정렬 가능</td></tr>
+      <tr><td>조회구분</td><td><span class="b bc">VIEWGUBUN</span></td><td>S:합산조회, Y:법인별조회</td></tr>
+      <tr><td>조정타입</td><td><span class="b bc">ADJ_TYPE</span></td><td>T:합계조정, C:셀단위 조정</td></tr>
     </tbody>
   </table>
 </div>
@@ -233,7 +231,7 @@
     <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">[편집] 버튼</div><div class="sbody">오른쪽 상단의 [편집] 버튼을 클릭하면 양식명 및 메뉴 편집이 활성화됩니다.</div></div></li>
     <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">[신규] 버튼 → 신규 오브젝트 팝업</div><div class="sbody">하단에 입력행이 추가됩니다. <strong>메뉴ID</strong>(중복 불가), <strong>메뉴구분</strong>(노드/양식), <strong>메뉴순서</strong>를 입력합니다.</div></div></li>
     <li class="si"><div class="sdot">3</div><div class="sc"><div class="stit">메뉴 속성 설정</div><div class="sbody"><strong>행 우선 환산</strong>, <strong>조회구분</strong>, <strong>조정타입</strong>, <strong>상위메뉴ID</strong>를 설정합니다. 상위메뉴 지정 시 메뉴구분이 자동으로 L(양식)로 설정됩니다.</div></div></li>
-    <li class="si"><div class="sdot">4</div><div class="sc"><div class="stit">메뉴명 텍스트 생성</div><div class="sbody">언어구분 선택 후 메뉴명을 입력합니다. [계속] → [적용]을 클릭하여 ZGRADIS01_LAN(메뉴텍스트 테이블)에 저장합니다.</div></div></li>
+    <li class="si"><div class="sdot">4</div><div class="sc"><div class="stit">메뉴명 텍스트 생성</div><div class="sbody">언어구분 선택 후 메뉴명을 입력합니다. [계속] → [적용]을 클릭하여 (메뉴텍스트 테이블)에 저장합니다.</div></div></li>
     <li class="si"><div class="sdot">5</div><div class="sc"><div class="stit">[생성] 또는 [저장]으로 확정</div><div class="sbody">생성된 메뉴를 확인하고 [생성] 버튼을 클릭하여 저장합니다.</div></div></li>
   </ul>
   <div class="note"><strong>📌 메뉴순서 입력:</strong> 메뉴순서는 자동으로 부여되지 않습니다. 사용자가 직접 입력해야 하며, 저장 시 1-2-3처럼 연속된 숫자 체계인지 검증합니다.</div>
@@ -262,7 +260,7 @@
       <tr><td><strong>어떤 메뉴든</strong></td><td>연결 데이터 존재하는 경우</td><td>"해당 메뉴에 연결된 데이터가 존재합니다" → 삭제 불가</td></tr>
     </tbody>
   </table>
-  <div class="danger"><strong>🚫 메뉴 삭제 시 연쇄 삭제:</strong> ZGDT0011(메뉴) → ZGRADIS03C/R/F(레이아웃) → ZGRADIS04T/05T/06T/07T(주석데이터) → 각 텍스트 테이블이 해당 양식ID·메뉴ID 기준으로 모두 삭제됩니다.</div>
+  <div class="danger"><strong>🚫 메뉴 삭제 시 연쇄 삭제:</strong> (메뉴) → (레이아웃) → (주석데이터) → 각 텍스트 테이블이 해당 양식ID·메뉴ID 기준으로 모두 삭제됩니다.</div>
 </div>
 
 <!-- S8 저장 -->
@@ -315,43 +313,6 @@
   </table>
 </div>
 
-<!-- S11 테이블 구조 -->
-<div class="sec" id="s11">
-  <div class="shead"><div class="snum">·</div><div><h2>테이블 구조</h2><div class="sdesc">양식 및 메뉴관리에서 사용하는 커스텀 테이블입니다.</div></div></div>
-  <div class="g2">
-    <div class="tc2">
-      <div class="tct">ZGDT0010 — 주석작성양식</div>
-      <div class="ti"><code>FORM_ID</code><span class="td2">주석양식ID (PK, 최대 20자)</span></div>
-      <div class="ti"><code>CYCLE</code><span class="td2">작성주기 (Y/H/Q/M)</span></div>
-      <div class="ti"><code>CRE/UPD</code><span class="td2">생성·변경 이력</span></div>
-    </div>
-    <div class="tc2">
-      <div class="tct">ZGDT0012 — 양식 텍스트</div>
-      <div class="ti"><code>FORMID</code><span class="td2">주석양식ID (FK)</span></div>
-      <div class="ti"><code>LANGUAGE</code><span class="td2">언어구분 (KO, EN 등)</span></div>
-      <div class="ti"><code>FROMTEXT</code><span class="td2">주석양식명 (최대 100자)</span></div>
-    </div>
-    <div class="tc2">
-      <div class="tct">ZGDT0011 — 주석작성메뉴</div>
-      <div class="ti"><code>FORM_ID</code><span class="td2">양식ID (PK)</span></div>
-      <div class="ti"><code>MENU_ID</code><span class="td2">메뉴ID (PK)</span></div>
-      <div class="ti"><code>PARENT_MENU</code><span class="td2">상위메뉴ID</span></div>
-      <div class="ti"><code>MENU_SEQ</code><span class="td2">메뉴순서</span></div>
-      <div class="ti"><code>MENUGUBUN</code><span class="td2">메뉴구분 (0:노드/1:양식)</span></div>
-      <div class="ti"><code>ROW_CONV</code><span class="td2">행 환산 적용 (Y/blank)</span></div>
-      <div class="ti"><code>VIEWGUBUN</code><span class="td2">조회구분 (S:합산/Y:법인별)</span></div>
-      <div class="ti"><code>ADJ_TYPE</code><span class="td2">조정타입 (T:합계/C:셀단위)</span></div>
-      <div class="ti"><code>HIDE_COL</code><span class="td2">열 숨김 (Y)</span></div>
-    </div>
-    <div class="tc2">
-      <div class="tct">ZGRADIS01_LAN — 메뉴 텍스트</div>
-      <div class="ti"><code>FORM_ID</code><span class="td2">양식ID (PK)</span></div>
-      <div class="ti"><code>MENU_ID</code><span class="td2">메뉴ID (PK)</span></div>
-      <div class="ti"><code>LANGUAGE</code><span class="td2">언어구분 (PK)</span></div>
-      <div class="ti"><code>MENUTEXT</code><span class="td2">메뉴명</span></div>
-    </div>
-  </div>
-</div>
 </main>
 <script>
   const ids=['overview','s1','s2','s3','s4','s5','s6','s7','s8','s9','s10','s11'];
