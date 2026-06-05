@@ -192,8 +192,6 @@
     <div class="nlabel">참고</div>
     <a class="nitem" href="#s8"><span class="nnum">·</span> 변동유형 코드 정의</a>
     <a class="nitem" href="#s9"><span class="nnum">·</span> 이연법인세 계산 공식</a>
-    <a class="nitem" href="#s10"><span class="nnum">·</span> 조회 조건 및 그리드 필드</a>
-    <a class="nitem" href="#s11"><span class="nnum">·</span> 테이블 구조</a>
   </div>
 </aside>
 
@@ -660,90 +658,6 @@
       <tr><td><strong>E</strong> 최초상각, <strong>B</strong> 상각, <strong>F</strong> 상각종료</td><td>누계_LC = 이전 ZAMT_TAX_LC 합계 + 현재 ZAMT_TAX_LC<br>누계_GC = 누계_LC × 평균환율(AVG)<br>ZAMT_TAX_GC = 누계_GC − 이전 ZAMT_TAX_GC 합계</td></tr>
     </tbody>
   </table>
-</div>
-
-<!-- S10 조회조건 -->
-<div class="sec" id="s10">
-  <div class="shead">
-    <div class="snum">·</div>
-    <div>
-      <h2>조회 조건 및 그리드 필드 상세</h2>
-      <div class="sdesc">초기 화면 조회 조건의 필드 정의 및 일괄계산 화면 그리드 항목입니다.</div>
-    </div>
-  </div>
-
-  <h3 class="sub">정렬 기능</h3>
-  <p style="font-size:13px;color:var(--text-light);margin-bottom:8px;">상세 화면의 <strong>정렬</strong> 기능은 필드 너비가 줄어들었을 때 자동 너비 맞춤을 제공합니다. 컬럼 헤더를 클릭하여 오름차순·내림차순 정렬이 가능합니다.</p>
-
-  <h3 class="sub">일괄계산 화면 추가 그리드 컬럼</h3>
-  <p style="font-size:13px;color:var(--text-light);margin-bottom:10px;">초기 화면 그리드 항목에 더해, 일괄계산 화면에서는 아래 항목이 추가로 표시됩니다.</p>
-  <table class="dt" style="font-size:12.5px;">
-    <thead><tr><th>컬럼명</th><th>테이블/필드</th><th>비고</th></tr></thead>
-    <tbody>
-      <tr><td>변동일자</td><td><span class="b bc">ZGRAT5210.ZDATE_EVE</span></td><td></td></tr>
-      <tr><td>상각비(LC/GC)</td><td><span class="b bc">ZAMT_DEP_LC / ZAMT_DEP_GC</span></td><td></td></tr>
-      <tr><td>상각누계(LC/GC)</td><td><span class="b bc">ZAMT_ACCU_LC / ZAMT_ACCU_GC</span></td><td></td></tr>
-      <tr><td>이연법인세(LC/GC)</td><td><span class="b bc">ZAMT_DEF_LC / ZAMT_DEF_GC</span></td><td></td></tr>
-      <tr><td>법인세비용(LC/GC)</td><td><span class="b bc">ZAMT_TAX_LC / ZAMT_TAX_GC</span></td><td></td></tr>
-      <tr><td>전표번호</td><td><span class="b bc">ZGRAT5210.DOCNR</span></td><td>전표 생성 후 자동 채번</td></tr>
-      <tr><td>메시지</td><td>—</td><td>처리 결과 메시지</td></tr>
-    </tbody>
-  </table>
-</div>
-
-<!-- S11 테이블 -->
-<div class="sec" id="s11">
-  <div class="shead">
-    <div class="snum">·</div>
-    <div>
-      <h2>테이블 구조</h2>
-      <div class="sdesc">스케줄 관리 프로그램에서 사용하는 커스텀 테이블 목록 및 주요 필드입니다.</div>
-    </div>
-  </div>
-
-  <div class="tech-grid">
-    <div class="tc">
-      <div class="tct">ZGRAT5210 — 상각스케줄</div>
-      <div class="ti"><code>ZTRS</code><span class="td2">거래코드 (PK · ZGRAT5200 참조)</span></div>
-      <div class="ti"><code>ZDATE_EVE</code><span class="td2">변동일자</span></div>
-      <div class="ti"><code>ZSEQ</code><span class="td2">순서 (동일 월 복수 라인)</span></div>
-      <div class="ti"><code>ZTYPE_EVE</code><span class="td2">변동유형 (A~F)</span></div>
-      <div class="ti"><code>RHCUR / RKCUR</code><span class="td2">로컬/그룹 통화키</span></div>
-      <div class="ti"><code>ZAMT_DEP_LC</code><span class="td2">상각비 (LC)</span></div>
-      <div class="ti"><code>ZAMT_DEP_LC_ADJ</code><span class="td2">상각비 조정 (LC) — 편집 가능</span></div>
-      <div class="ti"><code>ZAMT_REDEP_LC</code><span class="td2">상각비잔액 (LC)</span></div>
-      <div class="ti"><code>ZAMT_ACCU_LC</code><span class="td2">상각누계액 (LC)</span></div>
-      <div class="ti"><code>ZAMT_DEP_GC</code><span class="td2">상각비 (GC)</span></div>
-      <div class="ti"><code>ZAMT_ACCU_GC</code><span class="td2">상각누계액 (GC)</span></div>
-      <div class="ti"><code>TAXRT</code><span class="td2">법인세율(%) — 편집 가능</span></div>
-      <div class="ti"><code>ZAMT_DEF_LC / GC</code><span class="td2">이연법인세 (LC·GC)</span></div>
-      <div class="ti"><code>ZAMT_TAX_LC / GC</code><span class="td2">법인세비용 (LC·GC)</span></div>
-      <div class="ti"><code>RYEAR</code><span class="td2">회계연도</span></div>
-      <div class="ti"><code>DOCNR</code><span class="td2">전표번호 (전표 생성 후 자동)</span></div>
-      <div class="ti"><code>CRE_DATE/BY</code><span class="td2">생성일/생성자</span></div>
-      <div class="ti"><code>UPD_DATE/BY</code><span class="td2">최종변경일/변경자</span></div>
-    </div>
-    <div class="tc">
-      <div class="tct">ZGRAT5200 — 기준정보 (일반) 참조</div>
-      <div class="ti"><code>ZTRS</code><span class="td2">거래코드 (PK)</span></div>
-      <div class="ti"><code>ZTRS_TXT</code><span class="td2">거래명</span></div>
-      <div class="ti"><code>ZTRS_TYPE</code><span class="td2">거래유형 (A/B)</span></div>
-      <div class="ti"><code>RBUNIT / RBUPTR</code><span class="td2">매입/매출 법인</span></div>
-      <div class="ti"><code>ZDATE_TRS / ZDATE_CLO</code><span class="td2">거래일자 / 상각일자</span></div>
-      <div class="ti"><code>RHCUR / RKCUR</code><span class="td2">로컬/그룹 통화키</span></div>
-      <div class="ti"><code>ZAMT_UNRLZ / ZAMT_UNRLZ_GC</code><span class="td2">미실현손익 (LC·GC)</span></div>
-      <div class="ti"><code>ZUSFL</code><span class="td2">상각기간 (개월)</span></div>
-      <div class="ti"><code>ZCK_DEFTAX</code><span class="td2">이연법인세 적용 여부</span></div>
-      <div class="ti"><code>ZSTATUS</code><span class="td2">상태</span></div>
-      <div style="margin-top:16px;padding:12px;background:var(--navy-light);border-radius:4px;font-size:12.5px;color:var(--navy);">
-        <strong>공통 PK 구성:</strong><br>
-        MANDT + CONGR + RITCLG + RLDNR + RDIMEN + RVERS + ZTRS
-      </div>
-      <div style="margin-top:10px;padding:12px;background:#fff8e1;border-radius:4px;font-size:12px;color:#7c5800;">
-        <strong>ZGRAT5201 (추가거래)</strong>도 동일 PK 구조를 공유하며, 손상(C)·처분(D) 변동 데이터를 관리합니다. 추가거래 등록 후 재계산을 실행해야 ZGRAT5210에 반영됩니다.
-      </div>
-    </div>
-  </div>
 </div>
 
 </main>
