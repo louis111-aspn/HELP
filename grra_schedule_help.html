@@ -247,54 +247,48 @@
 
   <h3 class="sub">조회 조건</h3>
   <table class="dt">
-    <thead><tr><th>필드</th><th>UI 요소</th><th>필수</th><th>테이블/필드</th></tr></thead>
+    <thead><tr><th>필드</th><th>UI 요소</th><th>필수 여부</th></tr></thead>
     <tbody>
-      <tr><td>연결그룹</td><td>도움창</td><td><span class="b br">필수</span> · KFCG01 기본값</td><td><span class="b bc">CONGR</span></td></tr>
-      <tr><td>연결계정과목표</td><td>도움창</td><td><span class="b br">필수</span></td><td><span class="b bc">RITCLG</span></td></tr>
-      <tr><td>연결버전</td><td>도움창</td><td><span class="b br">필수</span></td><td><span class="b bc">RVERS</span></td></tr>
-      <tr><td>회계연도</td><td>도움창</td><td><span class="b br">필수</span></td><td><span class="b bc">ZDATE_CLO</span></td></tr>
-      <tr><td>회계기간</td><td>도움창</td><td><span class="b br">필수</span></td><td><span class="b bc">ZDATE_CLO</span></td></tr>
-      <tr><td>거래유형</td><td>도움창</td><td><span class="b bo">선택</span> · CBO 테이블 관리</td><td>—</td></tr>
-      <tr><td>거래코드</td><td>도움창</td><td><span class="b bo">선택</span></td><td><span class="b bc">ZTRS</span></td></tr>
+      <tr><td>연결그룹</td><td>도움창</td><td><span class="b br">필수</span></td></tr>
+      <tr><td>연결계정과목표</td><td>도움창</td><td><span class="b br">필수</span></td></tr>
+      <tr><td>연결버전</td><td>도움창</td><td><span class="b br">필수</span></td></tr>
+      <tr><td>회계연도</td><td>도움창</td><td><span class="b br">필수</span></td></tr>
+      <tr><td>회계기간</td><td>도움창</td><td><span class="b br">필수</span></td></tr>
+      <tr><td>거래유형</td><td>도움창</td><td><span class="b bo">선택</span></td></tr>
+      <tr><td>거래코드</td><td>도움창</td><td><span class="b bo">선택</span></td></tr>
     </tbody>
   </table>
 
   <h3 class="sub">그리드 표시 항목 (조회용)</h3>
   <div class="g2">
     <table class="dt" style="font-size:12.5px;">
-      <thead><tr><th>컬럼명</th><th>테이블/필드</th></tr></thead>
+      <thead><tr><th>컬럼명</th></tr></thead>
       <tbody>
-        <tr><td>거래코드</td><td><span class="b bc">ZTRS</span></td></tr>
-        <tr><td>거래명</td><td><span class="b bc">ZTRS_TXT</span></td></tr>
-        <tr><td>거래유형 / 거래유형명</td><td><span class="b bc">ZTRS_TYPE / DDTEXT</span></td></tr>
-        <tr><td>매출법인(투자) / 법인명</td><td><span class="b bc">RGRAT5200.RBUIT</span></td></tr>
-        <tr><td>매입법인(피투자) / 법인명</td><td><span class="b bc">RBUPTR</span></td></tr>
-        <tr><td>거래일자 / 상각일자</td><td><span class="b bc">ZDATE_TRS / ZDATE_CLO</span></td></tr>
-        <tr><td>통화키</td><td><span class="b bc">RHCUR</span></td></tr>
-        <tr><td>그룹통화키</td><td><span class="b bc">RKCUR</span></td></tr>
-        <tr><td>미실현손익(TC)</td><td><span class="b bc">ZAMT_UNRLZ</span></td></tr>
-        <tr><td>미실현손익(GC)</td><td><span class="b bc">ZAMT_UNRLZ_GC</span></td></tr>
-        <tr><td>상각기간(개월)</td><td><span class="b bc">ZUSFL</span></td></tr>
-        <tr><td>실현금액(개월)</td><td>ZAMT_UNRLZ ÷ ZUSFL (계산값)</td></tr>
-        <tr><td>이연법인세 적용</td><td><span class="b bc">ZCK_DEFTAX</span></td></tr>
-        <tr><td>상태</td><td><span class="b bc">ZSTATUS</span></td></tr>
+        <tr><td>거래코드</td></tr>
+        <tr><td>거래명</td></tr>
+        <tr><td>거래유형</td></tr>
+        <tr><td>거래유형명</td></tr>
+        <tr><td>판매법인(투자)</td></tr>
+        <tr><td>판매법인명(투자)</td></tr>
+        <tr><td>매입법인(피투자)</td></tr>
+        <tr><td>매입법인명(피투자)</td></tr>
+        <tr><td>거래일자</td></tr>
+        <tr><td>상각일자</td></tr>
       </tbody>
     </table>
     <table class="dt" style="font-size:12.5px;">
-      <thead><tr><th>컬럼명</th><th>테이블/필드</th></tr></thead>
+      <thead><tr><th>컬럼명</th></tr></thead>
       <tbody>
-        <tr><td>상각스케줄</td><td>아이콘 (등록 여부 표시)</td></tr>
-        <tr><td>추가거래</td><td>아이콘 (손상·처분 여부 표시)</td></tr>
-        <tr><td>회계연도</td><td><span class="b bc">RYEAR</span></td></tr>
-        <tr><td>변동유형</td><td><span class="b bc">ZTYPE_EVE</span></td></tr>
-        <tr><td>상각비(LC) / 상각비(LC)-조정</td><td><span class="b bc">ZAMT_DEP_LC / ZAMT_DEP_LC_ADJ</span></td></tr>
-        <tr><td>상각비잔액(LC) / 상각누계(LC)</td><td><span class="b bc">ZAMT_REDEP_LC / ZAMT_ACCU_LC</span></td></tr>
-        <tr><td>상각비(GC) / 상각누계(GC)</td><td><span class="b bc">ZAMT_DEP_GC / ZAMT_ACCU_GC</span></td></tr>
-        <tr><td>법인세율(%)</td><td><span class="b bc">TAXRT</span></td></tr>
-        <tr><td>이연법인세(TC/GC)</td><td><span class="b bc">ZAMT_DEF_LC / ZAMT_DEF_GC</span></td></tr>
-        <tr><td>법인세비용(TC/GC)</td><td><span class="b bc">ZAMT_TAX_LC / ZAMT_TAX_GC</span></td></tr>
-        <tr><td>전표번호</td><td><span class="b bc">DOCNR</span></td></tr>
-        <tr><td>메시지</td><td>처리 결과 메시지</td></tr>
+        <tr><td>통화키</td></tr>
+        <tr><td>미실현손익</td></tr>
+        <tr><td>그룹통화키</td></tr>
+        <tr><td>미실현손익(GC)</td></tr>
+        <tr><td>상각기간(개월)</td></tr>
+        <tr><td>실현금액(개월)</td></tr>
+        <tr><td>이연법인세 적용여부</td></tr>
+        <tr><td>상태</td></tr>
+        <tr><td>상각스케쥴 상태</td></tr>
+        <tr><td>추가거래 상태</td></tr>
       </tbody>
     </table>
   </div>
@@ -328,9 +322,7 @@
       <div class="sdot">2</div>
       <div class="sc">
         <div class="stit">이연법인세 적용 여부 확인 → 법인세율 입력</div>
-        <div class="sbody">이연법인세 적용 대상(ZCK_DEFTAX='X')이면 <strong>법인세율(%)</strong> 필드를 입력합니다.<br>
-        최초 스케줄 생성 시: <strong>연결단위 마스터에 등록된 세율</strong> 자동 적용<br>
-        이미 세율이 입력된 경우: <strong>전월 세율</strong>을 자동 참조합니다.</div>
+        <div class="sbody">이연법인세 적용 대상(ZCK_DEFTAX='X')이면 <strong>법인세율(%)</strong> 필드를 입력합니다.</div>
       </div>
     </li>
     <li class="si">
@@ -344,25 +336,26 @@
 
   <h3 class="sub">상세 그리드 컬럼</h3>
   <table class="ft">
-    <thead><tr><th>컬럼명</th><th>편집</th><th>필드</th><th>비고</th></tr></thead>
+    <thead><tr><th>컬럼명</th><th>편집</th><th>비고</th></tr></thead>
     <tbody>
-      <tr><td>회계연도</td><td><span class="b bro">조회</span></td><td><code>RYEAR</code></td><td></td></tr>
-      <tr><td>변동일자</td><td><span class="b bro">조회</span></td><td><code>ZDATE_EVE</code></td><td></td></tr>
-      <tr><td>변동유형</td><td><span class="b bro">조회</span></td><td><code>ZTYPE_EVE</code></td><td>A~F 코드 (아래 참고)</td></tr>
-      <tr><td>상각비(LC)</td><td><span class="b bro">조회</span></td><td><code>ZAMT_DEP_LC</code></td><td></td></tr>
-      <tr><td>상각비(LC)-조정</td><td><span class="b ba">편집 가능</span></td><td><code>ZAMT_DEP_LC_ADJ</code></td><td>수동 조정 가능</td></tr>
-      <tr><td>상각비잔액(LC)</td><td><span class="b bro">조회</span></td><td><code>ZAMT_REDEP_LC</code></td><td></td></tr>
-      <tr><td>상각누계(LC)</td><td><span class="b bro">조회</span></td><td><code>ZAMT_ACCU_LC</code></td><td></td></tr>
-      <tr><td>상각비(GC) / 상각누계(GC)</td><td><span class="b bro">조회</span></td><td><code>ZAMT_DEP_GC / ZAMT_ACCU_GC</code></td><td></td></tr>
-      <tr><td>법인세율(%)</td><td><span class="b ba">편집 가능</span></td><td><code>TAXRT</code></td><td>변경 시 이연법인세·법인세비용 자동 재계산</td></tr>
-      <tr><td>이연법인세(LC/GC)</td><td><span class="b bro">조회</span></td><td><code>ZAMT_DEF_LC / ZAMT_DEF_GC</code></td><td>법인세율 기반 계산</td></tr>
-      <tr><td>법인세비용(LC/GC)</td><td><span class="b bro">조회</span></td><td><code>ZAMT_TAX_LC / ZAMT_TAX_GC</code></td><td>전월 대비 이연법인세 차액</td></tr>
-      <tr><td>전표번호</td><td><span class="b bro">조회</span></td><td><code>DOCNR</code></td><td>전표 생성 후 자동 채번</td></tr>
+      <tr><td>회계연도</td><td><span class="b bro">조회</span></td><td></td></tr>
+      <tr><td>변동일자</td><td><span class="b bro">조회</span></td><td></td></tr>
+      <tr><td>변동유형</td><td><span class="b bro">조회</span></td><td>A~F 코드 (아래 참고)</td></tr>
+      <tr><td>상각비(TC)</td><td><span class="b bro">조회</span></td><td></td></tr>
+      <tr><td>상각비(TC)-조정</td><td><span class="b ba">편집 가능</span></td><td>수동 조정 가능</td></tr>
+      <tr><td>상각비잔액(TC)</td><td><span class="b bro">조회</span></td><td></td></tr>
+      <tr><td>상각누계(TC)</td><td><span class="b bro">조회</span></td><td></td></tr>
+      <tr><td>상각비(GC) / 상각누계(GC)</td><td><span class="b bro">조회</span></td><td></td></tr>
+      <tr><td>법인세율(%)</td><td><span class="b ba">편집 가능</span></td><td>변경 시 이연법인세·법인세비용 자동 재계산</td></tr>
+      <tr><td>이연법인세(TC/GC)</td><td><span class="b bro">조회</span></td><td>법인세율 기반 계산</td></tr>
+      <tr><td>법인세비용(TC/GC)</td><td><span class="b bro">조회</span></td><td>전월 대비 이연법인세 차액</td></tr>
+      <tr><td>전표번호</td><td><span class="b bro">조회</span></td><td>전표 생성 후 자동 채번</td></tr>
+      <tr><td>MSG</td><td><span class="b bro">조회</span></td><td>처리 결과 메시지</td></tr>
     </tbody>
   </table>
 
   <div class="note">
-    <strong>📌 법인세율 변경 시 자동 재계산:</strong> 법인세율(TAXRT) 필드를 변경하면 해당 라인의 이연법인세(LC·GC) 및 법인세비용(LC·GC) 필드가 즉시 재계산됩니다. 재계산 조건: 이연법인세 적용 대상이고 전표번호가 없는 라인에 한합니다.
+    <strong>📌 법인세율 변경 시 자동 재계산:</strong> 법인세율 필드를 변경하면 해당 라인의 이연법인세(TC·GC) 및 법인세비용(TC·GC) 필드가 즉시 재계산됩니다. 재계산 조건: 이연법인세 적용 대상이고 전표번호가 없는 라인에 한합니다.
   </div>
 </div>
 
@@ -381,7 +374,7 @@
       <div class="sdot">1</div>
       <div class="sc">
         <div class="stit">상세 화면에서 재계산 클릭</div>
-        <div class="sbody">상세 화면 상단의 <strong>재계산</strong> 버튼을 클릭합니다. 현재 선택된 거래코드(ZTRS)에 대한 <strong>전체 스케줄을 처음부터 다시 계산</strong>합니다.</div>
+        <div class="sbody">상세 화면 상단의 <strong>재계산</strong> 버튼을 클릭합니다. 현재 선택된 거래코드에 대한 <strong>전체 스케줄을 처음부터 다시 계산</strong>합니다.</div>
       </div>
     </li>
     <li class="si">
@@ -427,7 +420,7 @@
       <div class="sdot">2</div>
       <div class="sc">
         <div class="stit">재계산(당월) 클릭</div>
-        <div class="sbody"><strong>재계산(당월)</strong> 버튼을 클릭합니다. 선택한 월부터 상각 종료 월까지 이연법인세(LC·GC) 및 법인세비용(LC·GC) 필드가 재계산됩니다.</div>
+        <div class="sbody"><strong>재계산(당월)</strong> 버튼을 클릭합니다. 선택한 월부터 상각 종료 월까지 이연법인세(TC·GC) 및 법인세비용(TC·GC) 필드가 재계산됩니다.</div>
       </div>
     </li>
   </ul>
@@ -464,6 +457,13 @@
     <li class="si">
       <div class="sdot">2</div>
       <div class="sc">
+        <div class="stit">일괄계산 클릭</div>
+        <div class="sbody">지정한 회계연도와 회계월 기준으로 시스템이 자동으로 상각 스케쥴을 계산합니다.</div>
+      </div>
+    </li>
+    <li class="si">
+      <div class="sdot">3</div>
+      <div class="sc">
         <div class="stit">법인세율 자동 적용</div>
         <div class="sbody">일괄계산 시 법인세율은 다음 기준으로 자동 적용됩니다.<br>
         • <strong>최초 스케줄 생성:</strong> 연결단위 마스터에 등록된 세율<br>
@@ -471,7 +471,7 @@
       </div>
     </li>
     <li class="si">
-      <div class="sdot">3</div>
+      <div class="sdot">4</div>
       <div class="sc">
         <div class="stit">저장 — 기존 스케줄 재계산 후 갱신</div>
         <div class="sbody">저장 시 해당 거래코드의 기존 스케줄을 삭제하고 재계산하여 다시 저장합니다. 단, <strong>기준월보다 큰 월에 해당하는 스케줄만 삭제</strong> 후 재계산합니다.</div>
@@ -480,7 +480,7 @@
   </ul>
 
   <div class="note">
-    <strong>📌 일괄계산 대상 제외 기준:</strong> 상각스케줄 중 하나라도 전표번호(DOCNR)가 존재하는 거래코드는 일괄계산 대상에서 제외됩니다. 전표가 한 건도 없는 거래코드만 일괄계산 그리드에 조회됩니다.
+    <strong>📌 일괄계산 대상 제외 기준:</strong> 상각스케줄 중 하나라도 전표번호가 존재하는 거래코드는 일괄계산 대상에서 제외됩니다. 전표가 한 건도 없는 거래코드만 일괄계산 그리드에 조회됩니다.
   </div>
 
   <div class="warn">
@@ -503,14 +503,14 @@
       <div class="sdot">1</div>
       <div class="sc">
         <div class="stit">상세 화면 버튼 클릭 → 편집 활성화</div>
-        <div class="sbody">상세 화면 버튼을 클릭하면 편집 가능한 필드(상각비(LC)-조정, 법인세율)가 활성화됩니다.</div>
+        <div class="sbody">상세 화면 버튼을 클릭하면 편집 가능한 필드(상각비(TC)-조정, 법인세율)가 활성화됩니다.</div>
       </div>
     </li>
     <li class="si">
       <div class="sdot">2</div>
       <div class="sc">
         <div class="stit">값 수정</div>
-        <div class="sbody">법인세율 변경 시 이연법인세 및 법인세비용이 즉시 재계산됩니다. 상각비(LC)-조정 필드로 상각비를 수동 조정할 수 있습니다.</div>
+        <div class="sbody">법인세율 변경 시 이연법인세 및 법인세비용이 즉시 재계산됩니다. 상각비(TC)-조정 필드로 상각비를 수동 조정할 수 있습니다.</div>
       </div>
     </li>
     <li class="si">
@@ -523,8 +523,8 @@
   </ul>
 
   <div class="g2">
-    <div class="card"><div class="ctit"><span class="cico">✏️</span> 편집 가능 필드</div><p>• 상각비(LC)-조정: <span class="b bc">ZAMT_DEP_LC_ADJ</span><br>• 법인세율(%): <span class="b bc">TAXRT</span></p></div>
-    <div class="card"><div class="ctit"><span class="cico">🔒</span> 편집 불가 필드</div><p>전표번호(DOCNR)가 존재하는 라인의 법인세율은 편집이 제한될 수 있습니다. 전표 생성 후에는 해당 월의 스케줄 수정이 불가합니다.</p></div>
+    <div class="card"><div class="ctit"><span class="cico">✏️</span> 편집 가능 필드</div><p>• 상각비(TC)-조정<br>• 법인세율(%)</p></div>
+    <div class="card"><div class="ctit"><span class="cico">🔒</span> 편집 불가 필드</div><p>전표번호가 존재하는 라인의 법인세율은 편집이 제한될 수 있습니다. 전표 생성 후에는 해당 월의 스케줄 수정이 불가합니다.</p></div>
   </div>
 </div>
 
@@ -549,11 +549,11 @@
   </ul>
 
   <div class="danger">
-    <strong>🚫 삭제 불가 조건:</strong> 스케줄 중 <strong>하나라도 전표번호(DOCNR)가 존재</strong>하면 삭제할 수 없습니다. 전표를 먼저 취소 처리한 후 삭제를 진행하세요.
+    <strong>🚫 삭제 불가 조건:</strong> 스케줄 중 <strong>하나라도 전표번호가 존재</strong>하면 삭제할 수 없습니다. 전표를 먼저 취소 처리한 후 삭제를 진행하세요.
   </div>
 
   <div class="note">
-    <strong>📌 전표 취소 후 재처리:</strong> 전표제출 화면에서 전표를 취소하면 해당 월의 DOCNR가 삭제 처리되어 스케줄 편집이 다시 가능해집니다. 이후 상각자산 전표생성에서 전표를 재생성할 수 있습니다.
+    <strong>📌 전표 취소 후 재처리:</strong> 전표제출 화면에서 전표를 취소하면 해당 월의 전표번호가 삭제 처리되어 스케줄 편집이 다시 가능해집니다. 이후 상각자산 전표생성에서 전표를 재생성할 수 있습니다.
   </div>
 </div>
 
@@ -563,7 +563,7 @@
     <div class="snum">·</div>
     <div>
       <h2>변동유형 코드 정의</h2>
-      <div class="sdesc">ZTYPE_EVE 필드에서 사용하는 변동유형 코드입니다.</div>
+      <div class="sdesc">상세 스케줄에서 사용하는 변동유형 코드입니다.</div>
     </div>
   </div>
 
@@ -571,32 +571,32 @@
     <div class="vtype-item">
       <div class="vtype-code">A</div>
       <div class="vtype-name">최초취득</div>
-      <div class="vtype-desc">자산 취득 시점. GC 이연법인세 계산 시 취득 환율(UNRLZ_GC / UNRLZ) 비율 적용</div>
+      <div class="vtype-desc">자산 취득 시점. GC 이연법인세 계산 시 취득 환율 비율 적용</div>
     </div>
     <div class="vtype-item">
       <div class="vtype-code">B</div>
       <div class="vtype-name">상각</div>
-      <div class="vtype-desc">일반 월별 감가상각. GC 법인세비용은 누계액 기반 평균환율(AVG) 적용</div>
+      <div class="vtype-desc">일반 월별 감가상각. GC 법인세비용은 누계액 기반 평균환율 적용</div>
     </div>
     <div class="vtype-item">
       <div class="vtype-code">C</div>
       <div class="vtype-name">손상</div>
-      <div class="vtype-desc">자산 손상 발생. GC 법인세비용 계산 시 평균환율(AVG) 적용</div>
+      <div class="vtype-desc">자산 손상 발생. GC 법인세비용 계산 시 평균환율 적용</div>
     </div>
     <div class="vtype-item">
       <div class="vtype-code">D</div>
       <div class="vtype-name">처분</div>
-      <div class="vtype-desc">자산 처분 발생. GC 법인세비용 계산 시 평균환율(AVG) 적용</div>
+      <div class="vtype-desc">자산 처분 발생. GC 법인세비용 계산 시 평균환율 적용</div>
     </div>
     <div class="vtype-item">
       <div class="vtype-code">E</div>
       <div class="vtype-name">최초상각</div>
-      <div class="vtype-desc">첫 번째 상각 시점. GC 법인세비용은 누계액 기반 평균환율(AVG) 적용</div>
+      <div class="vtype-desc">첫 번째 상각 시점. GC 법인세비용은 누계액 기반 평균환율 적용</div>
     </div>
     <div class="vtype-item">
       <div class="vtype-code">F</div>
       <div class="vtype-name">상각종료</div>
-      <div class="vtype-desc">상각 완료 시점. GC 법인세비용은 누계액 기반 평균환율(AVG) 적용</div>
+      <div class="vtype-desc">상각 완료 시점. GC 법인세비용은 누계액 기반 평균환율 적용</div>
     </div>
   </div>
 </div>
@@ -612,39 +612,39 @@
   </div>
 
   <div class="note" style="margin-bottom:16px;">
-    <strong>📌 계산 적용 조건:</strong> 이연법인세 적용 대상(ZCK_DEFTAX = 'X')이고 <strong>전표번호(DOCNR)가 없는</strong> 라인에 한해 계산이 실행됩니다.
+    <strong>📌 계산 적용 조건:</strong> 이연법인세 적용 대상이고 <strong>전표번호가 없는</strong> 라인에 한해 계산이 실행됩니다.
   </div>
 
   <div class="formula-grid">
     <div class="formula-item">
-      <div class="formula-label">① 이연법인세 (LC)</div>
-      <div class="formula-eq">ZAMT_DEF_LC<br>= ZAMT_REDEP_LC × TAXRT</div>
-      <div class="formula-note">상각비잔액(LC) × 법인세율</div>
+      <div class="formula-label">① 이연법인세 (TC)</div>
+      <div class="formula-eq">이연법인세(TC)<br>= 상각비잔액(TC) × 법인세율</div>
+      <div class="formula-note">상각비잔액(TC) × 법인세율</div>
     </div>
     <div class="formula-item">
-      <div class="formula-label">② 법인세비용 (LC)</div>
-      <div class="formula-eq">ZAMT_TAX_LC<br>= 전월 ZAMT_DEF_LC − 당월 ZAMT_DEF_LC</div>
-      <div class="formula-note">전월 이연법인세(LC)와 당월의 차액</div>
+      <div class="formula-label">② 법인세비용 (TC)</div>
+      <div class="formula-eq">법인세비용(TC)<br>= 전월 이연법인세(TC) − 당월 이연법인세(TC)</div>
+      <div class="formula-note">전월 이연법인세(TC)와 당월의 차액</div>
     </div>
     <div class="formula-item">
       <div class="formula-label">③ 이연법인세 (GC) — KRW</div>
-      <div class="formula-eq">ZAMT_DEF_GC = ZAMT_DEF_LC</div>
-      <div class="formula-note">통화가 KRW인 경우 LC와 동일</div>
+      <div class="formula-eq">이연법인세(GC) = 이연법인세(TC)</div>
+      <div class="formula-note">통화가 KRW인 경우 TC와 동일</div>
     </div>
     <div class="formula-item">
       <div class="formula-label">③ 이연법인세 (GC) — 외화, 변동유형 A</div>
-      <div class="formula-eq">ZAMT_DEF_GC<br>= ZAMT_DEF_LC × (ZAMT_UNRLZ_GC / ZAMT_UNRLZ)</div>
-      <div class="formula-note">취득 시점의 LC/GC 비율 적용</div>
+      <div class="formula-eq">이연법인세(GC)<br>= 이연법인세(TC) × (미실현손익_GC / 미실현손익_TC)</div>
+      <div class="formula-note">취득 시점의 TC/GC 비율 적용</div>
     </div>
     <div class="formula-item">
       <div class="formula-label">③ 이연법인세 (GC) — 외화, 그 외</div>
-      <div class="formula-eq">ZAMT_DEF_GC<br>= ZAMT_DEF_LC × 기말환율(CLO)</div>
-      <div class="formula-note">기말환율(KURST='CLO') 적용</div>
+      <div class="formula-eq">이연법인세(GC)<br>= 이연법인세(TC) × 기말환율(CLO)</div>
+      <div class="formula-note">기말환율(CLO) 적용</div>
     </div>
     <div class="formula-item">
       <div class="formula-label">④ 법인세비용 (GC) — KRW</div>
-      <div class="formula-eq">ZAMT_TAX_GC = ZAMT_TAX_LC</div>
-      <div class="formula-note">통화가 KRW인 경우 LC와 동일</div>
+      <div class="formula-eq">법인세비용(GC) = 법인세비용(TC)</div>
+      <div class="formula-note">통화가 KRW인 경우 TC와 동일</div>
     </div>
   </div>
 
@@ -652,9 +652,9 @@
   <table class="dt" style="font-size:12.5px;">
     <thead><tr><th>변동유형</th><th>GC 법인세비용 계산 방식</th></tr></thead>
     <tbody>
-      <tr><td><strong>A</strong> 최초취득</td><td>ZAMT_TAX_GC = 0</td></tr>
-      <tr><td><strong>C</strong> 손상, <strong>D</strong> 처분</td><td>ZAMT_TAX_GC = ZAMT_TAX_LC × 평균환율(KURST='AVG')</td></tr>
-      <tr><td><strong>E</strong> 최초상각, <strong>B</strong> 상각, <strong>F</strong> 상각종료</td><td>누계_LC = 이전 ZAMT_TAX_LC 합계 + 현재 ZAMT_TAX_LC<br>누계_GC = 누계_LC × 평균환율(AVG)<br>ZAMT_TAX_GC = 누계_GC − 이전 ZAMT_TAX_GC 합계</td></tr>
+      <tr><td><strong>A</strong> 최초취득</td><td>법인세비용(GC) = 0</td></tr>
+      <tr><td><strong>C</strong> 손상, <strong>D</strong> 처분</td><td>법인세비용(GC) = 법인세비용(TC) × 평균환율(AVG)</td></tr>
+      <tr><td><strong>E</strong> 최초상각, <strong>B</strong> 상각, <strong>F</strong> 상각종료</td><td>누계_TC = 이전 법인세비용(TC) 합계 + 현재 법인세비용(TC)<br>누계_GC = 누계_TC × 평균환율(AVG)<br>법인세비용(GC) = 누계_GC − 이전 법인세비용(GC) 합계</td></tr>
     </tbody>
   </table>
 </div>

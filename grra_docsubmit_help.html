@@ -239,10 +239,10 @@
 <div class="ov" id="overview">
   <div class="ovtag">상각자산 전표 제출 및 승인</div>
   <h1>상각자산 전표 제출 및 승인</h1>
-  <p>상각자산 스케줄 관리에서 확정된 스케줄을 GR(Group Reporting) 시스템에 전표로 전기하는 프로세스입니다. <strong>제출자</strong>가 승인을 요청하고, <strong>승인자</strong>가 결재를 처리한 후, <strong>연결 모니터</strong>에서 태스크(Z3010 / Z3020)를 실행하여 최종 전표가 생성됩니다. 역할에 따라 화면 권한과 표시 버튼이 달라집니다.</p>
+  <p>상각자산 스케줄 관리에서 확정된 스케줄을 GR(Group Reporting) 시스템에 전표로 전기하는 프로세스입니다. <strong>제출자</strong>가 승인을 요청하고, <strong>승인자</strong>가 결재를 처리한 후, <strong>연결 모니터</strong>에서 태스크를 실행하여 최종 전표가 생성됩니다. 역할에 따라 화면 권한과 표시 버튼이 달라집니다.</p>
   <div class="ovmeta">
     <div><div class="oml">연계 프로그램</div><div class="omv">상각자산 스케줄 관리</div></div>
-    <div><div class="oml">연결 태스크</div><div class="omv">Z3010 (고정자산 미실현) / Z3020 (공정가치 조정)</div></div>
+    <div><div class="oml">연결 태스크</div><div class="omv">고정자산 미실현 / 공정가치 조정 태스크</div></div>
   </div>
 </div>
 
@@ -272,7 +272,7 @@
     <div class="flow-lane lane-m">
       <div class="flow-lane-title">🖥️ 연결 모니터</div>
       <div style="height:228px;"></div><!-- spacer -->
-      <div class="flow-node"><div class="fn-num">Step 5</div><div class="fn-title">태스크 실행</div><div class="fn-desc">승인(F) 건 대상 Z3010 / Z3020 태스크 실행</div></div>
+      <div class="flow-node"><div class="fn-num">Step 5</div><div class="fn-title">태스크 실행</div><div class="fn-desc">승인(F) 건 대상 연결 태스크 실행</div></div>
       <div class="flow-arrow">↓</div>
       <div class="flow-node"><div class="fn-num">Step 6</div><div class="fn-title">전표 생성 확인</div><div class="fn-desc">전표번호 확인 · 오류 시 로그 확인</div></div>
     </div>
@@ -357,7 +357,7 @@
         <tr><td>거래코드</td><td><span class="b bc">ZTRS</span></td></tr>
         <tr><td>거래명</td><td><span class="b bc">ZTRS_TXT</span></td></tr>
         <tr><td>거래유형 / 거래유형명</td><td><span class="b bc">ZTRS_TYPE / DDTEXT</span></td></tr>
-        <tr><td>판매(투자)법인 / 법인명</td><td><span class="b bc">RBUINT</span></td></tr>
+        <tr><td>판매(투자)법인 / 법인명</td><td><span class="b bc">RBUNIT</span></td></tr>
         <tr><td>매입(피투자)법인</td><td><span class="b bc">RBUPTR</span></td></tr>
         <tr><td>거래일자 / 상각일자</td><td><span class="b bc">ZDATE_TRS / ZDATE_CLO</span></td></tr>
         <tr><td>통화키</td><td><span class="b bc">RHCUR</span></td></tr>
@@ -388,25 +388,39 @@
     <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">조회 조건에서 조회 모드 선택</div><div class="sbody">검색조건 중 <strong>조회 모드</strong>를 선택하면 이미 전표가 생성된 거래코드들이 조회됩니다.</div></div></li>
     <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">라인 상세 클릭 → 전표 내역 확인</div><div class="sbody">메인 그리드에서 라인의 <strong>&gt; 버튼</strong>을 클릭하면 디테일 그리드에 전표 항목별 구체적인 내역(재무제표항목·그룹통화금액·장부통화금액·전표번호 등)이 표시됩니다.</div></div></li>
   </ul>
+  
   <h3 class="sub">디테일 그리드 항목</h3>
-  <table class="dt" style="font-size:12.5px;">
-    <thead><tr><th>컬럼명</th><th>소스</th></tr></thead>
-    <tbody>
-      <tr><td>거래유형 / 거래유형명</td><td><span class="b bc">ZTRS_TYPE / DDTEXT</span></td></tr>
-      <tr><td>거래코드 / 거래코드명</td><td><span class="b bc">ZTRS / ZTRS_TXT</span></td></tr>
-      <tr><td>상세거래코드 / 상세거래명</td><td><span class="b bc">ZNO</span></td></tr>
-      <tr><td>연결거래유형 (하위항목)</td><td><span class="b bc">RMVCT</span></td></tr>
-      <tr><td>자기법인 (연결단위) / 법인명</td><td><span class="b bc">RBUNIT</span></td></tr>
-      <tr><td>상대법인 (파트너단위) / 법인명</td><td><span class="b bc">RBUPTR</span></td></tr>
-      <tr><td>연결계정 (재무제표항목) / 항목명</td><td><span class="b bc">ACDOCU.RITEM / SKAT.TXT50</span></td></tr>
-      <tr><td>그룹통화키 / 그룹통화누적금액</td><td><span class="b bc">ACDOCU.RKCUR / KSL</span></td></tr>
-      <tr><td>장부통화키 / 장부통화누적금액</td><td><span class="b bc">ACDOCU.RHCUR / HSL</span></td></tr>
-      <tr><td>적요</td><td><span class="b bc">ACDOCU.SGTXT</span></td></tr>
-      <tr><td>회계연도/기간</td><td><span class="b bc">RYEAR, POPER</span></td></tr>
-      <tr><td>전표번호 / 개별항목</td><td><span class="b bc">DOCNR / DOCLN</span></td></tr>
-    </tbody>
-  </table>
-  <div class="note" style="margin-top:4px;"><strong>📌 전표내역 CDS 뷰:</strong> <code style="font-family:monospace;background:rgba(0,51,102,0.1);padding:1px 5px;border-radius:3px;">ZGRVDEPDOC</code> — 전기된 전표 내역을 조회합니다.</div>
+  <div class="g2">
+    <table class="dt" style="font-size:12.5px;">
+      <thead><tr><th>컬럼명</th><th>테이블/필드</th></tr></thead>
+      <tbody>
+        <tr><td>거래유형</td><td><span class="b bc">ZTRS_TYPE</span></td></tr>
+        <tr><td>거래유형명</td><td><span class="b bc">DDTEXT</span></td></tr>
+        <tr><td>거래코드</td><td><span class="b bc">ZTRS</span></td></tr>
+        <tr><td>거래명</td><td><span class="b bc">ZTRS_TXT</span></td></tr>
+        <tr><td>상세거래코드</td><td><span class="b bc">ZNO</span></td></tr>
+        <tr><td>상세거래코드명</td><td><span class="b bc">ZNO_TXT</span></td></tr>
+        <tr><td>연결거래유형</td><td><span class="b bc">RMVCT</span></td></tr>
+        <tr><td>연결거래유형명</td><td><span class="b bc">RMVCT_TXT</span></td></tr>
+        <tr><td>판매법인(투자)</td><td><span class="b bc">RBUNIT</span></td></tr>
+        <tr><td>판매법인명(투자)</td><td><span class="b bc">TXT_RBUNIT</span></td></tr>
+      </tbody>
+    </table>
+    <table class="dt" style="font-size:12.5px;">
+      <thead><tr><th>컬럼명</th><th>테이블/필드</th></tr></thead>
+      <tbody>
+        <tr><td>매입법인(피투자)</td><td><span class="b bc">RBUPTR</span></td></tr>
+        <tr><td>매입법인명(피투자)</td><td><span class="b bc">TXT_RBUPTR</span></td></tr>
+        <tr><td>연결계정</td><td><span class="b bc">RITEM</span></td></tr>
+        <tr><td>연결계정명</td><td><span class="b bc">TXT_RITEM</span></td></tr>
+        <tr><td>BS/PL구분</td><td><span class="b bc">BSPL_CD</span></td></tr>
+        <tr><td>그룹통화금액(누적)</td><td><span class="b bc">KSL</span></td></tr>
+        <tr><td>그룹통화키</td><td><span class="b bc">RKCUR</span></td></tr>
+        <tr><td>그룹통화금액(생성)</td><td><span class="b bc">ZAMT_GC</span></td></tr>
+        <tr><td>그룹통화키(생성)</td><td><span class="b bc">RKCUR_GEN</span></td></tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <!-- S3 승인요청 -->
@@ -489,7 +503,7 @@
         <li class="si"><div class="sdot">1</div><div class="sc"><div class="stit">데이터 선택 → 승인 버튼</div><div class="sbody">내역을 선택하고 <strong>승인</strong> 버튼을 클릭합니다. "승인 하시겠습니까?" 다이얼로그가 표시됩니다.</div></div></li>
         <li class="si"><div class="sdot">2</div><div class="sc"><div class="stit">승인 완료 → 승인상태 F</div><div class="sbody">승인 처리되면 해당 거래코드의 <strong>승인상태(ZWSTATUS)가 F</strong>로 업데이트됩니다. 제출자에게 승인 완료 알람이 발송됩니다. <br><strong>승인 상태 F인 건만 연결모니터에서 전표 생성이 가능합니다.</strong></div></div></li>
       </ul>
-      <div class="success"><strong>✅ 승인 후:</strong> 연결모니터 프로그램(Z3010, Z3020)에서 상태를 확인하고 태스크를 실행할 수 있습니다.</div>
+      <div class="success"><strong>✅ 승인 후:</strong> 연결모니터 프로그램에서 상태를 확인하고 태스크를 실행할 수 있습니다.</div>
     </div>
     <div>
       <h3 class="sub" style="color:var(--red);">❌ 반려 처리</h3>
@@ -521,13 +535,11 @@
   <h3 class="sub">전표유형 → 태스크 매핑</h3>
   <div class="task-grid">
     <div class="task-card z1">
-      <div class="task-code">Z3010</div>
       <div class="task-pill">전표유형 Z1</div>
       <div class="task-name">고정자산 미실현 태스크</div>
       <div class="task-desc">거래유형 <strong>A (고정자산 미실현)</strong>에 해당하는 거래코드의 전표를 생성합니다.<br>전표유형 Z1(연결조정 - 상각자산 미실현)</div>
     </div>
     <div class="task-card z2">
-      <div class="task-code">Z3020</div>
       <div class="task-pill">전표유형 Z2</div>
       <div class="task-name">공정가치 조정 태스크</div>
       <div class="task-desc">거래유형 <strong>B (공정가치 조정)</strong>에 해당하는 거래코드의 전표를 생성합니다.<br>전표유형 Z2(연결조정 - 공정가치 조정)</div>
@@ -566,7 +578,7 @@
       <tr><td><strong>차대 잔액 검증</strong></td><td>장부통화/그룹통화 금액 합(ZAMT_LC, ZAMT_GC)이 0이어야 함</td><td>"차대의 합이 0이 아닙니다" — 생성 중단</td></tr>
     </tbody>
   </table>
-  <div class="note" style="margin-top:4px;"><strong>📌 전표 취소 후 재생성:</strong> 연결 모니터 전표 취소 처리 → DOCNR 삭제 → 스케줄 편집 가능 → 상각자산 전표생성에서 재생성 가능. 전표 생성은 증분 내역 방식으로 처리됩니다.</div>
+  <div class="note" style="margin-top:4px;"><strong>📌 전표 취소 후 재생성:</strong> 특정 거래코드를 선택 후 [취소요청] 클릭 &rarr; 승인자와 Document Title 지정 후 [취소요청] 클릭</div>
 </div>
 
 <!-- S10 조회 조건 -->
