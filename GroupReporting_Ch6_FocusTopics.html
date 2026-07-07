@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Group Reporting — Focus Topics &amp; Advanced Integration | ASPN BAC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0B2447;
+    --navy-2:#13315C;
+    --ink:#1C2530;
+    --sub:#5B6675;
+    --line:#E3E7ED;
+    --bg:#FAFBFC;
+    --card:#FFFFFF;
+    --btp-orange:#FF6A13;
+    --btp-orange-soft:#FFF1E6;
+    --mono:'JetBrains Mono','Noto Sans KR',monospace;
+    --sans:'Inter','Noto Sans KR',sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--sans);
+    overflow-x:clip;
+    line-height:1.7;
+  }
+  /* ---------- HEADER ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:var(--navy); color:#fff;
+    padding:14px 32px;
+    display:flex; align-items:center; justify-content:space-between;
+    border-bottom:3px solid var(--btp-orange);
+    flex-wrap:wrap; gap:8px;
+  }
+  .topbar .brand{font-weight:800; letter-spacing:.02em; font-size:15px;}
+  .topbar .brand span{color:var(--btp-orange);}
+  .topbar .meta{font-family:var(--mono); font-size:11px; color:#B8C4D9; letter-spacing:.03em;}
+  .topbar .pagenav{display:flex; align-items:center; gap:14px; font-family:var(--mono); font-size:11.5px;}
+  .topbar .pagenav a{color:#DCE5F2; text-decoration:none; padding:4px 10px; border:1px solid rgba(255,255,255,.25); border-radius:14px; transition:all .15s ease; white-space:nowrap;}
+  .topbar .pagenav a:hover{background:rgba(255,255,255,.12); border-color:rgba(255,255,255,.5);}
+  .topbar .pagenav a.next{color:#fff; background:var(--btp-orange); border-color:var(--btp-orange); font-weight:700;}
+  .topbar .pagenav a.next:hover{background:#e85f0f;}
+  .topbar .pagenav a.disabled{opacity:.35; pointer-events:none;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:64px 32px 56px; max-width:1180px; margin:0 auto;
+  }
+  .hero .eyebrow{
+    font-family:var(--mono); font-size:12px; color:var(--btp-orange);
+    font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  .hero h1{
+    font-size:38px; font-weight:900; color:var(--navy); margin:0 0 18px;
+    letter-spacing:-0.01em; max-width:820px;
+  }
+  .hero p.lead{
+    font-size:16px; color:var(--sub); max-width:680px; margin:0 0 28px;
+  }
+  .hero .tags{display:flex; gap:8px; flex-wrap:wrap;}
+  .hero .tag{
+    font-family:var(--mono); font-size:11px; padding:6px 12px;
+    border:1px solid var(--line); border-radius:20px; color:var(--navy-2);
+    background:#fff;
+  }
+
+  /* ---------- LAYOUT ---------- */
+  .layout{
+    display:grid; grid-template-columns:250px 1fr;
+    max-width:1180px; margin:0 auto; gap:48px;
+    padding:0 32px 100px;
+  }
+  nav.chapters{
+    position:sticky; top:64px; align-self:start;
+    height:fit-content;
+    padding-top:8px;
+  }
+  nav.chapters .navlabel{
+    font-family:var(--mono); font-size:11px; color:var(--sub);
+    text-transform:uppercase; letter-spacing:.08em; margin-bottom:14px;
+  }
+  nav.chapters a{
+    display:block; padding:10px 0 10px 14px;
+    border-left:2px solid var(--line);
+    color:var(--sub); text-decoration:none; font-size:13.5px; font-weight:500;
+    transition:all .15s ease;
+  }
+  nav.chapters a:hover{color:var(--navy); border-left-color:var(--navy-2);}
+  nav.chapters a.active{
+    color:var(--navy); border-left-color:var(--btp-orange); font-weight:700;
+  }
+  nav.chapters a .num{font-family:var(--mono); color:var(--btp-orange); margin-right:6px;}
+  nav.chapters .navfoot{
+    margin-top:24px; padding-top:16px; border-top:1px solid var(--line);
+    font-size:11.5px; color:var(--sub); line-height:1.7;
+  }
+  nav.chapters .navfoot a{display:inline; padding:0; border:none; color:var(--navy-2); font-weight:600;}
+  nav.chapters .navfoot a:hover{text-decoration:underline;}
+
+  main{min-width:0;}
+
+  /* ---------- CHAPTER ---------- */
+  .chapter{
+    padding:52px 0; border-bottom:1px solid var(--line);
+    scroll-margin-top:80px;
+  }
+  .chapter:last-child{border-bottom:none;}
+  .chapter .chnum{
+    font-family:var(--mono); color:var(--btp-orange); font-weight:700;
+    font-size:13px; margin-bottom:8px;
+  }
+  .chapter h2{
+    font-size:27px; font-weight:800; color:var(--navy); margin:0 0 6px;
+    letter-spacing:-0.01em;
+  }
+  .chapter .sub{color:var(--sub); font-size:14.5px; margin:0 0 28px;}
+
+  .block{margin-bottom:30px;}
+  .block h3{
+    font-size:15px; font-weight:700; color:var(--navy-2);
+    display:flex; align-items:center; gap:10px; margin:0 0 14px;
+  }
+  .block h3::before{
+    content:""; width:8px; height:8px; background:var(--navy-2); border-radius:2px; flex:none;
+  }
+  .block p{font-size:15px; color:var(--ink); margin:0 0 12px;}
+  .block ul{margin:0 0 12px; padding-left:20px;}
+  .block li{font-size:14.5px; margin-bottom:8px; color:var(--ink);}
+  .block li b{color:var(--navy);}
+
+  code, .kw{
+    font-family:var(--mono); font-size:.92em; background:#EEF2F8; color:var(--navy-2);
+    padding:1px 6px; border-radius:4px;
+  }
+
+  /* insight box */
+  .insight{
+    background:var(--btp-orange-soft); border:1px solid #FFD9B8;
+    border-left:4px solid var(--btp-orange);
+    border-radius:6px; padding:20px 22px; margin:24px 0;
+  }
+  .insight .label{
+    font-family:var(--mono); font-size:11px; font-weight:700; color:var(--btp-orange);
+    text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px;
+    display:flex; align-items:center; gap:6px;
+  }
+  .insight p{font-size:14.5px; margin:0 0 8px; color:#3d2b1a;}
+  .insight p:last-child{margin-bottom:0;}
+
+  /* caution box */
+  .caution{
+    background:#F4F5F7; border:1px dashed #B9C0CC;
+    border-radius:6px; padding:16px 20px; margin:20px 0;
+    font-size:13.5px; color:var(--sub);
+  }
+  .caution b{color:var(--navy);}
+
+  /* concept box - navy reaffirmation */
+  .concept{
+    background:#EEF2F8; border:1px solid #C9D6E8;
+    border-left:4px solid var(--navy-2);
+    border-radius:6px; padding:20px 22px; margin:24px 0;
+  }
+  .concept .label{
+    font-family:var(--mono); font-size:11px; font-weight:700; color:var(--navy-2);
+    text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px;
+  }
+  .concept p{font-size:14.5px; margin:0; color:var(--ink);}
+
+  /* generalize box - red caution */
+  .generalize{
+    background:#FDECEC; border:1px solid #F3C6C6;
+    border-left:4px solid #8A1F2D;
+    border-radius:6px; padding:20px 22px; margin:24px 0;
+  }
+  .generalize .label{
+    font-family:var(--mono); font-size:11px; font-weight:700; color:#8A1F2D;
+    text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px;
+  }
+  .generalize p{font-size:14.5px; margin:0; color:#4a1319;}
+
+  /* related */
+  .related{
+    margin-top:32px; padding-top:20px; border-top:1px solid var(--line);
+    font-size:13px; color:var(--sub);
+  }
+  .related b{color:var(--navy); font-weight:700; margin-right:8px;}
+  .related span{
+    font-family:var(--mono); font-size:12px; color:var(--navy-2);
+    background:#EEF2F8; padding:3px 9px; border-radius:12px; margin:2px 4px 2px 0; display:inline-block;
+  }
+
+  /* diagram containers */
+  .diagram{
+    background:#fff; border:1px solid var(--line); border-radius:10px;
+    padding:26px; margin:22px 0;
+  }
+  .flow{display:flex; align-items:center; gap:0; flex-wrap:wrap;}
+  .flow .step{
+    flex:1; min-width:110px; text-align:center; padding:14px 8px;
+    background:#F5F7FA; border:1px solid var(--line); border-radius:8px;
+    font-size:12.5px; font-weight:600; color:var(--navy-2);
+  }
+  .flow .arrow{
+    flex:none; width:26px; text-align:center; color:var(--btp-orange); font-size:16px; font-weight:700;
+  }
+
+  .compare{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .compare .col{
+    background:#F5F7FA; border:1px solid var(--line); border-radius:8px; padding:18px;
+  }
+  .compare .col.hi{border-color:var(--btp-orange); background:var(--btp-orange-soft);}
+  .compare .col h4{margin:0 0 10px; font-size:13.5px; color:var(--navy); font-weight:800;}
+  .compare .col ul{margin:0; padding-left:18px;}
+  .compare .col li{font-size:13px; margin-bottom:6px;}
+
+  table.simple{width:100%; border-collapse:collapse; margin:16px 0; font-size:13.5px;}
+  table.simple th{
+    background:var(--navy); color:#fff; text-align:left; padding:10px 12px; font-weight:600;
+  }
+  table.simple td{padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top;}
+  table.simple tr:nth-child(even) td{background:#F7F9FB;}
+  table.simple td.mono, table.simple th.mono{font-family:var(--mono); font-size:12.5px;}
+
+  .orgbox{
+    display:flex; flex-direction:column; align-items:center; gap:6px;
+  }
+  .org-node{
+    background:var(--navy); color:#fff; padding:10px 18px; border-radius:6px;
+    font-size:13px; font-weight:700;
+  }
+  .org-node.unit{background:#fff; color:var(--navy); border:2px solid var(--navy-2); font-weight:600;}
+  .org-children{display:flex; gap:14px; margin-top:10px; flex-wrap:wrap; justify-content:center;}
+  .org-line{width:2px; height:16px; background:var(--line);}
+
+  /* task flow (step-by-step vertical checklist) */
+  .taskflow{display:flex; flex-direction:column; gap:0;}
+  .taskrow{
+    display:grid; grid-template-columns:34px 1fr; gap:12px; align-items:flex-start;
+    padding:10px 0; position:relative;
+  }
+  .taskrow .dot{
+    width:26px; height:26px; border-radius:50%; background:var(--navy);
+    color:#fff; font-family:var(--mono); font-size:11px; font-weight:700;
+    display:flex; align-items:center; justify-content:center; flex:none;
+  }
+  .taskrow .dot.gate{background:var(--btp-orange);}
+  .taskrow .body b{color:var(--navy); font-size:13.5px;}
+  .taskrow .body p{margin:2px 0 0; font-size:13px; color:var(--sub);}
+  .taskrow:not(:last-child)::before{
+    content:""; position:absolute; left:16px; top:36px; width:2px; height:calc(100% - 20px);
+    background:var(--line);
+  }
+
+  footer.pagefoot{
+    max-width:1180px; margin:0 auto; padding:36px 32px 60px;
+    color:var(--sub); font-size:12.5px; font-family:var(--mono);
+    border-top:1px solid var(--line);
+  }
+  footer.pagefoot .footnav{
+    display:flex; gap:16px; margin-top:14px; flex-wrap:wrap;
+  }
+  footer.pagefoot .footnav a{
+    color:var(--navy-2); text-decoration:none; border-bottom:1px dotted var(--navy-2);
+  }
+  footer.pagefoot .footnav a:hover{color:var(--navy);}
+
+  @media (max-width:860px){
+    .layout{grid-template-columns:1fr;}
+    nav.chapters{position:static; display:flex; flex-direction:column; overflow-x:auto; gap:4px; padding-bottom:8px;}
+    .compare{grid-template-columns:1fr;}
+    .topbar{flex-direction:column; align-items:flex-start;}
+  }
+
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">ASPN <span>BAC</span> · SAP Group Reporting 교육 시리즈</div>
+  <div class="meta">FILE 6 / 6 — FOCUS TOPICS &amp; ADVANCED INTEGRATION</div>
+  <div class="pagenav">
+    <a href="GroupReporting_Index.html">☰ 인덱스</a>
+    <a href="GroupReporting_Ch5_AnalyticsForGroupReporting.html">← File 5</a>
+    <a class="next" href="GroupReporting_Index.html">시리즈 완료 · 인덱스로 →</a>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="eyebrow">Group Reporting Essentials · Chapter 6 of 6</div>
+  <h1>Focus Topics &amp; Advanced Integration — 여러 영역을 가로지르는 5가지 심화 프로세스</h1>
+  <p class="lead">File 1~5가 연결 프로세스의 순차적 흐름(조직구조 → 데이터 준비 → ICMR → 결산 → 분석)을 다뤘다면,
+    이번 File은 그 흐름을 가로지르며 특정 상황에서만 필요한 5가지 Focus Topic — Equity Pickup, GR Preparation
+    Ledger 통합, Custom Sign Convention, Flexible Derivation of Consolidation Units, SAP Green Ledger 통합 —
+    을 다룹니다. 예시 수치는 ASPN 픽션 시나리오로 재구성했습니다. SAP 전체 GR 모듈 공통 Configuration
+    레퍼런스는 이번 File에서 다루지 않으며, 컨설턴트용 별도 자료로 추후 정리할 예정입니다.</p>
+  <div class="tags">
+    <div class="tag">SAP S/4HANA Cloud Public Edition</div>
+    <div class="tag">Focus Topics · Advanced Integration</div>
+    <div class="tag">Equity Pickup · Green Ledger</div>
+  </div>
+</div>
+
+<div class="layout">
+  <nav class="chapters" id="chapNav">
+    <div class="navlabel">Chapters</div>
+    <a href="#ch1"><span class="num">01</span>Equity Pickup(EPU)</a>
+    <a href="#ch2"><span class="num">02</span>GR Preparation Ledger 통합</a>
+    <a href="#ch3"><span class="num">03</span>Custom Sign Convention</a>
+    <a href="#ch4"><span class="num">04</span>Flexible Derivation of CU</a>
+    <a href="#ch5"><span class="num">05</span>SAP Green Ledger 통합</a>
+    <a href="#ch6"><span class="num">06</span>통합 정리 · 시리즈 마무리</a>
+    <div class="navfoot">
+File 5 ← <b style="color:var(--navy)">현재: File 6</b>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ================= CHAPTER 1 ================= -->
+    <section class="chapter" id="ch1">
+      <div class="chnum">CHAPTER 01</div>
+      <h2>Equity Pickup(EPU) — 지분법 평가 조정</h2>
+      <p class="sub">Equity Pickup(App ID FINCS_EPU_EXEC)은 지배 Consolidation Unit이 보유한 투자주식을 피투자회사의 최신 지분가치로 재평가하는 조정 프로세스입니다. 투자회사 내부의 연결 시스템에서 처리되며, 그룹 내 모든 투자 체인에 대해 하위에서 상위 방향으로 실행됩니다.</p>
+
+      <div class="block">
+        <h3>Controlling vs Noncontrolling Parent 판정</h3>
+        <p>EPU 설정에서 Noncontrolling·Controlling 지분율 임계값(threshold)을 정의하면, 시스템은 각 Parent의 직접 소유 비율이 어느 구간에 속하는지에 따라 자동으로 지배관계를 판정합니다. 예를 들어 Noncontrolling 20%·Controlling 50%로 설정하면, 소유 비율이 50% 이상이면 지배 Parent, 20~50%이면 비지배 Parent, 20% 이하이면 EPU를 수행하지 않습니다.</p>
+      </div>
+
+      <div class="insight">
+        <div class="label">💡 예외 처리 · Force Control Indicator</div>
+        <p>지분율만으로 실제 지배력을 판단하기 어려운 경우(예: 40% 소유이지만 계약상 지배력 보유), FS Item을 Force Control Indicator로 지정해 특정 수량값(예: 1=지배, -1=비지배)을 리포트하면 지분율 임계값과 무관하게 지배관계를 강제로 override할 수 있습니다.</p>
+      </div>
+
+      <div class="generalize">
+        <div class="label">일반화 주의</div>
+        <p>Force Control Indicator의 override 기준은 SAP가 자동 판단해주는 것이 아니라, 계약·의결권 구조를 분석한 프로젝트 설계 결정을 시스템에 반영하는 수단일 뿐입니다. "몇 % 이상이면 무조건 지배"라는 식의 일반화된 규칙으로 이해해서는 안 됩니다.</p>
+      </div>
+
+      <div class="block">
+        <h3>Calculation Approach 1 vs 2</h3>
+        <table class="simple">
+          <tr><th>구분</th><th>Approach 1</th><th>Approach 2</th></tr>
+          <tr><td>NCI 표시 방식</td><td>지배 Parent가 피투자회사 지분 100%를 투자계정에 인식하고, 비지배지분은 별도 NCI FS Item에 분리 계상</td><td>NCI를 별도 FS Item으로 분리하지 않고, 투자계정 잔액 자체를 순지분(net share) 기준으로 차감 표시</td></tr>
+          <tr><td>투자계정 잔액</td><td>총지분 기준</td><td>순지분 기준</td></tr>
+        </table>
+      </div>
+
+      <div class="block">
+        <h3>ASPN 예시 — 다단계 투자 체인 (Approach 1)</h3>
+        <p>ASPN Holdings 산하에 ASPN Europe(지배 Parent)이 있고, ASPN Europe은 ASPN Tech 지분 100%, ASPN Energy Korea K300 지분 60%를 보유하며, ASPN Tech는 다시 ASPN Energy Korea K300 지분 10%를 보유하고 있다고 가정합니다(threshold: Noncontrolling 20%·Controlling 50%).</p>
+        <ul>
+          <li>ASPN Tech의 K300 지분(10%)은 threshold 이하이므로 EPU 대상에서 제외됩니다.</li>
+          <li>ASPN Europe의 K300 지분(60%)은 threshold 이상이므로 지배 Parent로서 EPU를 수행합니다.</li>
+          <li>EPU 순서는 항상 체인의 최하위(K300)에서 최상위(ASPN Europe) 방향으로 진행되며, ASPN Europe은 K300의 재평가된 지분변동분의 60%를 투자계정에 반영합니다.</li>
+        </ul>
+      </div>
+
+      <div class="caution">
+        <b>스탠딩 룰 · 소스 데이터 범위</b> — EPU는 원칙적으로 당기 순이익(Net Income)과 기타포괄손익(OCI) 변동분만 반영하며, 전기 이전 이익잉여금은 대상에서 제외됩니다. 소유권 변경이 있었던 경우, 신규 지배회사 인수 이전 시점의 피투자회사 지분가치는 EPU 대상에 포함되지 않습니다.
+      </div>
+
+      <div class="insight">
+        <div class="label">💡 순환출자(Circular Ownership) 케이스</div>
+        <p>A가 B의 지분을 보유하고 B도 A의 지분 일부를 보유하는 순환출자 구조에서는, 재평가된 순이익(A', B' 등)이 서로를 참조하는 연립방정식으로 표현됩니다. 예를 들어 A'=100+0.6B', B'=200+0.1A'라는 관계라면 두 식을 대입해 B'≈223.4, A'≈234.0처럼 수렴값을 계산합니다. 시스템은 이 계산을 자동 수행하지만, 대상 FS Item 선택 기준(Net Income·OCI 유형별 규칙)은 사전 구성이 필요합니다.</p>
+      </div>
+
+      <div class="block">
+        <h3>Reporting &amp; Analysis</h3>
+        <p>EPU 실행 결과는 EPUGroupJournalEntries.xlsx(Group Reporting 반영용)·EPU_GL_JournalEntries.xlsx(General Ledger 반영용)·EPU_LOG_YYYYMMDDnnnn.csv(계산 상세 로그) 세 파일로 로컬에 저장됩니다. Import Group Journal Entries 또는 Upload General Journal Entries 앱으로 업로드한 뒤, Group Data Analysis에서 EPU 반영 재무제표를 조회합니다.</p>
+      </div>
+
+      <div class="related">
+        <b>연관 챕터</b>
+        <span>Ch.2 GR Preparation Ledger</span><span>Ch.4 Flexible Derivation</span>
+      </div>
+    </section>
+
+    <!-- ================= CHAPTER 2 ================= -->
+    <section class="chapter" id="ch2">
+      <div class="chnum">CHAPTER 02</div>
+      <h2>Group Reporting Preparation Ledger 통합</h2>
+      <p class="sub">General Ledger 회계 데이터를 별도로 Group Reporting에 다시 전송하지 않고, 회계 원장 자체에 GR 관련 필드를 확장해 직접 연동하는 구조입니다. 데이터를 이중으로 왕복시키지 않는다는 점이 핵심입니다.</p>
+
+      <div class="block">
+        <h3>기존 방식 대비 이점</h3>
+        <ul>
+          <li>세밀한 수준의 재무 데이터에 조기 접근 가능</li>
+          <li>물류 문서 기반 예측치를 포함한 최신 데이터에 상시 접근</li>
+          <li>변경분만 릴리스(Delta Release)하여 전체 모드 릴리스로 인한 성능 저하 회피</li>
+          <li>특수기간(Special Period)으로 별도 릴리스 가능 — 마지막 정기 기간에 합산되는 문제 방지</li>
+        </ul>
+        <p>Define Group Reporting Preparation Ledgers 설정을 통해 Consolidation Group·Posting Level 등 GR 전용 필드가 General Ledger에 추가되며, 이 값들은 Release 태스크 실행 시 사전 정의된 Substitution Rule로 도출되어 회계 쪽에 함께 기록(replication)됩니다.</p>
+      </div>
+
+      <div class="block">
+        <h3>Setup 7단계 &amp; Posting Process</h3>
+        <div class="diagram">
+          <div class="flow">
+            <div class="step">1. 회계 전표 포스팅<br><span style="font-weight:400;color:var(--sub)">일반 회계 거래 발생</span></div>
+            <div class="arrow">→</div>
+            <div class="step">2. Universal Journal Release<br><span style="font-weight:400;color:var(--sub)">Data Monitor에서 활성화</span></div>
+            <div class="arrow">→</div>
+            <div class="step">3. Line Item Validation<br><span style="font-weight:400;color:var(--sub)">Data Monitor 로그 확인</span></div>
+            <div class="arrow">→</div>
+            <div class="step">4. 빈 필드 값 점검<br><span style="font-weight:400;color:var(--sub)">Validation of Totals Data</span></div>
+            <div class="arrow">→</div>
+            <div class="step">5~6. 오류 수정<br><span style="font-weight:400;color:var(--sub)">회계 재반제 또는 GR 수기 수정</span></div>
+            <div class="arrow">→</div>
+            <div class="step">7~8. Balance Carryforward<br><span style="font-weight:400;color:var(--sub)">회계·Data Monitor 양쪽 실행</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Currency Source 옵션</h3>
+        <table class="simple">
+          <tr><th>옵션</th><th>내용</th></tr>
+          <tr><td>Group Currency Source</td><td>회계 필드 중 하나를 그룹통화 소스로 지정(선택). 지정 시 해당 필드 통화는 반드시 버전의 Group Currency와 일치해야 함</td></tr>
+          <tr><td>Local Currency Source</td><td>회사 코드에 배정된 Defined Currency 1과 일치해야 하며, 미지정 시 기능통화(Functional Currency)가 기본 소스로 사용됨</td></tr>
+          <tr><td>Quantity Source</td><td>Universal Journal 내 수량 필드를 Quantity 값의 소스로 지정(선택)</td></tr>
+        </table>
+      </div>
+
+      <div class="caution">
+        <b>스탠딩 룰 · From Year 선행 조건</b> — From Year for Group Reporting Preparation Ledger는 Check Global System Settings에서 최초 1회 설정하는 통합의 시작 시점입니다. 이 시점 이후로는 GR Preparation Ledger 통합이 회계-GR 연동의 유일한 경로가 되며, Release Universal Journals 태스크를 통해서만 연동해야 합니다. 설정 이후 되돌리거나 재정의할 수 없으므로 신중한 사전 검토가 필요합니다.
+      </div>
+
+      <div class="insight">
+        <div class="label">💡 병행 지원 · Integration with G/L Accounts</div>
+        <p>회계 데이터 일부가 SAP 시스템 외부에서 GR로 직접 로드되는 경우 등 모든 데이터가 회계에 있지 않은 케이스도 지원됩니다. 기존 연동 방식인 Integration with G/L Accounts는 여전히 사용 가능하나, From Year 이후에는 신규 방식(Preparation Ledger)으로 전환하는 것이 표준입니다.</p>
+      </div>
+
+      <div class="related">
+        <b>연관 챕터</b>
+        <span>Ch.1 Equity Pickup</span><span>Ch.4 Flexible Derivation</span>
+      </div>
+    </section>
+
+    <!-- ================= CHAPTER 3 ================= -->
+    <section class="chapter" id="ch3">
+      <div class="chnum">CHAPTER 03</div>
+      <h2>Custom Sign Convention — 자체 부호 로직</h2>
+      <p class="sub">SAP 표준 Sign Logic은 모든 FS Item의 양수 금액을 차변(Debit), 음수 금액을 대변(Credit)으로 해석합니다(예: 수익은 음수로 저장). Custom Sign Convention은 FS Item Type·FS Item 레벨에서 이 해석을 프로젝트 요구에 맞게 재정의할 수 있게 합니다.</p>
+
+      <div class="block">
+        <h3>설정 절차</h3>
+        <div class="diagram">
+          <div class="flow">
+            <div class="step">1. Global System Settings<br><span style="font-weight:400;color:var(--sub)">Debit/Credit Indicator + Customer-Defined Sign Convention 체크박스 활성화</span></div>
+            <div class="arrow">→</div>
+            <div class="step">2. Default Sign Convention 정의<br><span style="font-weight:400;color:var(--sub)">Define Default Sign Convention for FS Item Types에서 FS Item Type별 Debit/Credit Item 지정</span></div>
+          </div>
+        </div>
+        <p>Debit Item으로 지정하면 양수=차변·음수=대변, Credit Item으로 지정하면 음수=차변·양수=대변으로 해석됩니다. FS Item Type 레벨 기본값은 개별 FS Item 레벨에서 재정의(override)할 수도 있습니다.</p>
+      </div>
+
+      <div class="caution">
+        <b>스탠딩 룰 · 활성화 시점 제약</b> — Customer-Defined Sign Convention 기능을 활성화·비활성화하면, 이미 Credit Item으로 설정된 FS Item의 증가·감소 포스팅 해석이 정반대로 뒤바뀝니다. 따라서 이 스위치는 GR에 이미 트랜잭션 데이터가 존재하는 시스템에서는 변경해서는 안 되며, FS Item Type·FS Item 레벨 기본값 점검도 반드시 데이터 발생 이전에 완료해야 합니다.
+      </div>
+
+      <div class="block">
+        <h3>활성화 시 영향 범위</h3>
+        <p>Custom Sign Convention 활성화는 Release Universal Journal 태스크, GR 핵심 기능, Analytics for Group Reporting, 데이터 수집 앱, SAC 계획 데이터 Import, 수기 그룹 전표 앱, Line Item Validation, Task Logs 등 GR 전반의 처리 로직에 영향을 미칩니다.</p>
+      </div>
+
+      <div class="generalize">
+        <div class="label">일반화 주의 · 비활성화되는 기능</div>
+        <p>Custom Sign Convention을 활성화하면 SAC로부터의 계획 데이터 Export, Copy Transaction Data(거래 데이터 복사), Mass Reversal(일괄 반제) 세 기능이 비활성화됩니다. "부호 로직만 바뀔 뿐 다른 기능은 그대로"라고 단정해서는 안 됩니다.</p>
+      </div>
+
+      <div class="related">
+        <b>연관 챕터</b>
+        <span>Ch.2 GR Preparation Ledger</span><span>Ch.4 Flexible Derivation</span>
+      </div>
+    </section>
+
+    <!-- ================= CHAPTER 4 ================= -->
+    <section class="chapter" id="ch4">
+      <div class="chnum">CHAPTER 04</div>
+      <h2>Flexible Derivation of Consolidation Units &amp; Partner Units</h2>
+      <p class="sub">하나의 Company(회사)를 복수의 Consolidation Unit에 매핑해두고, 회계 포스팅 시점에 Segment·Profit Center 등 추가 기준에 따라 그중 하나를 자동으로 도출(derive)하는 기능입니다. 회사 단위로만 존재하던 조직구조를, 세그먼트별 연결처럼 더 세분화된 기준으로 쪼개고 싶을 때 사용합니다.</p>
+
+      <div class="block">
+        <h3>전제조건</h3>
+        <ul>
+          <li>From Year for Group Reporting Preparation Ledger 이후 회계기간에서 작업 중이어야 함(그 이전 기간은 Company와 동일 ID의 Consolidation Unit에 자동 배정됨)</li>
+          <li>Plan Version이 아닌 버전에서 작업 중이어야 함(Plan Version에서는 항상 동일 ID CU에 자동 배정)</li>
+          <li>동일 회계기간에는 하나의 Consolidation Unit에 하나의 Company만 배정 가능(단, 하나의 Company는 여러 CU에 배정 가능)</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <h3>3단계 도출 프로세스</h3>
+        <div class="diagram">
+          <div class="flow">
+            <div class="step">1. Company 복수 매핑<br><span style="font-weight:400;color:var(--sub)">Define Consolidation Units / Import Consolidation Master Data</span></div>
+            <div class="arrow">→</div>
+            <div class="step">2. Substitution Rule 도출<br><span style="font-weight:400;color:var(--sub)">Segment·Profit Center 등 기준으로 CU 하나 선택</span></div>
+            <div class="arrow">→</div>
+            <div class="step">3. Universal Journal 반영<br><span style="font-weight:400;color:var(--sub)">도출된 CU가 회계 전표에 영구 기록(persist)됨</span></div>
+          </div>
+        </div>
+        <p>Trading Partner가 존재하는 포스팅은 CU 도출이 트리거된 직후 Partner Unit 도출도 동일한 3단계 구조로 이어서 실행됩니다.</p>
+      </div>
+
+      <div class="block">
+        <h3>Consolidation Unit 유도 vs Partner Unit 유도 — 차이점</h3>
+        <table class="simple">
+          <tr><th>구분</th><th>Consolidation Unit 유도</th><th>Partner Unit 유도</th></tr>
+          <tr><td>Business Context</td><td class="mono">GRPL core fields</td><td class="mono">GRPL subassignments to FS item</td></tr>
+          <tr><td>Target Field</td><td class="mono">ConsolidationUnit</td><td class="mono">PartnerConsolidationUnit</td></tr>
+          <tr><td>Lookup 조건 필드</td><td>일반 필드(예: Segment)</td><td>Partner 변형 필드(예: PartnerSegment)</td></tr>
+        </table>
+      </div>
+
+      <div class="block">
+        <h3>ASPN 예시 — 세그먼트별 분할 포스팅</h3>
+        <p>ASPN Tech(IT 서비스)가 하나의 Company로 존재하지만, 내부적으로 클라우드 사업부·SI 사업부 두 세그먼트를 각각 별도 Consolidation Unit(<span class="kw">ASPN_TECH_CLOUD</span>, <span class="kw">ASPN_TECH_SI</span>)으로 연결·보고하고 싶다고 가정합니다. Define Consolidation Units에서 ASPN Tech를 두 CU 모두에 배정한 뒤, Segment 필드를 조건으로 하는 Substitution Rule을 만들면, 회계 전표의 Segment 값에 따라 두 CU 중 하나가 자동 도출됩니다. 이렇게 도출된 CU 기준으로 계층(Hierarchy) 또는 Consolidation Group을 구성하면 세그먼트별 연결·보고가 가능해집니다.</p>
+      </div>
+
+      <div class="block">
+        <h3>Table Lookup — 다수 CU를 하나의 규칙으로 처리</h3>
+        <p>도출 대상 CU가 많을 경우, CU마다 개별 Substitution Rule을 만드는 대신 Table Lookup 방식을 사용합니다. Custom Business Object로 Lookup Table을 만들어 Company Code·Segment 등을 Key 필드로, Consolidation Unit을 결과 필드로 정의한 뒤, 하나의 Substitution Rule에서 이 테이블을 참조해 여러 CU를 한 번에 도출합니다.</p>
+      </div>
+
+      <div class="caution">
+        <b>스탠딩 룰 · Lookup Table 정합성 미검증</b> — Lookup Table 항목을 생성할 때 시스템은 Consolidation Unit Master Data와의 정합성을 자동 검증하지 않습니다. 예를 들어 동일 CU에 서로 다른 Company Code를 매핑하는 모순된 항목을 만들 수 있는데, 이 경우 3단계(Universal Journal 반영) 시점에 정합성이 재검증되어 모순된 CU 값은 초기화(clear)되거나 되돌려집니다. Lookup Table 유지보수 시 Master Data와의 일치 여부를 별도로 확인해야 합니다.
+      </div>
+
+      <div class="related">
+        <b>연관 챕터</b>
+        <span>Ch.2 GR Preparation Ledger</span><span>Ch.3 Custom Sign Convention</span>
+      </div>
+    </section>
+
+    <!-- ================= CHAPTER 5 ================= -->
+    <section class="chapter" id="ch5">
+      <div class="chnum">CHAPTER 05</div>
+      <h2>SAP Green Ledger 통합 — 탄소회계 연계</h2>
+      <p class="sub">SAP Green Ledger는 여러 입력 채널의 탄소 데이터를 수집·집계해 재무보고와 결합하는 솔루션입니다. Group Reporting과 통합하면 온실가스(GHG) 데이터를 재무제표의 부채 항목으로 반영하고, 분석·감사 리포트에 활용할 수 있습니다.</p>
+
+      <div class="block">
+        <h3>전제조건 — 계정 및 재무제표 구조</h3>
+        <p>다음 4개의 대차대조표 계정(G/L Account Type: Balance Sheet Accounts)을 생성해야 합니다.</p>
+        <ul>
+          <li>Carbon Transition Account</li>
+          <li>GHG Liabilities Account</li>
+          <li>GHG Liabilities Transferred to Customers</li>
+          <li>Retained GHG Liabilities</li>
+        </ul>
+        <p>이 계정들은 Financial Statement Version의 Liabilities and Equity 노드 아래 <span class="kw">GHG Liabilities</span>라는 별도 서브노드에 배정합니다.</p>
+      </div>
+
+      <div class="block">
+        <h3>연동 아키텍처 — BTP 기반 Data Mapping</h3>
+        <div class="diagram">
+          <div class="flow">
+            <div class="step">1. API 노출<br><span style="font-weight:400;color:var(--sub)">BTP Cockpit에서 JournalEntryEmissions API 노출</span></div>
+            <div class="arrow">→</div>
+            <div class="step">2. Destination 생성<br><span style="font-weight:400;color:var(--sub)">GR Data Collection 서브계정에 OAuth2 Destination 구성</span></div>
+            <div class="arrow">→</div>
+            <div class="step">3. Data Mapping 정의<br><span style="font-weight:400;color:var(--sub)">Source Filter + Mapping File로 GR FS Item에 매핑</span></div>
+            <div class="arrow">→</div>
+            <div class="step">4. Mapping Job 실행<br><span style="font-weight:400;color:var(--sub)">ACDOCU 테이블에 집계 데이터 적재</span></div>
+          </div>
+        </div>
+        <p>연동은 Datasphere를 경유하지 않고 SAP Group Reporting Data Collection의 OData Custom Connection을 통해 직접 이루어지며, Mapping Log·Import Log 및 선택적 Traceability Log로 데이터 흐름을 추적할 수 있습니다.</p>
+      </div>
+
+      <div class="block">
+        <h3>GHG 관련 추가 필드</h3>
+        <p>Enable Greenhouse Gas Fields in Group Reporting 비즈니스 기능을 활성화하면 GHG Scope, GHG Category, GHG Scope 2 Calculation Method, GHG Energy Classification, Sustainability Mode of Transport 등의 필드가 활성화되어 Group Data Analysis, Define Selections, Post Group Journal Entries 등 기존 GR 앱에서 그대로 사용할 수 있습니다.</p>
+      </div>
+
+      <div class="caution">
+        <b>Constraints</b> — GHG 관련 필드는 Release Universal Journal 태스크로는 전송되지 않으며, 지분법 기준 투자 처리(Activity-Based Consolidation of Investments)에서도 처리되지 않습니다. 이 두 시나리오에서는 별도 데이터 반영 경로(Data Mapping Job, 수기 입력 등)를 설계해야 합니다.
+      </div>
+
+      <div class="block">
+        <h3>ASPN 예시 — ASPN Energy Korea(K300)</h3>
+        <p>ASPN Energy Korea(K300)는 그룹 내 에너지·유틸리티 사업부로, 발전·송배전 과정에서 발생하는 온실가스 데이터를 정기적으로 집계해야 하는 특성상 Green Ledger 연동의 적용 대상으로 적합합니다. K300의 Green Ledger 인스턴스에서 JournalEntryEmissions API를 노출하고 GHG Scope·Category 필드를 GR FS Item에 매핑하면, ASPN Holdings 연결 재무제표의 GHG Liabilities 노드에서 K300의 탄소 부채를 다른 계열사(ASPN Tech, ASPN Europe 등)와 동일한 Group Data Analysis 화면으로 조회할 수 있습니다. 다만 이는 SAP 표준 기능 범위 내 구조 설명이며, K300의 실제 배출량·회계처리 세부사항은 별도 검증이 필요합니다.</p>
+      </div>
+
+      <div class="insight">
+        <div class="label">💡 최신성 확인 필요</div>
+        <p>Green Ledger 통합은 비교적 최근에 추가된 영역으로 Public Cloud 릴리스별 지원 범위가 달라질 수 있습니다. 프로젝트 적용 전 SAP Road Map Explorer에서 해당 릴리스의 지원 여부를 확인하는 것을 권장합니다.</p>
+      </div>
+
+      <div class="related">
+        <b>연관 챕터</b>
+        <span>Ch.2 GR Preparation Ledger</span><span>Ch.6 통합 정리</span>
+      </div>
+    </section>
+
+    <!-- ================= CHAPTER 6 ================= -->
+    <section class="chapter" id="ch6">
+      <div class="chnum">CHAPTER 06</div>
+      <h2>Focus Topics 통합 정리 &amp; 시리즈 마무리</h2>
+      <p class="sub">5가지 Focus Topic은 서로 독립적으로 필요할 때만 켜는 기능들입니다. "언제 이 기능을 검토해야 하는가"를 기준으로 한 페이지로 정리합니다.</p>
+
+      <div class="block">
+        <h3>Focus Topics 의사결정 매트릭스</h3>
+        <table class="simple">
+          <tr><th>Topic</th><th>검토가 필요한 상황</th></tr>
+          <tr><td><b>Equity Pickup</b></td><td>지분법 대상 투자주식의 가치를 최신 지분 변동분으로 재평가해야 할 때</td></tr>
+          <tr><td><b>GR Prep Ledger 통합</b></td><td>회계-GR 데이터 왕복을 줄이고 실시간에 가까운 연결 데이터 접근이 필요할 때</td></tr>
+          <tr><td><b>Custom Sign Convention</b></td><td>SAP 표준 부호 해석이 사내 회계 관행과 맞지 않아 자체 규칙이 필요할 때</td></tr>
+          <tr><td><b>Flexible Derivation of CU</b></td><td>하나의 법인을 세그먼트·Profit Center 등 추가 기준으로 쪼개 연결해야 할 때</td></tr>
+          <tr><td><b>SAP Green Ledger 통합</b></td><td>탄소회계 데이터를 재무제표·연결 리포트에 통합해야 할 때</td></tr>
+        </table>
+      </div>
+
+      <div class="insight">
+        <div class="label">📎 참고 · Configuration 레퍼런스는 별도 자료로</div>
+        <p>이번 File의 원본 문서 후반부에는 GR 모듈 전반의 공통 Configuration 활동(Elimination Method, Substitution/Validation Rule 등)을 다루는 별도 레퍼런스 섹션이 있으나, 그 상당 부분이 File 3·4에서 이미 다룬 내용과 겹칩니다. 중복을 피하기 위해 이 File에서는 다루지 않으며, 컨설턴트 실무용 Configuration 체크리스트로 별도 정리할 예정입니다.</p>
+      </div>
+
+      <div class="insight">
+        <div class="label">📎 시리즈 진행 상황</div>
+        <p>File 1(연결·조직구조) → File 2(Period &amp; Data Preparation) → File 3(ICMR 매칭·조정) → File 4(Consolidation Process) → File 5(Analytics for Group Reporting) → <b>File 6(Focus Topics &amp; Advanced Integration)</b>까지, 데이터 준비부터 연결 확정, 결과 분석, 그리고 특수 상황에서 필요한 심화 프로세스까지 SAP Group Reporting 교육 시리즈를 마무리합니다.</p>
+      </div>
+
+      <div class="related">
+        <b>연관 챕터</b>
+        <span>Ch.1 Equity Pickup</span><span>Ch.5 Green Ledger</span>
+      </div>
+    </section>
+
+
+  </main>
+</div>
+
+<footer class="pagefoot">
+  ASPN BAC · SAP Group Reporting Essentials — File 6 of 6 (Focus Topics &amp; Advanced Integration)<br>
+  본 자료는 SAP 공식 Help 문서를 기반으로 실무 교육 목적에 맞게 재구성한 것으로, 특정 프로젝트 설계를 대체하지 않습니다.
+  <div class="footnav">
+    <a href="GroupReporting_Index.html">☰ 시리즈 인덱스로</a>
+    <a href="GroupReporting_Ch5_AnalyticsForGroupReporting.html">← File 5: Analytics for Group Reporting</a>
+    <a href="GroupReporting_Index.html">시리즈 완료 · 인덱스로 →</a>
+  </div>
+</footer>
+
+<script>
+  const links = document.querySelectorAll('nav.chapters a[href^="#"]');
+  const sections = document.querySelectorAll('.chapter');
+  function onScroll(){
+    let current = sections[0].id;
+    sections.forEach(sec=>{
+      const rect = sec.getBoundingClientRect();
+      if(rect.top <= 120) current = sec.id;
+    });
+    links.forEach(a=>{
+      a.classList.toggle('active', a.getAttribute('href') === '#'+current);
+    });
+  }
+  document.addEventListener('scroll', onScroll);
+  onScroll();
+</script>
+
+</body>
+</html>

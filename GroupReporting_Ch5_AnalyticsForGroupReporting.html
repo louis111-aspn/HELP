@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Group Reporting — Analytics for Group Reporting | ASPN BAC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0B2447;
+    --navy-2:#13315C;
+    --ink:#1C2530;
+    --sub:#5B6675;
+    --line:#E3E7ED;
+    --bg:#FAFBFC;
+    --card:#FFFFFF;
+    --btp-orange:#FF6A13;
+    --btp-orange-soft:#FFF1E6;
+    --mono:'JetBrains Mono','Noto Sans KR',monospace;
+    --sans:'Inter','Noto Sans KR',sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--sans);
+    overflow-x:clip;
+    line-height:1.7;
+  }
+  /* ---------- HEADER ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:var(--navy); color:#fff;
+    padding:14px 32px;
+    display:flex; align-items:center; justify-content:space-between;
+    border-bottom:3px solid var(--btp-orange);
+    flex-wrap:wrap; gap:8px;
+  }
+  .topbar .brand{font-weight:800; letter-spacing:.02em; font-size:15px;}
+  .topbar .brand span{color:var(--btp-orange);}
+  .topbar .meta{font-family:var(--mono); font-size:11px; color:#B8C4D9; letter-spacing:.03em;}
+  .topbar .pagenav{display:flex; align-items:center; gap:14px; font-family:var(--mono); font-size:11.5px;}
+  .topbar .pagenav a{color:#DCE5F2; text-decoration:none; padding:4px 10px; border:1px solid rgba(255,255,255,.25); border-radius:14px; transition:all .15s ease; white-space:nowrap;}
+  .topbar .pagenav a:hover{background:rgba(255,255,255,.12); border-color:rgba(255,255,255,.5);}
+  .topbar .pagenav a.next{color:#fff; background:var(--btp-orange); border-color:var(--btp-orange); font-weight:700;}
+  .topbar .pagenav a.next:hover{background:#e85f0f;}
+  .topbar .pagenav a.disabled{opacity:.35; pointer-events:none;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:64px 32px 56px; max-width:1180px; margin:0 auto;
+  }
+  .hero .eyebrow{
+    font-family:var(--mono); font-size:12px; color:var(--btp-orange);
+    font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  .hero h1{
+    font-size:38px; font-weight:900; color:var(--navy); margin:0 0 18px;
+    letter-spacing:-0.01em; max-width:820px;
+  }
+  .hero p.lead{
+    font-size:16px; color:var(--sub); max-width:680px; margin:0 0 28px;
+  }
+  .hero .tags{display:flex; gap:8px; flex-wrap:wrap;}
+  .hero .tag{
+    font-family:var(--mono); font-size:11px; padding:6px 12px;
+    border:1px solid var(--line); border-radius:20px; color:var(--navy-2);
+    background:#fff;
+  }
+
+  /* ---------- LAYOUT ---------- */
+  .layout{
+    display:grid; grid-template-columns:250px 1fr;
+    max-width:1180px; margin:0 auto; gap:48px;
+    padding:0 32px 100px;
+  }
+  nav.chapters{
+    position:sticky; top:64px; align-self:start;
+    height:fit-content;
+    padding-top:8px;
+  }
+  nav.chapters .navlabel{
+    font-family:var(--mono); font-size:11px; color:var(--sub);
+    text-transform:uppercase; letter-spacing:.08em; margin-bottom:14px;
+  }
+  nav.chapters a{
+    display:block; padding:10px 0 10px 14px;
+    border-left:2px solid var(--line);
+    color:var(--sub); text-decoration:none; font-size:13.5px; font-weight:500;
+    transition:all .15s ease;
+  }
+  nav.chapters a:hover{color:var(--navy); border-left-color:var(--navy-2);}
+  nav.chapters a.active{
+    color:var(--navy); border-left-color:var(--btp-orange); font-weight:700;
+  }
+  nav.chapters a .num{font-family:var(--mono); color:var(--btp-orange); margin-right:6px;}
+  nav.chapters .navfoot{
+    margin-top:24px; padding-top:16px; border-top:1px solid var(--line);
+    font-size:11.5px; color:var(--sub); line-height:1.7;
+  }
+  nav.chapters .navfoot a{display:inline; padding:0; border:none; color:var(--navy-2); font-weight:600;}
+  nav.chapters .navfoot a:hover{text-decoration:underline;}
+
+  main{min-width:0;}
+
+  /* ---------- CHAPTER ---------- */
+  .chapter{
+    padding:52px 0; border-bottom:1px solid var(--line);
+    scroll-margin-top:80px;
+  }
+  .chapter:last-child{border-bottom:none;}
+  .chapter .chnum{
+    font-family:var(--mono); color:var(--btp-orange); font-weight:700;
+    font-size:13px; margin-bottom:8px;
+  }
+  .chapter h2{
+    font-size:27px; font-weight:800; color:var(--navy); margin:0 0 6px;
+    letter-spacing:-0.01em;
+  }
+  .chapter .sub{color:var(--sub); font-size:14.5px; margin:0 0 28px;}
+
+  .block{margin-bottom:30px;}
+  .block h3{
+    font-size:15px; font-weight:700; color:var(--navy-2);
+    display:flex; align-items:center; gap:10px; margin:0 0 14px;
+  }
+  .block h3::before{
+    content:""; width:8px; height:8px; background:var(--navy-2); border-radius:2px; flex:none;
+  }
+  .block p{font-size:15px; color:var(--ink); margin:0 0 12px;}
+  .block ul{margin:0 0 12px; padding-left:20px;}
+  .block li{font-size:14.5px; margin-bottom:8px; color:var(--ink);}
+  .block li b{color:var(--navy);}
+
+  code, .kw{
+    font-family:var(--mono); font-size:.92em; background:#EEF2F8; color:var(--navy-2);
+    padding:1px 6px; border-radius:4px;
+  }
+
+  /* insight box */
+  .insight{
+    background:var(--btp-orange-soft); border:1px solid #FFD9B8;
+    border-left:4px solid var(--btp-orange);
+    border-radius:6px; padding:20px 22px; margin:24px 0;
+  }
+  .insight .label{
+    font-family:var(--mono); font-size:11px; font-weight:700; color:var(--btp-orange);
+    text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px;
+    display:flex; align-items:center; gap:6px;
+  }
+  .insight p{font-size:14.5px; margin:0 0 8px; color:#3d2b1a;}
+  .insight p:last-child{margin-bottom:0;}
+
+  /* caution box */
+  .caution{
+    background:#F4F5F7; border:1px dashed #B9C0CC;
+    border-radius:6px; padding:16px 20px; margin:20px 0;
+    font-size:13.5px; color:var(--sub);
+  }
+  .caution b{color:var(--navy);}
+
+  /* concept box - navy reaffirmation */
+  .concept{
+    background:#EEF2F8; border:1px solid #C9D6E8;
+    border-left:4px solid var(--navy-2);
+    border-radius:6px; padding:20px 22px; margin:24px 0;
+  }
+  .concept .label{
+    font-family:var(--mono); font-size:11px; font-weight:700; color:var(--navy-2);
+    text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px;
+  }
+  .concept p{font-size:14.5px; margin:0; color:var(--ink);}
+
+  /* generalize box - red caution */
+  .generalize{
+    background:#FDECEC; border:1px solid #F3C6C6;
+    border-left:4px solid #8A1F2D;
+    border-radius:6px; padding:20px 22px; margin:24px 0;
+  }
+  .generalize .label{
+    font-family:var(--mono); font-size:11px; font-weight:700; color:#8A1F2D;
+    text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px;
+  }
+  .generalize p{font-size:14.5px; margin:0; color:#4a1319;}
+
+  /* related */
+  .related{
+    margin-top:32px; padding-top:20px; border-top:1px solid var(--line);
+    font-size:13px; color:var(--sub);
+  }
+  .related b{color:var(--navy); font-weight:700; margin-right:8px;}
+  .related span{
+    font-family:var(--mono); font-size:12px; color:var(--navy-2);
+    background:#EEF2F8; padding:3px 9px; border-radius:12px; margin:2px 4px 2px 0; display:inline-block;
+  }
+
+  /* diagram containers */
+  .diagram{
+    background:#fff; border:1px solid var(--line); border-radius:10px;
+    padding:26px; margin:22px 0;
+  }
+  .flow{display:flex; align-items:center; gap:0; flex-wrap:wrap;}
+  .flow .step{
+    flex:1; min-width:110px; text-align:center; padding:14px 8px;
+    background:#F5F7FA; border:1px solid var(--line); border-radius:8px;
+    font-size:12.5px; font-weight:600; color:var(--navy-2);
+  }
+  .flow .arrow{
+    flex:none; width:26px; text-align:center; color:var(--btp-orange); font-size:16px; font-weight:700;
+  }
+
+  .compare{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .compare .col{
+    background:#F5F7FA; border:1px solid var(--line); border-radius:8px; padding:18px;
+  }
+  .compare .col.hi{border-color:var(--btp-orange); background:var(--btp-orange-soft);}
+  .compare .col h4{margin:0 0 10px; font-size:13.5px; color:var(--navy); font-weight:800;}
+  .compare .col ul{margin:0; padding-left:18px;}
+  .compare .col li{font-size:13px; margin-bottom:6px;}
+
+  table.simple{width:100%; border-collapse:collapse; margin:16px 0; font-size:13.5px;}
+  table.simple th{
+    background:var(--navy); color:#fff; text-align:left; padding:10px 12px; font-weight:600;
+  }
+  table.simple td{padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top;}
+  table.simple tr:nth-child(even) td{background:#F7F9FB;}
+  table.simple td.mono, table.simple th.mono{font-family:var(--mono); font-size:12.5px;}
+
+  .orgbox{
+    display:flex; flex-direction:column; align-items:center; gap:6px;
+  }
+  .org-node{
+    background:var(--navy); color:#fff; padding:10px 18px; border-radius:6px;
+    font-size:13px; font-weight:700;
+  }
+  .org-node.unit{background:#fff; color:var(--navy); border:2px solid var(--navy-2); font-weight:600;}
+  .org-children{display:flex; gap:14px; margin-top:10px; flex-wrap:wrap; justify-content:center;}
+  .org-line{width:2px; height:16px; background:var(--line);}
+
+  /* task flow (step-by-step vertical checklist) */
+  .taskflow{display:flex; flex-direction:column; gap:0;}
+  .taskrow{
+    display:grid; grid-template-columns:34px 1fr; gap:12px; align-items:flex-start;
+    padding:10px 0; position:relative;
+  }
+  .taskrow .dot{
+    width:26px; height:26px; border-radius:50%; background:var(--navy);
+    color:#fff; font-family:var(--mono); font-size:11px; font-weight:700;
+    display:flex; align-items:center; justify-content:center; flex:none;
+  }
+  .taskrow .dot.gate{background:var(--btp-orange);}
+  .taskrow .body b{color:var(--navy); font-size:13.5px;}
+  .taskrow .body p{margin:2px 0 0; font-size:13px; color:var(--sub);}
+  .taskrow:not(:last-child)::before{
+    content:""; position:absolute; left:16px; top:36px; width:2px; height:calc(100% - 20px);
+    background:var(--line);
+  }
+
+  footer.pagefoot{
+    max-width:1180px; margin:0 auto; padding:36px 32px 60px;
+    color:var(--sub); font-size:12.5px; font-family:var(--mono);
+    border-top:1px solid var(--line);
+  }
+  footer.pagefoot .footnav{
+    display:flex; gap:16px; margin-top:14px; flex-wrap:wrap;
+  }
+  footer.pagefoot .footnav a{
+    color:var(--navy-2); text-decoration:none; border-bottom:1px dotted var(--navy-2);
+  }
+  footer.pagefoot .footnav a:hover{color:var(--navy);}
+
+  @media (max-width:860px){
+    .layout{grid-template-columns:1fr;}
+    nav.chapters{position:static; display:flex; flex-direction:column; overflow-x:auto; gap:4px; padding-bottom:8px;}
+    .compare{grid-template-columns:1fr;}
+    .topbar{flex-direction:column; align-items:flex-start;}
+  }
+
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">ASPN <span>BAC</span> · SAP Group Reporting 교육 시리즈</div>
+  <div class="meta">FILE 5 / 6 — ANALYTICS FOR GROUP REPORTING</div>
+  <div class="pagenav">
+    <a href="GroupReporting_Index.html">☰ 인덱스</a>
+    <a href="GroupReporting_Ch4_ConsolidationProcess.html">← File 4</a>
+    <a class="next" href="GroupReporting_Ch6_FocusTopics.html">다음: File 6 →</a>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="eyebrow">Group Reporting Essentials · Chapter 5 of 6</div>
+  <h1>Analytics for Group Reporting — 연결결과를 어떻게 읽고, 확장하고, 계획에 연결하는가</h1>
+  <p class="lead">File 4까지의 태스크를 거쳐 연결 데이터가 확정되면, 이제 질문은 "이 데이터를 어떤 관점에서 읽을 것인가"로
+    바뀝니다. 이번 File은 Group Data Analysis의 3가지 조회 관점, Reporting Rules를 통한 리포트 확장,
+    Custom Attributes, Review Booklet, 그리고 SAC 연동 기반의 Plan Consolidation·Restatement까지 다룹니다.
+    예시 수치는 ASPN 픽션 시나리오(ASPN Holdings 그룹)로 재구성했습니다.</p>
+  <div class="tags">
+    <div class="tag">SAP S/4HANA Cloud Public Edition</div>
+    <div class="tag">Analytics for Group Reporting</div>
+    <div class="tag">SAC 연동 · Plan Consolidation</div>
+  </div>
+</div>
+
+<div class="layout">
+  <nav class="chapters" id="chapNav">
+    <div class="navlabel">Chapters</div>
+    <a href="#ch1"><span class="num">01</span>Analytics 개요 · Reporting Logic</a>
+    <a href="#ch2"><span class="num">02</span>Group Data Analysis 실전</a>
+    <a href="#ch3"><span class="num">03</span>Reporting Items · Rules</a>
+    <a href="#ch4"><span class="num">04</span>Custom Attributes 확장</a>
+    <a href="#ch5"><span class="num">05</span>Review Booklet</a>
+    <a href="#ch6"><span class="num">06</span>Plan Consolidation · Restatement</a>
+    <div class="navfoot">
+File 4 ← <b style="color:var(--navy)">현재: File 5</b> → <a href="GroupReporting_Ch6_FocusTopics.html">File 6</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ================= CHAPTER 1 ================= -->
+    <section class="chapter" id="ch1">
+      <div class="chnum">CHAPTER 01</div>
+      <h2>Analytics 개요 &amp; Reporting Logic (New)</h2>
+      <p class="sub">Analytics for Group Reporting는 소거 전(Contribution) 또는 소거 후(Consolidated) 관점에서 데이터를 보여주는 분석 리포트 앱군입니다. 이 모든 앱의 밑바탕에는 하나의 공통된 Reporting Logic이 깔려 있습니다.</p>
+
+      <div class="block">
+        <h3>공통 전제조건</h3>
+        <p>Analytics 앱을 실행하기 전에는 다음 Master Data·설정이 먼저 구성되어 있어야 합니다.</p>
+        <ul>
+          <li>조직 단위 Master Data(Consolidation Unit, Profit Center, Segment 등)</li>
+          <li>FS Item Hierarchy(예: 재무상태표·손익계산서 계층)</li>
+          <li>필요 시 Reporting Rules 및 Reporting Item Hierarchy 설정</li>
+        </ul>
+        <p>이 전제 위에서 필터를 적용해 재무상태표·손익계산서 등을 생성하고, 필요한 차원을 행/열로 자유롭게 추가하며, 최하위 노드(Leaf Node) 금액을 클릭해 전표 라인 항목까지 드릴스루할 수 있습니다.</p>
+      </div>
+
+      <div class="insight">
+        <div class="label">💡 표준 지원 수준 · 커스텀 리포트</div>
+        <p>표준 화면 외에 직접 커스텀 리포트를 만들 수도 있습니다. Reporting Rules 없이 조회할 때는 CDS 뷰 <span class="kw">C_CnsldtnGrpJrnlItemQ</span>(쿼리 2CCSGRPJRNLITMQ)를, Reporting Rules를 적용해 조회할 때는 <span class="kw">C_CnsldtnRuleBsdGrpJrnlItemQ</span>(쿼리 2CCSRBGRPJRNLITMQ)를 사용합니다.</p>
+      </div>
+
+      <div class="block">
+        <h3>3가지 조회 관점 — Group / Hierarchical / Combined View</h3>
+        <table class="simple">
+          <tr><th>관점</th><th>기준 축</th><th>특징</th></tr>
+          <tr><td>Group Consolidation View</td><td>Consolidation Group</td><td>편입된 Consolidation Unit의 플랫 리스트 + 취득일·처분일·연결방법 등 그룹종속 속성. Manage Group Structure(Group/Unit View)로 관리</td></tr>
+          <tr><td>Hierarchical Consolidation View</td><td>CU·Profit Center·Segment 계층</td><td>Manage Consolidation Hierarchies에서 정의한 조직 계층 기반. 유연한 재조직(Reorganization) 시나리오에 적합</td></tr>
+          <tr><td>Combined View</td><td>Group + Hierarchy 동시 지정</td><td>두 축을 함께 적용해 계층별 관점에서 그룹종속 항목(PCC, 지분법 등)까지 확인</td></tr>
+        </table>
+      </div>
+
+      <div class="block">
+        <h3>Posting Level(PL)별 처리 차이 — Hierarchy View 기준</h3>
+        <table class="simple">
+          <tr><th>관련 PL</th><th>Hierarchy 조직축 처리</th></tr>
+          <tr><td class="mono">Blank / 00 / 01 / 0C / 10</td><td>Hierarchy 멤버는 원 조직단위(예: ASPN Korea Manufacturing K200) 그대로 사용</td></tr>
+          <tr><td class="mono">20</td><td>양방향 소거이므로 조직단위 쌍(Pair) 기준으로 가상의 소거 멤버(<span class="kw">&lt;노드ID&gt;_ELIM</span>)를 계층 노드 아래 자동 생성</td></tr>
+          <tr><td class="mono">02 / 12 / 22 / 30</td><td>그룹종속 전기(지분법 조정, C/I 등)로, Group View 기준으로 별도 파생 규칙이 적용됨(Ch.02에서 상세 설명)</td></tr>
+        </table>
+      </div>
+
+      <div class="concept">
+        <div class="label">프레임 재확인</div>
+        <p>Reporting Logic은 SAP GR이 IFRS 판단을 대신 내려주는 추론 엔진이 아니라는 원칙을 그대로 반영합니다. 시스템은 Consolidation Group 정의, Hierarchy 정의라는 사전 구성된 Master Data 위에서 정해진 파생 규칙을 실행할 뿐이며, 어떤 관점(Group/Hierarchy/Combined)을 선택할지는 리포팅 목적에 따른 설계 결정입니다.</p>
+      </div>
+
+      <div class="related">
+        <b>연관 챕터</b>
+        <span>Ch.2 Group Data Analysis</span><span>Ch.3 Reporting Items</span>
+      </div>
+    </section>
+
+    <!-- ================= CHAPTER 2 ================= -->
+    <section class="chapter" id="ch2">
+      <div class="chnum">CHAPTER 02</div>
+      <h2>Group Data Analysis 실전 — Case 1~3</h2>
+      <p class="sub">Group Data Analysis(App ID W0135)는 Ch.01의 Reporting Logic을 실제 필터 조합으로 구현하는 대표 앱입니다. 아래 세 가지 케이스는 SAP 공식 예제의 구조를 ASPN 그룹 시나리오로 재구성한 것입니다.</p>
+
+      <div class="block">
+        <h3>핵심 필터 구조</h3>
+        <table class="simple">
+          <tr><th>Filter</th><th>역할</th></tr>
+          <tr><td>Consolidation Group</td><td>지정하면 그룹종속 PL(02·12·22·30)이 함께 조회됨. <span class="kw">#</span> 입력 시 그룹 미도출, 지정 CU만 표시</td></tr>
+          <tr><td>Consolidation Unit / Profit Center / Segment Hierarchy</td><td>지정 시 해당 계층의 소거 멤버(Eliminated 차원)가 파생됨. <span class="kw">$</span> 입력 시 계층 미적용</td></tr>
+          <tr><td>Hierarchy Valid On</td><td>계층은 시간종속적이므로, 이 Key Date 기준으로 유효한 버전이 선택됨</td></tr>
+        </table>
+      </div>
+
+      <div class="block">
+        <h3>Case 1 — Hierarchical &amp; Matrix Consolidation (ASPN 재구성)</h3>
+        <p>ASPN Europe 리전 노드 아래 여러 유럽 법인이 편입되어 있다고 가정합니다. 원 Consolidation Unit 차원(Contribution View)으로 조회하면 ASPN Europe 리전의 매출 기여분이 그대로 나타나지만, <b>Consolidation Unit Eliminated</b> 차원으로 전환하면 ASPN Europe 노드 하위 법인들 사이의 내부거래만 소거되어 표시됩니다. 두 차원(CU / Profit Center)을 각각 행·열에 배치하면 리전 × 사업라인 매트릭스 리포트도 생성할 수 있습니다.</p>
+      </div>
+
+      <div class="block">
+        <h3>Case 2 — Consolidation Group과 Hierarchy 결합</h3>
+        <p>ASPN Holdings 그룹(CG: ASPN_TOP) 안에서 두 자회사의 처리 방식을 비교합니다.</p>
+        <table class="simple">
+          <tr><th>구분</th><th>ASPN Tech(구매법, 처분)</th><th>ASPN Energy Korea K300(지분법)</th></tr>
+          <tr><td>Consolidation Group 지정 시</td><td>처분 시점 기준 PCC 조정 표시 — 순이익이 "순이익/청산"으로 재분류(Record Type 0), 이후 기간 전액 반제(Record Type D)</td><td>지분법 PCC 조정 표시 — Record Type E로 반제</td></tr>
+          <tr><td>Consolidation Group 미지정 시(<span class="kw">#</span>)</td><td>재분류·반제 미표시, 원 재무데이터 그대로 노출</td><td>반제 미표시, 원 재무데이터 그대로 노출</td></tr>
+        </table>
+      </div>
+
+      <div class="block">
+        <h3>Case 3 — 복수 Consolidation Group에 동시 소속</h3>
+        <p>ASPN Korea Manufacturing K200이 2025년 특정 시점부터 <b>Top Group ASPN Holdings(그룹지분율 80%)</b>와 <b>서브그룹 ASPN Korea 지주(그룹지분율 75%)</b>에 동시 편입되었다고 가정합니다. NCI(비지배지분)는 각 그룹별로 별도 계산되며, 델타 계산 없이 그룹마다 독립적으로 산출됩니다.</p>
+        <ul>
+          <li>Top Group(ASPN Holdings) 관점 NCI = 로컬 순이익 × (1 − 80%)</li>
+          <li>서브그룹(ASPN Korea 지주) 관점 NCI = 로컬 순이익 × (1 − 75%)</li>
+        </ul>
+      </div>
+
+      <div class="caution">
+        <b>스탠딩 룰 · 데이터 범위 우선순위</b> — Consolidation Unit Hierarchy와 Consolidation Group을 함께 지정할 때는 두 데이터셋의 교집합이 존재해야 하며, 최종 데이터 범위는 항상 Consolidation Group 지정값이 우선합니다. 지정 그룹에 속한 CU가 지정 Hierarchy에 없는 경우, 해당 CU는 <span class="kw">REST_H</span> 노드 아래 별도 표시됩니다.
+      </div>
+
+      <div class="generalize">
+        <div class="label">일반화 주의</div>
+        <p>이 세 케이스는 Reporting Logic이 어떻게 동작하는지 보여주는 예시일 뿐, "어떤 상황에서 어떤 필터 조합을 써야 한다"는 규칙을 시스템이 자동 판단해주지는 않습니다. Consolidation Method(구매법·지분법)와 그룹지분율은 여전히 Ownership Manager 구성과 프로젝트 설계에 따라 정해집니다.</p>
+      </div>
+
+      <div class="related">
+        <b>연관 챕터</b>
+        <span>Ch.1 Reporting Logic</span><span>Ch.3 Reporting Items</span>
+      </div>
+    </section>
+
+    <!-- ================= CHAPTER 3 ================= -->
+    <section class="chapter" id="ch3">
+      <div class="chnum">CHAPTER 03</div>
+      <h2>Reporting Items &amp; Reporting Rules</h2>
+      <p class="sub">현금흐름표, 자본변동표처럼 원 FS Item을 그대로 쓰기 어려운 리포트는, FS Item을 재가공하는 별도 계층 — Reporting Item — 을 통해 구현합니다.</p>
+
+      <div class="block">
+        <h3>개념 관계도</h3>
+        <div class="diagram">
+          <div class="flow">
+            <div class="step">FS Item (Type=REPT)<br><span style="font-weight:400;color:var(--sub)">Define FS Items 앱에서 생성</span></div>
+            <div class="arrow">→</div>
+            <div class="step">Reporting Item<br><span style="font-weight:400;color:var(--sub)">Reporting Item Hierarchy에 편입</span></div>
+            <div class="arrow">→</div>
+            <div class="step">Reporting Rule<br><span style="font-weight:400;color:var(--sub)">FS Item·CU·Doc Type 등 선택기준 할당</span></div>
+            <div class="arrow">→</div>
+            <div class="step">리포트<br><span style="font-weight:400;color:var(--sub)">선택기준에 따른 집계값 표시</span></div>
+          </div>
+        </div>
+        <p>즉 Reporting Item은 그 자체로 하나의 통계적 FS Item이면서, 동시에 Reporting Rule에 정의된 선택 조건(예: FS Item 범위)에 해당하는 값들의 집계 결과를 대표합니다.</p>
+      </div>
+
+      <div class="block">
+        <h3>Define vs Manage Reporting Rules — 앱 선택 기준</h3>
+        <table class="simple">
+          <tr><th>구분</th><th>Define Reporting Rules</th><th>Manage Reporting Rules</th></tr>
+          <tr><td>Master Data 해석 방식</td><td>동적 해석(시간·버전 종속 속성 변화 반영)</td><td>지정한 Selection Resolution Date 기준 고정 해석</td></tr>
+          <tr><td>사용 가능 차원</td><td>Consolidation Unit, Subitem, FS Item, Document Type</td><td>위 차원 + Profit Center, Segment 등 확장 차원(커스텀 필드 포함)</td></tr>
+          <tr><td>조건식</td><td>단순 범위 선택 중심</td><td>Greater Than / Not Equal / Like / Not Empty 등 복합 조건 가능</td></tr>
+        </table>
+      </div>
+
+      <div class="block">
+        <h3>SAP 표준 Reporting Item Hierarchy (X1~X4)</h3>
+        <ul>
+          <li><b>X1</b> — Statement of Changes in Equity(자본변동표)</li>
+          <li><b>X2</b> — Statement of Cash Flow(현금흐름표)</li>
+          <li><b>X3</b> — Statement of Comprehensive Income(포괄손익계산서)</li>
+          <li><b>X4</b> — P&amp;L by Function of Expense(기능별 손익계산서)</li>
+        </ul>
+        <p>모든 규칙을 담은 표준 Reporting Rule Variant는 <span class="kw">Y10</span>입니다. Assign Reporting Rules to Versions 앱에서 이 Variant를 Report Rule Version에 매핑하고, 다시 Define Versions 구성에서 Consolidation Version과 연결하면 해당 버전에 규칙이 암묵적으로 적용됩니다.</p>
+      </div>
+
+      <div class="caution">
+        <b>주의 · Variant 불변성</b> — Report Rule Version에 한 번 할당된 Reporting Rule Variant는 이후 수정·추가가 불가능합니다. 의도치 않은 소급 변경으로부터 확정 리포트를 보호하기 위한 설계이며, 변경이 필요하면 기존 Variant를 복사해 새 Variant를 만들고 그 위에서 수정해야 합니다.
+      </div>
+
+      <div class="insight">
+        <div class="label">💡 "With Reporting Rules" 접미사</div>
+        <p>Group Data Analysis - With Reporting Rules처럼 앱 제목에 이 접미사가 붙으면 Reporting Item을 분석 차원으로 사용하며, Reporting Item Hierarchy와 Reporting Rule Variant 필터가 필수입니다. 접미사가 없는 앱은 Reporting Item·Hierarchy·Variant를 전혀 사용하지 않습니다.</p>
+      </div>
+
+      <div class="related">
+        <b>연관 챕터</b>
+        <span>Ch.1 Reporting Logic</span><span>Ch.4 Custom Attributes</span>
+      </div>
+    </section>
+
+    <!-- ================= CHAPTER 4 ================= -->
+    <section class="chapter" id="ch4">
+      <div class="chnum">CHAPTER 04</div>
+      <h2>Custom Attributes로 리포트 확장하기</h2>
+      <p class="sub">표준 차원만으로 부족한 분석 요구 — 예를 들어 ASPN 그룹 내부의 사업라인 구분 — 는 Consolidation Unit·FS Item에 커스텀 속성을 추가해 해결합니다.</p>
+
+      <div class="block">
+        <h3>6단계 워크플로</h3>
+        <div class="diagram">
+          <div class="flow">
+            <div class="step">1. CU 커스텀 속성 생성<br><span style="font-weight:400;color:var(--sub)">Custom Fields 앱(F6957)</span></div>
+            <div class="arrow">→</div>
+            <div class="step">2. FS Item 커스텀 속성 생성<br><span style="font-weight:400;color:var(--sub)">동일 앱, 다른 Business Context</span></div>
+            <div class="arrow">→</div>
+            <div class="step">3~4. 속성값 반영<br><span style="font-weight:400;color:var(--sub)">Import Consolidation Master Data(F3924)</span></div>
+            <div class="arrow">→</div>
+            <div class="step">5. 데이터 업로드<br><span style="font-weight:400;color:var(--sub)">Data Monitor + Flexible Upload</span></div>
+            <div class="arrow">→</div>
+            <div class="step">6. 리포트 표시<br><span style="font-weight:400;color:var(--sub)">Group Data Analysis Drilldown</span></div>
+          </div>
+        </div>
+
+        <table class="simple">
+          <tr><th>단계</th><th>필요 Business Catalog</th><th>비고</th></tr>
+          <tr><td>1~2. 커스텀 속성 생성</td><td class="mono">SAP_CORE_BC_EXT_BLE, SAP_CORE_BC_EXT_FLD</td><td>Business Context: Group Reporting: Consolidation Unit / Consolidation Financial Statement Item</td></tr>
+          <tr><td>3~4. Master Data 반영</td><td class="mono">SAP_FIN_BC_CCON_MDORG_PC, SAP_FIN_BC_CCON_READ_PC</td><td>다운로드한 템플릿에 속성 컬럼 입력 후 업로드·Check·Import</td></tr>
+          <tr><td>5. 데이터 업로드</td><td class="mono">SAP_FIN_BC_CCON_CNFGRLS_PC, SAP_FIN_BC_CCON_PRDTPRE_PC</td><td>Data Monitor에서 대상 기간 오픈 후 Flexible Upload of Reported Financial Data 실행</td></tr>
+          <tr><td>6. 리포트 표시</td><td class="mono">SAP_FIN_BC_CCON_MNGT_RPT_PC</td><td>Group Data Analysis에서 CU·FS Item 우클릭 → Drilldown → Add Attribute</td></tr>
+        </table>
+
+        <p><b>ASPN 예시</b> — Consolidation Unit에 <span class="kw">ZASPN_BIZLINE</span>(사업라인 구분, Numerical Text), Financial Statement Item에 <span class="kw">ZASPN_SEGCD</span>(내부 세그먼트 코드)를 각각 커스텀 속성으로 정의하면, 표준 재무제표 차원 외에 ASPN 내부 사업라인·세그먼트 기준으로도 Group Data Analysis에서 드릴다운이 가능해집니다.</p>
+      </div>
+
+      <div class="insight">
+        <div class="label">💡 놓치기 쉬운 절차</div>
+        <p>Custom Fields 앱에서 속성을 생성한 뒤, UIs and Reports 탭의 <b>Enable Usage</b>를 선택하고 Save → Publish까지 완료해야 리포트에서 실제로 사용할 수 있습니다. 이 단계를 건너뛰면 Master Data 업로드는 성공해도 리포트 Drilldown에 속성이 나타나지 않습니다.</p>
+      </div>
+
+      <div class="related">
+        <b>연관 챕터</b>
+        <span>Ch.3 Reporting Rules</span><span>Ch.2 Group Data Analysis</span>
+      </div>
+    </section>
+
+    <!-- ================= CHAPTER 5 ================= -->
+    <section class="chapter" id="ch5">
+      <div class="chnum">CHAPTER 05</div>
+      <h2>Group Financial Statements Review Booklet</h2>
+      <p class="sub">개별 리포트를 하나씩 조회하는 대신, 재무제표 전체를 하나의 검토 세트로 묶어 보여주는 앱이 Review Booklet(App ID F6133)입니다.</p>
+
+      <div class="block">
+        <h3>4대 영역과 대표 Business Page</h3>
+        <table class="simple">
+          <tr><th>영역</th><th>대표 Business Page</th></tr>
+          <tr><td>Consolidated Balance Sheet</td><td>Overview / Assets / Liability &amp; Equity</td></tr>
+          <tr><td>Profit &amp; Loss</td><td>Overview / P&amp;L by Time / P&amp;L by Reporting Unit / Profit Margins(Waterfall) / Dynamic Mode</td></tr>
+          <tr><td>Cash Flow Statement</td><td>Overview / Cash Flow by Time / by Reporting Unit / Dynamic Mode</td></tr>
+          <tr><td>Statement of Changes in Equity</td><td>Changes in Equity(전기·당기 기초·기말 변동 비교)</td></tr>
+        </table>
+      </div>
+
+      <div class="block">
+        <h3>Dynamic Mode — 시간종속적 조직 변경 반영</h3>
+        <p>ASPN Tech가 연중 조직개편으로 리전 노드 3(ASPN 아시아)에서 노드 4(ASPN 글로벌 IT)로 소속이 변경되었다고 가정합니다. Dynamic Mode는 각 소속 구간(예: 노드 3 소속 1~3월, 노드 4 소속 4~12월)을 서로 겹치지 않는 고유한 유효기간(Validity)으로 관리하며, 입력한 Key Date에 해당하는 구간의 값만 표시합니다. 이를 통해 조직개편 전후 실적을 왜곡 없이 비교할 수 있습니다.</p>
+      </div>
+
+      <div class="block">
+        <h3>Drill-through &amp; Q&amp;A</h3>
+        <p>모든 Business Page에서 금액 셀을 우클릭해 <b>Jump to Display Group Journal Entries</b>로 전표 라인 항목까지 드릴스루할 수 있습니다. 또한 Question / Predefined Answer / Free Text Answer 차원을 레이아웃에 추가하면, 재무 수치 옆에 사전 정의된 질의응답이나 자유 텍스트 코멘트를 함께 표시해 분석 근거를 남길 수 있습니다.</p>
+      </div>
+
+      <div class="block">
+        <h3>Public View로 기본 설정 저장</h3>
+        <p>부서 표준 레이아웃을 만들었다면 View 드롭다운에서 Save As → Set as Default + Public을 선택해 조직 전체의 기본 화면으로 배포할 수 있습니다.</p>
+      </div>
+
+      <div class="caution">
+        <b>설치 전제 · DEFAULT_HIERARCHY</b> — Review Booklet은 Consolidation Unit Hierarchy 필터의 기본값으로 <span class="kw">DEFAULT_HIERARCHY</span>를 가정합니다. SAP 표준 콘텐츠를 그대로 쓰지 않는 조직은 동일 이름의 커스텀 계층을 만들거나, 필터에서 자체 계층으로 교체해야 합니다.
+      </div>
+
+      <div class="insight">
+        <div class="label">📎 관련 정보 · 신규 검증 프로세스로 전환</div>
+        <p>과거 Validation Result Analysis - Group View / Unit View(App ID F3484) 두 앱은 Deprecated 상태이며 향후 릴리스에서 제거될 예정입니다. 신규 프로젝트는 Balance Validation 기반의 새 검증 프로세스로 전환하는 것이 표준 권고 사항입니다.</p>
+      </div>
+
+      <div class="related">
+        <b>연관 챕터</b>
+        <span>Ch.2 Group Data Analysis</span><span>Ch.6 Plan Consolidation</span>
+      </div>
+    </section>
+
+    <!-- ================= CHAPTER 6 ================= -->
+    <section class="chapter" id="ch6">
+      <div class="chnum">CHAPTER 06</div>
+      <h2>Plan Consolidation &amp; Restatement/Simulation</h2>
+      <p class="sub">연결 결과를 계획(Plan)과 비교하거나, 이미 확정된 재무제표를 재작성(Restatement)·시뮬레이션해야 할 때 사용하는 두 기능입니다.</p>
+
+      <div class="block">
+        <h3>SAP Analytics Cloud(SAC) 연동 구조</h3>
+        <p>Plan Consolidation은 SAC와의 통합을 전제로 합니다. SAP GR 공식 문서는 이를 Import Connection(Master/Transaction Data를 SAC로 추출해 계획 입력값으로 활용)과 Live Connection(데이터 물리적 복제 없이 실시간 조회)으로 구분하며, 다음 두 시나리오를 지원합니다.</p>
+        <ul>
+          <li><b>회계 레벨 계획</b> — S/4HANA Finance의 G/L계정·회사 Master Data 사용, Universal Journal(ACDOCA)에서 실적 추출 → SAC 계획 → Plan Data Line Items(ACDOCP)로 반영</li>
+          <li><b>그룹 레벨 계획</b> — GR의 FS Item·Consolidation Unit Master Data 사용, Universal Consolidation Journal Entry(ACDOCU)에서 실적 추출</li>
+        </ul>
+      </div>
+
+      <div class="caution">
+        <b>스탠딩 룰 · 최신 연동 방식 보완</b> — SAC의 S/4HANA Live Connection은 Datasphere 없이 <span class="kw">SAP_COM_0065</span> 통신 시나리오로 직접 OAuth 2.0 연결됩니다. 마찬가지로 ACDOCP Write-Back도 Datasphere 경유 없이 <span class="kw">SAP_COM_0087</span> 통신 시나리오로 직접 OData 연결됩니다. Datasphere는 비SAP 이기종 데이터 소스를 함께 결합해야 하는 경우에만 정당화되는 선택지입니다.
+      </div>
+
+      <div class="block">
+        <h3>Restatement vs Simulation</h3>
+        <p>Restatement는 회계기준·조직구조 변경 등으로 이미 공표된 재무제표를 다시 작성하는 것이고, Simulation은 "만약 ~라면"이라는 가상 시나리오의 결과를 확인하는 것입니다. 두 경우 모두 원본 버전을 그대로 보존한 채 <b>Extension Version</b> 위에서 처리합니다.</p>
+      </div>
+
+      <div class="block">
+        <h3>ASPN 예 — Version Stack 구성</h3>
+        <p>ASPN Holdings가 표준 버전 Z10(EUR)을 사용 중, IFRS 18 도입과 경영조직 개편이라는 두 가지 재작성 사유가 동시에 발생한 경우를 가정합니다.</p>
+        <table class="simple">
+          <tr><th>버전</th><th>유형</th><th>통화</th><th>Reference Version</th></tr>
+          <tr><td>Z10</td><td>Standard Version</td><td>EUR</td><td>-</td></tr>
+          <tr><td>Z12</td><td>Extension Version(IFRS 18 반영)</td><td>EUR</td><td>Z10</td></tr>
+          <tr><td>Z13</td><td>Extension Version(경영조직 개편 반영)</td><td>EUR</td><td>Z12</td></tr>
+        </table>
+        <p>Z13은 Z12 위에 쌓여 있으므로 Z12의 재작성 데이터에 접근할 수 있지만, 병렬로 생성된 다른 버전의 데이터에는 접근할 수 없습니다. 병렬 버전 간 데이터 이관이 필요하면 Copy Transaction Data 앱을 별도로 사용해야 합니다.</p>
+      </div>
+
+      <div class="insight">
+        <div class="label">💡 Run Mode</div>
+        <p>Extension Version은 Manual Run(참조 버전과 별도 시점에 독립 실행) 또는 Automatic Run으로 설정합니다. Manual Run 버전에서는 ICMR Elimination 태스크와 Universal Journal Release 태스크가 지원되지 않으며, Task Group도 할당할 수 없습니다.</p>
+      </div>
+
+      <div class="block">
+        <h3>Balance Carryforward — Source/Destination 규칙</h3>
+        <table class="simple">
+          <tr><th>규칙</th><th>내용</th></tr>
+          <tr><td>Source Version</td><td>반드시 Extension Version이어야 함(Standard·Group Currency Extension 불가)</td></tr>
+          <tr><td>Destination Version</td><td>Standard·Extension·Group Currency Extension 모두 가능하나, Source와 동일한 Version Stack·그룹통화·회계연도 변형이어야 함</td></tr>
+          <tr><td>1:1 매핑</td><td>동일 연도에 하나의 Destination에는 하나의 Source만 정의 가능</td></tr>
+          <tr><td>다단계 재작성</td><td>Z12·Z13처럼 여러 Extension Version이 쌓인 경우, 최상위 버전(Z13)만 Source로 지정하면 그 아래 버전들의 데이터까지 함께 Destination(Z10)으로 이월됨</td></tr>
+        </table>
+      </div>
+
+      <div class="generalize">
+        <div class="label">일반화 주의</div>
+        <p>Balance Carryforward를 정의된 연도 이외에 실행하면 이월 잔액은 일반 이월 Subitem에 기록되며, Deviating Carryforward Subitem은 적용되지 않습니다. 재작성 데이터의 출처를 재무제표에서 구분해서 보고 싶다면 Subitem Category 레벨에서 Deviating Carryforward Subitem을 사전에 활성화해야 합니다.</p>
+      </div>
+
+      <div class="insight">
+        <div class="label">📎 시리즈 진행 상황</div>
+        <p>File 1(연결·조직구조) → File 2(Period &amp; Data Preparation) → File 3(ICMR 매칭·조정) → File 4(Consolidation Process) → <b>File 5(Analytics for Group Reporting)</b>까지, 데이터 준비부터 연결 확정, 그리고 결과를 읽고 확장하고 계획에 연결하는 전 과정을 다뤘습니다.</p>
+      </div>
+
+      <div class="related">
+        <b>연관 챕터</b>
+        <span>Ch.1 Reporting Logic</span><span>Ch.5 Review Booklet</span>
+      </div>
+    </section>
+
+
+  </main>
+</div>
+
+<footer class="pagefoot">
+  ASPN BAC · SAP Group Reporting Essentials — File 5 of 6 (Analytics for Group Reporting)<br>
+  본 자료는 SAP 공식 Help 문서를 기반으로 실무 교육 목적에 맞게 재구성한 것으로, 특정 프로젝트 설계를 대체하지 않습니다.
+  <div class="footnav">
+    <a href="GroupReporting_Index.html">☰ 시리즈 인덱스로</a>
+    <a href="GroupReporting_Ch4_ConsolidationProcess.html">← File 4: Consolidation Process</a>
+    <a href="GroupReporting_Ch6_FocusTopics.html">다음: File 6: Focus Topics &amp; Advanced Integration →</a>
+  </div>
+</footer>
+
+<script>
+  const links = document.querySelectorAll('nav.chapters a[href^="#"]');
+  const sections = document.querySelectorAll('.chapter');
+  function onScroll(){
+    let current = sections[0].id;
+    sections.forEach(sec=>{
+      const rect = sec.getBoundingClientRect();
+      if(rect.top <= 120) current = sec.id;
+    });
+    links.forEach(a=>{
+      a.classList.toggle('active', a.getAttribute('href') === '#'+current);
+    });
+  }
+  document.addEventListener('scroll', onScroll);
+  onScroll();
+</script>
+
+</body>
+</html>
