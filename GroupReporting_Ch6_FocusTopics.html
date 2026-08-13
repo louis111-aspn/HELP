@@ -297,13 +297,13 @@
   <h1>Focus Topics &amp; Advanced Integration — 여러 영역을 가로지르는 5가지 심화 프로세스</h1>
   <p class="lead">File 1~5가 연결 프로세스의 순차적 흐름(조직구조 → 데이터 준비 → ICMR → 결산 → 분석)을 다뤘다면,
     이번 File은 그 흐름을 가로지르며 특정 상황에서만 필요한 5가지 Focus Topic — Equity Pickup, GR Preparation
-    Ledger 통합, Custom Sign Convention, Flexible Derivation of Consolidation Units, SAP Green Ledger 통합 —
-    을 다룹니다. 예시 수치는 ASPN 픽션 시나리오로 재구성했습니다. SAP 전체 GR 모듈 공통 Configuration
-    레퍼런스는 이번 File에서 다루지 않으며, 컨설턴트용 별도 자료로 추후 정리할 예정입니다.</p>
+    Ledger 통합, Custom Sign Convention, Flexible Derivation of Consolidation Units, SAP Green Ledger 통합,
+    Ownership-Driven Group Structure Management — 을 다룹니다. 예시 수치는 ASPN 픽션 시나리오로 재구성했습니다.
+    SAP 전체 GR 모듈 공통 Configuration 레퍼런스는 이번 File에서 다루지 않으며, 컨설턴트용 별도 자료로 추후 정리할 예정입니다.</p>
   <div class="tags">
     <div class="tag">SAP S/4HANA Cloud Public Edition</div>
     <div class="tag">Focus Topics · Advanced Integration</div>
-    <div class="tag">Equity Pickup · Green Ledger</div>
+    <div class="tag">Equity Pickup · Green Ledger · Ownership-Driven Assignment</div>
   </div>
 </div>
 
@@ -315,7 +315,8 @@
     <a href="#ch3"><span class="num">03</span>Custom Sign Convention</a>
     <a href="#ch4"><span class="num">04</span>Flexible Derivation of CU</a>
     <a href="#ch5"><span class="num">05</span>SAP Green Ledger 통합</a>
-    <a href="#ch6"><span class="num">06</span>통합 정리 · 시리즈 마무리</a>
+    <a href="#ch6"><span class="num">06</span>Ownership-Driven 그룹구조</a>
+    <a href="#ch7"><span class="num">07</span>통합 정리 · 시리즈 마무리</a>
     <div class="navfoot">
 File 5 ← <b style="color:var(--navy)">현재: File 6</b>
     </div>
@@ -596,15 +597,69 @@ File 5 ← <b style="color:var(--navy)">현재: File 6</b>
 
       <div class="related">
         <b>연관 챕터</b>
-        <span>Ch.2 GR Preparation Ledger</span><span>Ch.6 통합 정리</span>
+        <span>Ch.2 GR Preparation Ledger</span><span>Ch.6 Ownership-Driven 그룹구조</span>
       </div>
     </section>
 
     <!-- ================= CHAPTER 6 ================= -->
     <section class="chapter" id="ch6">
       <div class="chnum">CHAPTER 06</div>
+      <h2>Ownership-Driven Group Structure Management (2608 업데이트)</h2>
+      <p class="sub">2608부터 Manage Consolidation Group Structure 앱이 지분율·통제율 자동계산과 오너십 기반 배정 제안 기능을 함께 제공합니다. Scope(구조배정) → Percentage(지분율) → Method(연결방법 제안)를 하나의 프로세스로 연결하는 신규 워크플로우입니다.</p>
+
+      <div class="block">
+        <h3>활성화 전제조건</h3>
+        <p>이 기능은 <b>scope item 1SG</b>가 활성화된 2608 이상 릴리스에서 사용 가능합니다. Manage Consolidation Group Structure 앱은 기존의 Unit View / Group View 두 앱을 하나로 통합했습니다.</p>
+      </div>
+
+      <div class="generalize">
+        <div class="label">일반화 주의 · 용어 구분</div>
+        <p>이 기능은 <b>BPC의 Ownership Manager와는 무관한 GR 네이티브 기능</b>입니다. Manage Consolidation Group Structure 앱 안에서 동작하는 지분 기반 배정 제안 워크플로우이며, Ch.4의 Rule-Based C/I가 전제로 삼는 지분 Master Data 유지와도 별개의 화면·프로세스입니다.</p>
+      </div>
+
+      <div class="block">
+        <h3>지분율 3단계 수집</h3>
+        <ul>
+          <li><b>직접 소유지분율(Direct Ownership %)</b> — 투자자가 피투자회사에 보유한 지분율</li>
+          <li><b>직접 의결권지분율(Direct Voting Rights %)</b> — 소유지분율과 다를 때만 별도 보고(통제력 판단에 영향)</li>
+          <li><b>직접 통제지분율(Direct Control %)</b> — 의결권지분율이 소유지분율과 같으면 통제지분율도 소유지분율과 동일</li>
+        </ul>
+        <p>Control Setting 값 <span class="kw">+1</span>은 통제를 강제 인정, <span class="kw">-1</span>은 통제를 강제로 배제하는 데 사용합니다. 이 값들은 수기 보고 외에, 발행주식수·보유주식수 데이터가 있으면 자동전기 룰로도 산출할 수 있습니다.</p>
+      </div>
+
+      <div class="block">
+        <h3>Assignment Dialog — 3단계 프로세스</h3>
+        <div class="diagram">
+          <div class="flow">
+            <div class="step">Step 1<br><span style="font-weight:400;color:var(--sub)">배정 제안 검토 (신규 배정 / 비연결)</span></div>
+            <div class="arrow">→</div>
+            <div class="step">Step 2<br><span style="font-weight:400;color:var(--sub)">배정 세부조정 (연결방법 제안 포함)</span></div>
+            <div class="arrow">→</div>
+            <div class="step">Step 3<br><span style="font-weight:400;color:var(--sub)">체크 결과 확인 후 적용</span></div>
+          </div>
+        </div>
+        <ul>
+          <li><b>Step 1</b> — 그룹통제지분율이 설정된 threshold보다 높은 유닛은 "신규 배정 생성", 이하인 유닛은 "비연결"로 시스템이 제안하며, 사용자가 행 단위 또는 일괄로 결정</li>
+          <li><b>Step 2</b> — 연결방법 제안은 (2차 예비계산된) 그룹통제지분율과 threshold 비교로 결정되나, Control Enforced/Suppressed 같은 특수 Control Setting이 threshold 로직보다 우선 적용됨</li>
+          <li><b>Step 3</b> — 각 행에 대해 OK/Warning/Error 체크 결과가 표시되며, Error 행은 적용 불가, Warning 행은 확인 팝업 후 선택 적용 가능</li>
+        </ul>
+      </div>
+
+      <div class="caution">
+        <b>Apply Changes ≠ 지분 KPI 재계산</b> — Apply Changes로 배정을 프로덕티브 그룹구조에 반영해도, 그룹지분율·그룹통제지분율 등 프로덕티브 KPI는 자동으로 재계산되지 않습니다. Overview 페이지에서 배정 행을 하나만 선택한 뒤 <span class="kw">Calculate Ownership</span> 버튼을 별도로 실행해야 확정 값이 반영됩니다.
+      </div>
+
+      <div class="related">
+        <b>연관 챕터</b>
+        <span>Ch.1 Equity Pickup</span><span>Ch.7 통합 정리</span>
+      </div>
+    </section>
+
+    <!-- ================= CHAPTER 7 ================= -->
+    <section class="chapter" id="ch7">
+      <div class="chnum">CHAPTER 07</div>
       <h2>Focus Topics 통합 정리 &amp; 시리즈 마무리</h2>
-      <p class="sub">5가지 Focus Topic은 서로 독립적으로 필요할 때만 켜는 기능들입니다. "언제 이 기능을 검토해야 하는가"를 기준으로 한 페이지로 정리합니다.</p>
+      <p class="sub">6가지 Focus Topic은 서로 독립적으로 필요할 때만 켜는 기능들입니다. "언제 이 기능을 검토해야 하는가"를 기준으로 한 페이지로 정리합니다.</p>
 
       <div class="block">
         <h3>Focus Topics 의사결정 매트릭스</h3>
@@ -615,6 +670,7 @@ File 5 ← <b style="color:var(--navy)">현재: File 6</b>
           <tr><td><b>Custom Sign Convention</b></td><td>SAP 표준 부호 해석이 사내 회계 관행과 맞지 않아 자체 규칙이 필요할 때</td></tr>
           <tr><td><b>Flexible Derivation of CU</b></td><td>하나의 법인을 세그먼트·Profit Center 등 추가 기준으로 쪼개 연결해야 할 때</td></tr>
           <tr><td><b>SAP Green Ledger 통합</b></td><td>탄소회계 데이터를 재무제표·연결 리포트에 통합해야 할 때</td></tr>
+          <tr><td><b>Ownership-Driven 그룹구조</b></td><td>그룹 구조 배정·연결방법 결정을 지분 데이터 기반으로 시스템 제안받고 싶을 때 (2608+, scope item 1SG)</td></tr>
         </table>
       </div>
 
@@ -630,7 +686,7 @@ File 5 ← <b style="color:var(--navy)">현재: File 6</b>
 
       <div class="related">
         <b>연관 챕터</b>
-        <span>Ch.1 Equity Pickup</span><span>Ch.5 Green Ledger</span>
+        <span>Ch.1 Equity Pickup</span><span>Ch.6 Ownership-Driven 그룹구조</span>
       </div>
     </section>
 
