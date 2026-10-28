@@ -1,0 +1,850 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BPC 10.1 NW for GR Consultants</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* Layout: one long reader with sticky module tabs; each module = thesis → evidence → drill-down → insight (Fact/Interpretation/Proposal) → quiz */
+:root{
+  --bg:#f0f3f8; --surface:#ffffff; --ink:#333333; --muted:#5b6472; --line:#d5dbe5;
+  --navy:#003366; --navy-ink:#003366; --navy-soft:#e6edf5; --on-navy:#ffffff;
+  --warn:#7a4f00; --warn-bg:#fff4dc; --ok:#1d6b40; --ok-bg:#e6f3eb; --bad:#9b2525; --bad-bg:#fbe9e9;
+  --f-title:'DM Serif Display','Noto Sans KR',Georgia,serif;
+  --f-body:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  --f-mono:'JetBrains Mono','Noto Sans KR',monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1622; --surface:#172131; --ink:#dde3ec; --muted:#9aa6b8; --line:#2b394d;
+  --navy:#1f4e86; --navy-ink:#9ec0ea; --navy-soft:#1b2c44; --on-navy:#ffffff;
+  --warn:#f2c46b; --warn-bg:#3a2e14; --ok:#7fd3a2; --ok-bg:#143325; --bad:#f19a9a; --bad-bg:#3d1b1b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1622; --surface:#172131; --ink:#dde3ec; --muted:#9aa6b8; --line:#2b394d;
+  --navy:#1f4e86; --navy-ink:#9ec0ea; --navy-soft:#1b2c44; --on-navy:#ffffff;
+  --warn:#f2c46b; --warn-bg:#3a2e14; --ok:#7fd3a2; --ok-bg:#143325; --bad:#f19a9a; --bad-bg:#3d1b1b; color-scheme:dark}
+
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.7;word-break:keep-all;overflow-x:clip}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--navy)}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+a{color:var(--navy-ink)}
+:focus-visible{outline:2px solid var(--navy-ink);outline-offset:2px}
+
+/* hero */
+.hero{background:var(--navy);color:var(--on-navy)}
+.hero .wrap{padding-block:48px 40px;display:grid;gap:28px;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;opacity:.8;margin:0 0 10px}
+.hero h1{font-family:var(--f-title);font-weight:400;font-size:42px;line-height:1.15;margin:0 0 14px;text-wrap:balance}
+.hero p{margin:0;opacity:.92}
+.hero ul{margin:0;padding-left:18px}
+.hero .qs{border:1px solid rgba(255,255,255,.35);padding:18px 20px}
+.hero .qs h2{font-size:16px;margin:0 0 8px}
+.meta{font-family:var(--f-mono);font-size:12.5px;opacity:.8;margin-top:16px}
+
+/* nav */
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--surface);border-bottom:1px solid var(--line)}
+nav.tabs .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:thin}
+nav.tabs a{flex:0 0 auto;padding:12px 10px;font-size:13.5px;font-weight:500;color:var(--muted);text-decoration:none;border-bottom:3px solid transparent;white-space:nowrap}
+nav.tabs a.on,nav.tabs a:hover{color:var(--navy-ink);border-bottom-color:var(--navy-ink)}
+
+/* sections */
+main .wrap{padding-block:8px 64px}
+section.mod{padding-top:44px}
+.modno{font-family:var(--f-mono);font-size:13px;color:var(--navy-ink);letter-spacing:.06em;margin:0}
+section.mod>h2{font-family:var(--f-title);font-weight:400;font-size:30px;line-height:1.25;margin:4px 0 6px;text-wrap:balance}
+.kq{color:var(--muted);margin:0 0 18px;font-size:14px}
+.thesis{font-size:16px;font-weight:700;color:var(--navy-ink);margin:26px 0 12px;text-wrap:balance}
+.src{font-family:var(--f-mono);font-size:12px;color:var(--muted);margin:6px 0 0}
+p{max-width:72ch}
+
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:860px){.g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.hero .wrap{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:560px){.g2,.g3,.g4{grid-template-columns:minmax(0,1fr)}.hero h1{font-size:32px}section.mod>h2{font-size:25px}}
+
+.card{background:var(--surface);border:1px solid var(--line);min-width:0}
+.card h4{margin:0;padding:9px 14px;background:var(--navy);color:var(--on-navy);font-size:14px;font-weight:700}
+.card .bd{padding:12px 14px}
+.card ul{margin:0;padding-left:18px}
+.card li+li{margin-top:4px}
+.card.out h4{background:var(--surface);color:var(--navy-ink);border-bottom:1px solid var(--line)}
+
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:560px}
+th{background:var(--navy);color:var(--on-navy);text-align:left;font-weight:700;padding:8px 12px;font-size:13.5px}
+td{padding:8px 12px;border-top:1px solid var(--line);vertical-align:top}
+td:first-child{font-weight:700;color:var(--navy-ink)}
+td.c{text-align:center}
+code,.mono{font-family:var(--f-mono);font-size:13px;overflow-wrap:anywhere}
+pre{font-family:var(--f-mono);font-size:13px;background:var(--navy-soft);padding:12px 14px;overflow-x:auto;margin:0;line-height:1.55}
+
+.flow{display:flex;gap:8px;align-items:stretch;overflow-x:auto;padding-bottom:4px}
+.flow .st{flex:1 1 0;min-width:150px;background:var(--surface);border:1px solid var(--line)}
+.flow .st b{display:block;background:var(--navy);color:var(--on-navy);padding:7px 10px;font-size:13.5px}
+.flow .st span{display:block;padding:9px 10px;font-size:13.5px}
+.flow .ar{flex:0 0 auto;align-self:center;color:var(--navy-ink);font-weight:700}
+
+.callout{border:1px solid var(--line);padding:12px 16px;background:var(--navy-soft);margin:16px 0}
+.callout b.lbl{display:inline-block;font-size:13px;letter-spacing:.04em;margin-right:6px;color:var(--navy-ink)}
+.callout.warn{background:var(--warn-bg);border-color:transparent}.callout.warn b.lbl{color:var(--warn)}
+
+details.drill{background:var(--surface);border:1px solid var(--line);margin-top:16px}
+details.drill summary{cursor:pointer;padding:10px 14px;font-weight:700;color:var(--navy-ink);font-size:14.5px}
+details.drill>div{padding:4px 14px 14px}
+
+.ins{margin-top:26px}
+.ins .lab{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.ins .card h4 small{display:block;font-weight:400;font-size:12px;opacity:.85}
+.ins .card.prop{background:var(--navy-soft)}
+
+.quiz{margin-top:22px;background:var(--surface);border:1px solid var(--line);padding:14px 16px}
+.quiz h3{font-size:16px;margin:0 0 4px}
+.q{padding:12px 0;border-top:1px solid var(--line)}
+.q:first-of-type{border-top:0}
+.q p{margin:0 0 8px;font-weight:500}
+.opts{display:grid;gap:6px}
+.opts button{font:inherit;font-size:14px;text-align:left;padding:8px 12px;background:var(--bg);color:var(--ink);border:1px solid var(--line);cursor:pointer}
+.opts button:hover{border-color:var(--navy-ink)}
+.opts button.right{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+.opts button.wrong{background:var(--bad-bg);border-color:var(--bad);color:var(--bad)}
+.fb{font-size:14px;margin:8px 0 0;padding:8px 12px;background:var(--navy-soft)}
+
+.check{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.check li{background:var(--surface);border:1px solid var(--line);padding:10px 14px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:start}
+.check input{width:18px;height:18px;margin-top:3px;accent-color:var(--navy)}
+.check label{cursor:pointer}
+.check small{display:block;color:var(--muted);font-size:13px}
+.prog{font-family:var(--f-mono);font-size:13px;color:var(--navy-ink);margin:8px 0}
+.lv{font-weight:700;color:var(--navy-ink)}
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+footer .wrap{padding-block:20px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">ASPN BAC · PC파트 · GR 컨설턴트 학습자료</p>
+      <h1>SAP BPC 10.1 for NetWeaver</h1>
+      <p>Standard와 Embedded 구성을 해부하고, 각 기능을 S/4HANA Group Reporting 관점에서 다시 읽습니다. BPC 고객의 GR 전환을 진단·설계하는 컨설턴트를 위한 자료입니다.</p>
+      <p class="meta">원문: Application Help for SAP BPC, version for SAP NetWeaver 10.1 · Doc v1.0 (2025-09-12) · valid through 10.1 SP12 · 392p</p>
+    </div>
+    <div class="qs">
+      <h2>이 자료가 답하는 질문</h2>
+      <ul>
+        <li>BPC 10.1은 연결회계를 어떤 구조(모델·속성·룰)로 구현하는가</li>
+        <li>Standard와 Embedded 구성은 무엇이 다르고, 왜 중요한가</li>
+        <li>각 기능은 GR의 어떤 개념에 대응하며, 어디에 Gap이 있는가</li>
+        <li>전환 진단 시 무엇을 먼저 확인해야 하는가</li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="모듈">
+  <div class="wrap">
+    <a href="#summary">요약</a><a href="#bpc00">00 포지셔닝</a><a href="#bpc01">01 아키텍처</a><a href="#bpc02">02 셋업</a><a href="#bpc03">03 Business Rules</a><a href="#bpc04">04 Ownership·Monitor</a><a href="#bpc05">05 Journal·Controls</a><a href="#bpc06">06 Script Logic</a><a href="#bpc07">07 거버넌스</a><a href="#bpc08">08 리포팅</a><a href="#bpc09">09 GR 전환</a><a href="#appendix">부록</a>
+  </div>
+</nav>
+
+<main>
+<div class="wrap">
+
+<!-- SUMMARY -->
+<section class="mod" id="summary">
+  <p class="modno">EXECUTIVE SUMMARY</p>
+  <h2>연결 로직을 속성·룰 테이블·스크립트에 분산 구현한 OLAP 도구</h2>
+  <p class="kq">GR 컨설턴트에게 BPC는 전환 고객의 설계 의도를 역추적하는 지도입니다.</p>
+  <div class="grid g2">
+    <div class="card"><h4>구조 · 연결 로직의 3층 분산</h4><div class="bd">Dimension Property(RATETYPE, DATASRC_TYPE, FLOW_TYPE 등) + Business Rule Table + Script Logic(LGF)에 로직이 흩어져 있어, 화면 하나로 전체 로직을 파악할 수 없습니다.</div></div>
+    <div class="card"><h4>범위·지분 · Ownership Manager</h4><div class="bd">별도 Ownership 모델에 Category·Time·Group별 METHOD·POWN·PCON·PCTRL을 저장하고 Direct/Group Share 자동계산을 제공합니다. GR 표준에는 동등 기능이 없어 재설계 대상입니다.</div></div>
+    <div class="card"><h4>실행·통제 · 증분연결·Controls·Work Status·BPF</h4><div class="bd">증분(Incremental) 연결, 4단계 Control Level, Bottom-up 잠금, BPF 워크플로가 결산 거버넌스를 구성합니다. GR은 Data/Consolidation Monitor 태스크 중심입니다.</div></div>
+    <div class="card"><h4>전환 시점 · 유지보수 일정</h4><div class="bd">BPC 10.1 NW(standalone) Mainstream 유지보수는 2027-12-31까지, 선택적 연장은 2030년 말까지로 공지되었습니다(SAP 블로그, 2023.01). 고객 버전별로 PAM 재확인이 필요합니다.</div></div>
+  </div>
+  <div class="callout"><b class="lbl">인사이트 표기</b><b>SAP Fact</b> = 원문·SAP 공식 근거(페이지 표기) · <b>Interpretation</b> = 컨설턴트 해석 · <b>Proposal</b> = GR 프로젝트 적용 제안</div>
+</section>
+
+<!-- BPC00 -->
+<section class="mod" id="bpc00">
+  <p class="modno">BPC00 · p.4–17</p>
+  <h2>포지셔닝: Standard vs Embedded</h2>
+  <p class="kq">Key Question · 두 구성은 무엇이 다르며, GR 컨설턴트는 왜 이를 먼저 판별해야 하는가?</p>
+
+  <p class="thesis">BPC 10.1은 한 제품 안에 Standard와 Embedded 두 구성이 공존하며, 모델링 주체와 계산 엔진이 근본적으로 다릅니다.</p>
+  <div class="tbl"><table>
+    <tr><th>구분</th><th>Standard 구성</th><th>Embedded 구성</th></tr>
+    <tr><td>이전 명칭 (SP03 이전)</td><td>Classic</td><td>Unified</td></tr>
+    <tr><td>기술 기반</td><td>10.0 전체 기능 계승 · 비HANA DB도 가능</td><td>BW Planning Applications Kit 통합 · SAP HANA 전용</td></tr>
+    <tr><td>모델링 주체</td><td>BPC 웹 관리화면에서 Dimension·Model 직접 생성</td><td>BW 백엔드 InfoObject·InfoProvider를 참조·매핑 (웹에서 InfoProvider 생성 불가)</td></tr>
+    <tr><td>모델 유형</td><td>Reporting(Financial·Consolidation·Generic) + Drivers &amp; Rates(Rate·Ownership)</td><td>Planning 모델 · Consolidation 모델</td></tr>
+    <tr><td>계산 수단</td><td>Business Rule + Script Logic + Member Formula</td><td>Business Rule (Script Logic·Member Formula는 Standard 전용)</td></tr>
+    <tr><td>연결 실행</td><td>Data Manager 패키지 또는 Consolidation Monitor · 증분연결</td><td>Task Sequence로 정의한 룰을 Consolidation Monitor에서만 실행</td></tr>
+    <tr><td>환경 생성</td><td>EnvironmentShell 복사</td><td>Manage All Environments에서 신규 생성</td></tr>
+    <tr><td>Work Status 정의 단위</td><td>Environment 전체</td><td>Model 단위</td></tr>
+    <tr><td>직접 로그온 connType</td><td class="mono">classic</td><td class="mono">pak</td></tr>
+  </table></div>
+  <p class="src">Source: p.5, 126–128, 169–172, 228, 308, 362</p>
+
+  <p class="thesis">사용자 접점은 HTML5 웹 클라이언트와 Office Add-in으로 이원화되며, SAC 연계는 Periodic 모델 Write-back으로 확장됩니다.</p>
+  <div class="grid g2">
+    <div class="card"><h4>HTML5 Web Client 홈 구성</h4><div class="bd"><ul>
+      <li>Library: 보고서·입력양식·워크스페이스 (Favorites/Public/Private/Teams)</li>
+      <li>My Activities·Process Monitor: BPF 수행·검토·모니터링</li>
+      <li>Run Consolidation: Consolidation Monitor·Controls Monitor·Journals·Ownership Manager</li>
+      <li>Administration · System Reports · Documents(Standard 전용)</li></ul></div></div>
+    <div class="card"><h4>외부 연계 채널</h4><div class="bd"><ul>
+      <li>EPM add-in for Microsoft Office (Excel·Word·PowerPoint)</li>
+      <li>SAP BusinessObjects Analysis, edition for Microsoft Office (파워유저)</li>
+      <li>SAP Analytics Cloud: Periodic 저장 모델을 Write-back 모드로 소비</li>
+      <li>SAC 권고: 매핑 단계에서 필터링해 모델 최소화, 델타 일괄 반입은 1.5GB·45만 건 미만</li></ul></div></div>
+  </div>
+  <details class="drill"><summary>접속 URL 형식 (원문)</summary><div>
+    <pre>http://&lt;PC_server:port&gt;/sap/epm/bpc/web/
+http://&lt;PC_server:port&gt;/sap/epm/bpc/web/#cm=&lt;environment ID&gt;;connType=&lt;classic | pak&gt;</pre>
+    <p>직접 접속은 이전 로그온 티켓 등 자동 인증이 가능한 경우에만 동작합니다. (p.6)</p></div></details>
+
+  <div class="ins"><p class="lab">Insight · BPC 고객 진단의 첫 질문은 “Standard인가 Embedded인가”입니다</p>
+  <div class="grid g3">
+    <div class="card"><h4>SAP Fact<small>문서·SAP 공식 근거</small></h4><div class="bd"><ul>
+      <li>Standard는 10.0 기능 전체, Embedded는 HANA 기반 BW-PAK 통합 구성 (p.5)</li>
+      <li>Embedded Task Sequence의 “Enable Data Submit Check”는 S/4HANA 리포트로 드릴다운 (p.227, Note 2375986)</li>
+      <li>10.1 NW standalone Mainstream 2027-12-31, 선택적 연장 2030년 말 (SAP 블로그 2023.01)</li></ul></div></div>
+    <div class="card out"><h4>Interpretation<small>컨설턴트 해석</small></h4><div class="bd"><ul>
+      <li>Standard 고객의 로직은 웹 설정·LGF에, Embedded 고객의 로직은 BW 객체·속성 매핑에 있어 수집 경로가 다릅니다.</li>
+      <li>Embedded의 Task×Entity 실행 매트릭스는 GR 모니터와 구조적으로 유사해 사용자 전환 저항이 상대적으로 낮을 것으로 판단합니다.</li>
+      <li>BPC는 원장 데이터를 복사·적재해 연결하고, GR은 ACDOCA→ACDOCU 원장 연계 구조라는 점이 근본적 차이입니다.</li></ul></div></div>
+    <div class="card prop"><h4>Proposal<small>GR 프로젝트 적용 제안</small></h4><div class="bd"><ul>
+      <li>진단 1단계: connType·모델 유형·Script Logic 사용 여부로 구성을 판별</li>
+      <li>Standard는 LGF·Rule Table 전수, Embedded는 BW InfoProvider·속성 매핑표 수집을 견적 전제로 명시</li>
+      <li>유지보수 일정은 SAP PAM으로 재확인 후 제안서에 인용</li></ul></div></div>
+  </div></div>
+
+  <div class="quiz"><h3>확인 퀴즈</h3>
+    <div class="q" data-a="1"><p>Q1. Embedded 구성에서 사용할 수 없는 계산 수단은?</p><div class="opts"><button>Business Rule</button><button>Script Logic</button><button>Consolidation Monitor의 Task Sequence</button></div><p class="fb" hidden>Script Logic과 Member Formula는 Standard 전용입니다 (p.228).</p></div>
+    <div class="q" data-a="2"><p>Q2. Embedded 환경으로 직접 로그온할 때 connType 값은?</p><div class="opts"><button>classic</button><button>unified</button><button>pak</button></div><p class="fb" hidden>Standard는 classic, Embedded는 pak입니다 (p.6).</p></div>
+  </div>
+</section>
+
+<!-- BPC01 -->
+<section class="mod" id="bpc01">
+  <p class="modno">BPC01 · p.125–184, 187–199</p>
+  <h2>아키텍처: Environment · Model · Dimension</h2>
+  <p class="kq">Key Question · 연결은 어떤 모델과 차원, 그리고 어떤 속성 값으로 구성되는가?</p>
+
+  <p class="thesis">연결은 MAIN·OWNERSHIP·RATE 3개 모델의 협업으로 성립하며, Category·Time은 세 모델이 공유해야 합니다.</p>
+  <div class="grid g3">
+    <div class="card"><h4>MAIN (Consolidation)</h4><div class="bd">재무데이터와 모든 연결분개(제거·비지배지분)가 기록되는 주 모델. 생성 시 RATE·OWNERSHIP을 지정합니다.</div></div>
+    <div class="card"><h4>OWNERSHIP</h4><div class="bd">연결범위·연결방법·지분율·지배율을 저장합니다. 미지정 시 엔진은 “OWNERSHIP” 이름의 모델을 탐색합니다.</div></div>
+    <div class="card"><h4>RATE</h4><div class="bd">환율 유형별(평균·기말) 환율을 저장합니다. 여러 MAIN 모델이 RATE·OWNERSHIP을 공유할 수 있습니다.</div></div>
+  </div>
+  <div class="tbl" style="margin-top:16px"><table>
+    <tr><th>Dimension</th><th>Type</th><th>MAIN</th><th>OWNERSHIP</th><th>RATE</th></tr>
+    <tr><td>Account (각 모델별 별도)</td><td class="c">A</td><td class="c">●</td><td class="c">●</td><td class="c">●</td></tr>
+    <tr><td>Category · Time</td><td class="c">C · T</td><td class="c">●</td><td class="c">●</td><td class="c">●</td></tr>
+    <tr><td>Entity</td><td class="c">E</td><td class="c">●</td><td class="c">●</td><td class="c">Rate Entity</td></tr>
+    <tr><td>Intercompany</td><td class="c">I</td><td class="c">●</td><td class="c">●</td><td class="c"></td></tr>
+    <tr><td>Group</td><td class="c">G</td><td class="c">●</td><td class="c">●</td><td class="c"></td></tr>
+    <tr><td>Flow · Audit · Currency</td><td class="c">S · D · R</td><td class="c">●</td><td class="c"></td><td class="c">InputCurrency (R)</td></tr>
+  </table></div>
+  <p class="src">Source: p.129–131, 187–189, 198–201</p>
+
+  <p class="thesis">차원 유형은 10종이며, 연결회계의 핵심 축은 Audit(D)·Group(G)·Flow(S)·Intercompany(I)입니다.</p>
+  <div class="tbl"><table>
+    <tr><th>Type</th><th>유형</th><th>역할 (원문 요지)</th><th>GR 대응 개념 (해석)</th></tr>
+    <tr><td>A</td><td>Account</td><td>계정과목표·계획 가정 측정치</td><td>FS Item</td></tr>
+    <tr><td>C</td><td>Category</td><td>Actual·Budget·Forecast 등 버전·시나리오</td><td>Consolidation Version</td></tr>
+    <tr><td>D</td><td>Audit</td><td>데이터 원천·조정 구분, 연결 룰의 입력/조정 분리</td><td>Posting Level + Document Type</td></tr>
+    <tr><td>E</td><td>Entity</td><td>법인·사업부·원가센터 등 조직 단위</td><td>Consolidation Unit</td></tr>
+    <tr><td>G</td><td>Group</td><td>연결범위(Scope)와 그룹통화</td><td>Consolidation Group</td></tr>
+    <tr><td>I</td><td>Intercompany</td><td>내부거래 대사·제거 상대 법인 코드</td><td>Partner Unit</td></tr>
+    <tr><td>R</td><td>Currency</td><td>현지통화·보고통화 (모든 환경 필수)</td><td>LC / GC / TC 금액</td></tr>
+    <tr><td>S</td><td>Subtables (Flow)</td><td>계정 증감: 기초·증가·감소·대체·기말</td><td>Subitem</td></tr>
+    <tr><td>T</td><td>Time</td><td>주·월·분기·사용자 정의 기간</td><td>Fiscal Year / Period</td></tr>
+    <tr><td>U</td><td>User-defined</td><td>Product 등 추가 분석 차원</td><td>추가 특성 (Segment 등)</td></tr>
+  </table></div>
+  <p class="src">Source: p.136–137 · GR 대응은 컨설턴트 해석</p>
+
+  <p class="thesis">연결 로직의 상당 부분은 코드가 아닌 Dimension Property 값으로 설정되어 있어, 속성 인벤토리가 곧 로직 명세서입니다.</p>
+  <div class="grid g3">
+    <div class="card"><h4>Account</h4><div class="bd"><ul><li><code>ACCTYPE</code> INC·EXP·AST·LEQ (공란 불가)</li><li><code>RATETYPE</code> 환산 룰명, 공란이면 환산 안 됨</li><li><code>ELIMACC</code> US Elim Plug 계정</li><li><code>DIMLIST</code> · <code>TYPELIM</code></li></ul></div></div>
+    <div class="card"><h4>Audit (DataSrc)</h4><div class="bd"><ul><li><code>DATASRC_TYPE</code> I 입력·M 수기·A 자동조정·L 레벨</li><li><code>IS_CONSOL</code> 연결 대상 여부</li><li><code>IS_CONVERTED</code> Y·N·G</li><li><code>COPYOPENING</code> · <code>OPENING_DATASRC</code></li></ul></div></div>
+    <div class="card"><h4>Group</h4><div class="bd"><ul><li><code>CURRENCY_TYPE</code> G 그룹 / N 비그룹</li><li><code>GROUP_CURRENCY</code></li><li><code>PARENT_GROUP</code> 공란이면 Ownership 동적계층</li><li><code>ENTITY</code>·<code>STORE_ENTITY</code>·<code>STORE_GROUP_CURR</code>·<code>STAGE_ONLY</code></li></ul></div></div>
+    <div class="card"><h4>Entity</h4><div class="bd"><ul><li><code>CURRENCY</code> · <code>FX_TYPE</code></li><li><code>ELIM</code> 제거 결과 저장 엔터티</li><li><code>INTCO</code> 대응 IC 멤버</li><li><code>CONTROL_LEVEL</code> · <code>CTRL_CURRENCY_NOT_LC</code></li></ul></div></div>
+    <div class="card"><h4>Category</h4><div class="bd"><ul><li><code>FX_SOURCE_CATEGORY</code>·<code>RATE_CATEGORY/YEAR/PERIOD</code> 환율 시뮬레이션</li><li><code>FX_DIFFERENCE_ONLY</code></li><li><code>CATEGORY_FOR_OPE</code>·<code>OPENING_YEAR/PERIOD</code> 이월 원천</li></ul></div></div>
+    <div class="card"><h4>Flow · Time</h4><div class="bd"><ul><li><code>FLOW_TYPE</code> OPENING·CLOSING·VARSCP 필수, TRANSLOPE·TRANSFLOW 환산차</li><li>Time: <code>YEAR</code>·<code>PERIOD</code>·<code>TIMEID</code>·<code>MONTHNUM</code>, 연결은 동일 연도 Base 멤버에서만 실행</li></ul></div></div>
+  </div>
+  <p class="src">Source: p.150–160, 189–197</p>
+
+  <p class="thesis">모델 유형·저장방식·멤버 ID는 구축 초기에 확정해야 하며, 사후 변경 시 데이터 재배치·감사추적 손실 위험이 큽니다.</p>
+  <div class="grid g2">
+    <div class="tbl"><table style="min-width:0">
+      <tr><th>저장방식</th><th>Jan</th><th>Feb</th><th>Mar</th></tr>
+      <tr><td>Periodic</td><td class="c">100</td><td class="c">200</td><td class="c">0</td></tr>
+      <tr><td>YTD</td><td class="c">100</td><td class="c">300</td><td class="c">300</td></tr>
+    </table><p style="padding:8px 12px;margin:0;font-size:13.5px">INC·EXP 계정 예시. 기본은 Periodic이며, 외화환산처럼 YTD 계산이 필요하면 모델 생성 시 YTD 입력 모드를 지정합니다. (p.171)</p></div>
+    <div class="callout warn" style="margin:0"><b class="lbl">변경 제약</b><ul style="margin:6px 0 0;padding-left:18px">
+      <li>데이터가 있는 모델에 차원을 추가하면 모든 데이터가 알파벳 순 첫 Base 멤버로 기록됨 (p.140)</li>
+      <li>저널 템플릿 구조 변경 시 기존 저널과 감사추적 삭제, 큐브 반영분은 유지 (p.207, 369)</li>
+      <li>멤버 ID 변경 불가, 멤버명 최대 32자 (7.5 이관 차원 20자)</li>
+      <li>모델 변경·최적화·이관 시 큐브 기술명 변경 가능 → <code>ENABLE_FIXED_CUBENAME=X</code></li></ul></div>
+  </div>
+
+  <details class="drill"><summary>Embedded: 연결 모델 = BW InfoProvider 매핑</summary><div>
+    <div class="tbl"><table>
+      <tr><th>InfoProvider</th><th>필수</th><th>요건</th></tr>
+      <tr><td>CONSOLIDATION</td><td>필수</td><td>CompositeProvider 선택 시 실시간 InfoCube 또는 Write-back ADSO 1개만 포함</td></tr>
+      <tr><td>OWNERSHIP</td><td>필수</td><td>CompositeProvider·MultiProvider 불가, ADSO 등 입력 가능 객체만</td></tr>
+      <tr><td>EXCHANGE RATE</td><td>선택</td><td>Account(Rate)·Entity(Rate)·InputCurrency 필요</td></tr>
+      <tr><td>SOURCE</td><td>선택</td><td>CONSOLIDATION과 동일 InfoObject 구성</td></tr>
+    </table></div>
+    <p>Time은 모든 InfoProvider에서 <code>0FISCPER</code>를 사용해야 하며, 속성(RATETYPE 등)은 BW에서 유지한 뒤 모델 매핑 화면에서 Property에 연결합니다. 빨간 * 표시가 필수 속성입니다. Local Dimension·Local Provider·Local Query(NW 750 이상)는 환경(BW Workspace) 범위에서만 보입니다. (p.161–184, 209–225)</p></div></details>
+
+  <div class="ins"><p class="lab">Insight · DataSrc 체계의 “의미 매핑”이 전환의 첫 산출물입니다</p>
+  <div class="grid g3">
+    <div class="card"><h4>SAP Fact<small>문서·SAP 공식 근거</small></h4><div class="bd"><ul>
+      <li>DATASRC_TYPE·IS_CONSOL·IS_CONVERTED 조합이 환산·연결·이월 대상을 결정 (p.193–194)</li>
+      <li>FLOW_TYPE OPENING·CLOSING·VARSCP 멤버는 필수 (p.197)</li>
+      <li>Ownership 모델에는 G만, Consolidation 모델에는 R과 G를 함께 지정 (p.137, 154)</li></ul></div></div>
+    <div class="card out"><h4>Interpretation<small>컨설턴트 해석</small></h4><div class="bd"><ul>
+      <li>GR은 Posting Level·Document Type이 표준으로 고정되지만, BPC DataSrc는 고객마다 설계가 달라 매핑 난이도 편차가 큽니다.</li>
+      <li>Group·Currency 통합 차원은 7.5 이관 이력의 신호로, 레거시 로직 비중이 높을 가능성이 있습니다.</li>
+      <li>Flow 미사용 고객은 증감표를 Account로 처리했을 가능성이 높아 Subitem 설계가 신규 작업이 됩니다.</li></ul></div></div>
+    <div class="card prop"><h4>Proposal<small>GR 프로젝트 적용 제안</small></h4><div class="bd"><ul>
+      <li>산출물 1: Dimension × Property 인벤토리 (속성값 분포 포함)</li>
+      <li>산출물 2: DataSrc → Posting Level/Document Type, FLOW_TYPE → Subitem 매핑표</li>
+      <li>Embedded 고객은 BW 속성 매핑 화면을 같은 인벤토리 양식으로 정규화</li></ul></div></div>
+  </div></div>
+
+  <div class="quiz"><h3>확인 퀴즈</h3>
+    <div class="q" data-a="0"><p>Q1. Account의 RATETYPE이 공란이면?</p><div class="opts"><button>그 계정은 환산되지 않는다</button><button>기본 환율(AVG)로 환산된다</button><button>기말환율로 환산된다</button></div><p class="fb" hidden>RATETYPE이 비어 있으면 매칭되는 환산 룰이 없어 환산되지 않습니다 (p.190).</p></div>
+    <div class="q" data-a="2"><p>Q2. Ownership 모델에 지정하는 차원 조합으로 옳은 것은?</p><div class="opts"><button>Currency(R)와 Group(G) 모두</button><button>Currency(R)만</button><button>Group(G)만</button></div><p class="fb" hidden>Ownership 모델에는 G만 지정하며, R과 G를 같은 Ownership 모델에 동시에 둘 수 없습니다 (p.137).</p></div>
+  </div>
+</section>
+
+<!-- BPC02 -->
+<section class="mod" id="bpc02">
+  <p class="modno">BPC02 · p.185–227</p>
+  <h2>연결 모델 셋업</h2>
+  <p class="kq">Key Question · 법정연결 환경은 어떤 순서와 실행 객체로 구축되는가?</p>
+
+  <p class="thesis">Standard 구성의 연결 환경은 “환경→차원→모델→룰→데이터→통제” 7단계 표준 시퀀스로 구축됩니다.</p>
+  <div class="flow">
+    <div class="st"><b>① 환경</b><span>기존 계획·보고 환경 재사용 가능</span></div><div class="ar">→</div>
+    <div class="st"><b>② 차원·속성</b><span>MAIN·RATE·OWNERSHIP 필수 차원, 연결용 속성 세트</span></div><div class="ar">→</div>
+    <div class="st"><b>③ 모델</b><span>MAIN 생성 시 RATE·OWNERSHIP 지정, 보안 차원</span></div><div class="ar">→</div>
+    <div class="st"><b>④ Business Rule</b><span>Rule Type 활성화, 테이블 작성</span></div><div class="ar">→</div>
+    <div class="st"><b>⑤ 데이터</b><span>환율 → 지분 → 재무데이터, 원천 대사</span></div><div class="ar">→</div>
+    <div class="st"><b>⑥ Work Status</b><span>잠금 차원·상태</span></div><div class="ar">→</div>
+    <div class="st"><b>⑦ 저널·검증</b><span>템플릿, UJ_VALIDATION</span></div>
+  </div>
+  <p class="src">Source: p.185–208</p>
+
+  <p class="thesis">연결 태스크는 “프로세스 체인–Script Logic–Rule Table” 3중 구조로 실행되어, 로직을 추적하려면 세 지점을 모두 확인해야 합니다.</p>
+  <div class="tbl"><table>
+    <tr><th>연결 태스크</th><th>Process Chain</th><th>Script Logic</th><th>Business Rule</th></tr>
+    <tr><td>기초잔액 이월</td><td class="mono">/CPMB/OPENING_BALANCES</td><td class="mono">COPY_OPENING.LGF</td><td>Carry-forward</td></tr>
+    <tr><td>외화환산</td><td class="mono">/CPMB/FX_RESTATMENT</td><td class="mono">FXTRANS.LGF</td><td>Currency translation</td></tr>
+    <tr><td>내부거래 대사</td><td class="mono">/CPMB/ICDATA</td><td class="mono">ICDATA.LGF</td><td>룰 불필요</td></tr>
+    <tr><td>내부거래 차이 조정</td><td class="mono">/CPMB/ICBOOKING</td><td class="mono">ICBOOKING.LGF</td><td>Intercompany booking</td></tr>
+    <tr><td>법정연결</td><td class="mono">/CPMB/LEGAL_CONSOLIDATION</td><td class="mono">CONSOLIDATION.LGF</td><td>Eliminations &amp; adjustments</td></tr>
+    <tr><td>계정 계산(현금흐름)</td><td class="mono">/CPMB/RUNCALCACCOUNT</td><td class="mono">CALCACCOUNT.LGF</td><td>Account-based calculation</td></tr>
+    <tr><td>US 내부거래 제거</td><td class="mono">/CPMB/IC_ELIMINATION</td><td class="mono">ICELIM.LGF</td><td>US elimination</td></tr>
+  </table></div>
+  <p class="src">Source: p.203</p>
+
+  <p class="thesis">Embedded 구성은 Data Manager 대신 Task Sequence로 룰 실행 순서를 정의하며, 모든 룰은 Consolidation Monitor에서만 실행됩니다.</p>
+  <div class="tbl"><table>
+    <tr><th>비교 항목</th><th>Standard</th><th>Embedded</th></tr>
+    <tr><td>룰 실행 경로</td><td>Data Send(default.lgf) · DM 패키지 · Journal.lgf · Monitor</td><td>Consolidation Monitor (Task Sequence) 단일 경로</td></tr>
+    <tr><td>제공 룰</td><td>6종 (US Elimination 포함)</td><td>5종 (US Elimination 제외)</td></tr>
+    <tr><td>사전 설치</td><td>EnvironmentShell</td><td>RSA1 BI Content: <code>/CPMB/RULE</code>, <code>/CPMB/RENT</code>, <code>/CPMB/LAUNCH_LOGIC</code>, <code>/CPMB/WRITE_BACK</code>, <code>/CPMB/READ_CTRL_DATA</code></td></tr>
+    <tr><td>Controls 활성화</td><td>모델 유형 무관</td><td>Consolidation 유형 모델에서만</td></tr>
+  </table></div>
+  <div class="callout"><b class="lbl">Validation vs Journal</b>Validation은 Write-back 단계에서 잘못된 교차점(예: 내부거래 계정인데 Trading Partner 공란) 저장 자체를 막고, 입력·저널·DM 등 모든 경로에 적용됩니다(UJ_VALIDATION). Journal은 적재 후 조정을 기록하는 감사추적입니다. (p.207–208)</div>
+
+  <div class="ins"><p class="lab">Insight · 전환 견적은 표준 룰과 커스텀 로직의 비율 측정에서 출발합니다</p>
+  <div class="grid g3">
+    <div class="card"><h4>SAP Fact<small>문서·SAP 공식 근거</small></h4><div class="bd"><ul>
+      <li>연결 태스크별 Process Chain·LGF·Rule Table이 1:1:1 대응 (p.203)</li>
+      <li>Default.lgf는 모든 Data Send 후 실행, 룰 추가 시 성능 저하 경고 (p.288)</li>
+      <li>p.129와 p.201의 EnvironmentShell 샘플 모델 기술이 서로 다름</li></ul></div></div>
+    <div class="card out"><h4>Interpretation<small>컨설턴트 해석</small></h4><div class="bd"><ul>
+      <li>GR은 환율과 그룹구조를 별도 “모델”로 두지 않으므로 BPC의 3-모델 구조는 전환 후 사라집니다.</li>
+      <li>default.lgf에 환산·계산을 넣은 고객은 “입력 즉시 계산”에 익숙해 GR의 태스크 실행 흐름에 대한 변화관리가 필요합니다.</li></ul></div></div>
+    <div class="card prop"><h4>Proposal<small>GR 프로젝트 적용 제안</small></h4><div class="bd"><ul>
+      <li>수집 체크리스트: DM 패키지, LGF 전문, Rule Table 덤프, Task Sequence</li>
+      <li>LGF를 “표준 *RUN_PROGRAM만 호출” vs “커스텀 계산 포함”으로 분류해 공수 산정</li>
+      <li>UJ_VALIDATION 규칙은 GR Validation Rule 요건 목록으로 재사용</li></ul></div></div>
+  </div></div>
+
+  <div class="quiz"><h3>확인 퀴즈</h3>
+    <div class="q" data-a="1"><p>Q1. 내부거래 대사(ICDATA)에 필요한 Business Rule 테이블은?</p><div class="opts"><button>Intercompany booking</button><button>룰 불필요</button><button>Eliminations &amp; adjustments</button></div><p class="fb" hidden>ICDATA는 룰 테이블 없이 실행됩니다 (p.203).</p></div>
+  </div>
+</section>
+
+<!-- BPC03 -->
+<section class="mod" id="bpc03">
+  <p class="modno">BPC03 · p.287–322</p>
+  <h2>Business Rules</h2>
+  <p class="kq">Key Question · 환산·내부거래·이월·제거는 어떤 파라미터와 순서로 계산되는가?</p>
+
+  <p class="thesis">Business Rule 6종은 연결회계 표준 처리를 파라미터 테이블로 추상화한 것이며, US Elimination만 Standard 전용입니다.</p>
+  <div class="tbl"><table>
+    <tr><th>Rule</th><th>목적</th><th>핵심 구동 요소</th><th>구성</th></tr>
+    <tr><td>Account-based Calculation</td><td>계정·Flow·Audit 조합 집계 후 대체 계정에 기록 (현금흐름)</td><td>원천/대상 C·A·S·D, 부호 반전, 타기간 참조, YTD</td><td>Std·Emb</td></tr>
+    <tr><td>Currency Translation</td><td>LC → 보고·그룹통화</td><td>Account.RATETYPE, Entity.CURRENCY, Rate 모델</td><td>Std·Emb</td></tr>
+    <tr><td>Intercompany Booking</td><td>내부거래 선언 불일치 자동 조정</td><td>ICDATA 선행, Seller/Buyer/Greater, Max Booking</td><td>Std·Emb</td></tr>
+    <tr><td>Carry-Forward</td><td>전기 기말 → 당기 기초</td><td>FLOW_TYPE, Category·Audit 이월 속성</td><td>Std·Emb</td></tr>
+    <tr><td>US Eliminations</td><td>단순 관리연결의 내부거래 제거</td><td>ELIMACC, ELIM, IC.ENTITY, 첫 공통 부모</td><td>Std only</td></tr>
+    <tr><td>Eliminations &amp; Adjustments</td><td>법정연결 분개 (제거·조정·재분류·비지배지분)</td><td>Ownership 모델, Method, Multiplier, Adjustment Level</td><td>Std·Emb</td></tr>
+  </table></div>
+
+  <p class="thesis">환산은 Entity·Account·Audit·Flow 속성 조합으로 결정되며, 기본 방식은 단일 환율표 기반 Cross-rate 환산입니다.</p>
+  <div class="flow">
+    <div class="st"><b>원천 통화</b><span><code>Entity.CURRENCY</code></span></div><div class="ar">→</div>
+    <div class="st"><b>적용 환율 유형</b><span><code>Account.RATETYPE</code> = 환산 룰명</span></div><div class="ar">→</div>
+    <div class="st"><b>환율 조회</b><span>Rate 모델 · RATEENTITY(기본 GLOBAL) · <code>MD</code>=M/D</span></div><div class="ar">→</div>
+    <div class="st"><b>대상 선별</b><span><code>IS_CONVERTED</code> Y/N/G · <code>FLOW_TYPE</code></span></div><div class="ar">→</div>
+    <div class="st"><b>결과 기록</b><span>Currency(R) 또는 Group(G)</span></div>
+  </div>
+  <div class="callout"><b class="lbl">Cross-rate</b>LC 금액 × (대상통화 환율 ÷ 원천통화 환율). 환율표 하나로 모든 통화쌍을 환산합니다. 스크립트 키워드 <code>CURRENCY</code>는 보고통화 모드, <code>GROUP</code>은 그룹 모드이며 그룹 모드는 Ownership 모델 참조가 필수입니다. (p.291–294)</div>
+  <details class="drill"><summary>시뮬레이션 Category와 Time 제약</summary><div><ul>
+    <li><code>FX_SOURCE_CATEGORY</code>·<code>RATE_CATEGORY</code>·<code>RATE_YEAR</code>·<code>RATE_PERIOD</code>로 “예산을 실적환율로” 같은 환산을 정의하고, <code>FX_DIFFERENCE_ONLY=Y</code>면 차이만 저장합니다.</li>
+    <li>Time Base 멤버의 TIMEID·YEAR·PERIOD·MONTHNUM은 필수이고 유일해야 하며, 연결 프로그램은 동일 연도 내에서만 실행됩니다. (p.191–192, 295)</li></ul></div></details>
+
+  <p class="thesis">내부거래는 “대사→차이 조정→제거” 3단계이며, US Elimination은 첫 공통 부모 원리로 제거 위치를 정합니다.</p>
+  <div class="flow">
+    <div class="st"><b>① ICDATA 대사</b><span>모든 법인의 선언을 상대 법인으로 집중. 타 법인 조회 권한 없이 자기 기준 대사. DataSrc I·D1·D2·C1·C2</span></div><div class="ar">→</div>
+    <div class="st"><b>② IC Booking</b><span>Seller / Buyer / Greater 기준 자동 기표. Maximum Booking 초과분은 수기 조정</span></div><div class="ar">→</div>
+    <div class="st"><b>③ 제거</b><span>법정연결은 Elim &amp; Adj, 관리연결은 US Elimination</span></div>
+  </div>
+  <details class="drill"><summary>US Elimination 기본 로직 (p.299–300)</summary><div><ul>
+    <li>ELIM≠Y Base 엔터티의 보고통화(REPORTING=Y) 데이터만 처리. LC는 통화가 달라 제거하지 않습니다.</li>
+    <li>ELIMACC가 지정된 계정 금액을 Plug 계정으로 제거합니다.</li>
+    <li>Entity와 IC 멤버의 ENTITY 속성으로 두 법인을 찾고, 둘을 모두 하위에 둔 첫 공통 부모를 탐색합니다.</li>
+    <li>공통 부모 바로 아래의 ELIM=Y 엔터티에 결과를 기록합니다. 예: KR01↔DE01 거래는 TOTAL 직하 E_ELIM에 기록.</li>
+    <li>기본은 Entity 첫 번째 계층만 탐색합니다.</li></ul></div></details>
+
+  <p class="thesis">Elim &amp; Adj 룰은 “연결방법 × Method-based Multiplier × 지분율 변수” 조합으로 분개 금액을 산출합니다.</p>
+  <div class="tbl"><table>
+    <tr><th>필드</th><th>의미</th></tr>
+    <tr><td>Source / Destination Audit</td><td>적용 데이터(공란=I·M 전체) / 생성 데이터(A 유형 Base 멤버 1개)</td></tr>
+    <tr><td>Adjustment Type</td><td>공란 일반 · N 신규 · P 비례 · E 지분법 · D 기중처분 · L 기초처분 · I 통합</td></tr>
+    <tr><td>Adjustment Level</td><td>0→1→2 순 실행, 하위 레벨 결과가 상위 레벨 입력이 됨</td></tr>
+    <tr><td>Filters</td><td>Group Type · Entity Property · Other Dim(Product=Pro1) · Ownership(POWN &gt; 0.7) · Force Destination(Product=ALL)</td></tr>
+    <tr><td>Method (Global)</td><td>코드 1–98, 99=모든 방법(할당 불가) · New·Holding·Global·Proportionate·Equity·Leaving·Disposed</td></tr>
+    <tr><td>Multiplier 산식</td><td>All / Group / Minority 산식에 <code>[POWN]</code>·<code>[PCTRL]</code>, 접두 P=전기값, I_=상대법인값 (예: <code>[I_PPOWN]</code>)</td></tr>
+  </table></div>
+  <p class="src">Source: p.300–306</p>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><h4>Carry-Forward</h4><div class="bd"><ul><li>Flow OPENING 멤버에 CLOSING 잔액 이월</li><li>Audit DATASRC_TYPE I·M만 복사. A(자동조정) 잔액은 연결 절차가 자체 반영</li><li>CATEGORY_FOR_OPE로 Forecast → Budget 기초 같은 교차 이월</li></ul></div></div>
+    <div class="card"><h4>Integration Rule (Type I)</h4><div class="bd"><ul><li>Periodic 룰 + 기중 지분계층 변경 시 불일치 처리</li><li>활성화 시 환산은 그룹 레벨 결과를 만들지 않음</li><li>E·P·D·L 유형을 대체, 기존 룰은 숨김 처리되나 계산에 사용</li></ul></div></div>
+  </div>
+
+  <div class="ins"><p class="lab">Insight · 룰 테이블은 1:1 이관 대상이 아니라 “로직 명세서”입니다</p>
+  <div class="grid g3">
+    <div class="card"><h4>SAP Fact<small>문서·SAP 공식 근거</small></h4><div class="bd"><ul>
+      <li>룰 트리거: Data Send(default.lgf)·DM 패키지·Journal 게시(Journal.lgf)·Monitor (p.288)</li>
+      <li>Embedded Adjustment Type 목록에는 D가 없음 (p.302 vs p.317)</li>
+      <li>Multiplier는 POWN·PCTRL 계산과 시스템값/수기값 전환 지원 (p.305)</li></ul></div></div>
+    <div class="card out"><h4>Interpretation<small>컨설턴트 해석</small></h4><div class="bd"><ul>
+      <li>개념 대응: 환산 룰 ↔ Translation Method, 이월 ↔ Balance Carryforward, ICDATA·IC Booking ↔ 내부거래 대사, Elim &amp; Adj ↔ Reclassification·C/I</li>
+      <li>Adjustment Level 체인은 고객의 연결분개 의존 순서가 코드화된 것입니다.</li>
+      <li>US Elim 사용 고객은 관리연결 성격일 가능성이 있어 GR 도입 목적 재정의가 필요합니다.</li></ul></div></div>
+    <div class="card prop"><h4>Proposal<small>GR 프로젝트 적용 제안</small></h4><div class="bd"><ul>
+      <li>룰 행마다 “회계 의도 / 원천 / 대상 / 산식” 4열 명세서로 역설계</li>
+      <li>Adjustment Type N·D·L·I 사용 내역을 범위변동 테스트 케이스로 전환</li>
+      <li>[P…]·[I_…] 산식 행은 GR C/I 활동 설계 우선 검토 항목</li></ul></div></div>
+  </div></div>
+
+  <div class="quiz"><h3>확인 퀴즈</h3>
+    <div class="q" data-a="0"><p>Q1. Carry-Forward가 복사하는 Audit 멤버 유형은?</p><div class="opts"><button>I(입력)와 M(수기)</button><button>I, M, A 전체</button><button>A(자동조정)만</button></div><p class="fb" hidden>이월은 I·M만 대상이며, A 잔액은 연결 절차가 자체적으로 반영합니다 (p.297).</p></div>
+    <div class="q" data-a="2"><p>Q2. US Elimination 결과가 기록되는 위치는?</p><div class="opts"><button>거래 당사자 법인</button><button>최상위 그룹 노드</button><button>첫 공통 부모 바로 아래의 ELIM=Y 엔터티</button></div><p class="fb" hidden>첫 공통 부모 직하의 제거용 엔터티에 기록합니다 (p.299).</p></div>
+  </div>
+</section>
+
+<!-- BPC04 -->
+<section class="mod" id="bpc04">
+  <p class="modno">BPC04 · p.18–24, 41–93</p>
+  <h2>Ownership Manager &amp; Consolidation Monitor</h2>
+  <p class="kq">Key Question · 연결범위와 지분은 어떻게 관리되고, 연결은 어떻게 실행·재실행되는가?</p>
+
+  <p class="thesis">Ownership Manager는 Category·Time별 연결범위와 지분 파라미터를 별도 Ownership 모델에 저장하는 BPC 고유의 범위관리 장치입니다.</p>
+  <div class="grid g2">
+    <div class="card"><h4>소유지분 기반 계층</h4><div class="bd"><ul>
+      <li>상단은 정적 Group 계층, 하단은 Category·Time별로 법인을 연결·해제하는 동적 계층</li>
+      <li>필요 시점: 한 법인을 복수 부모가 소유하거나 100% 미만 부분 소유</li>
+      <li>편집: 자식 추가·제거, Show empty, Update ownership upwards, Copy to(병합), Pin/Unpin</li></ul></div></div>
+    <div class="tbl"><table style="min-width:0">
+      <tr><th>O_ACCOUNT</th><th>의미</th></tr>
+      <tr><td>METHOD</td><td>연결방법 코드</td></tr>
+      <tr><td>PCON</td><td>연결율 (75% × 400 = 300)</td></tr>
+      <tr><td>POWN</td><td>궁극 소유지분율</td></tr>
+      <tr><td>PCTRL</td><td>궁극 지배율</td></tr>
+      <tr><td>*_SYS</td><td>시스템 제안값</td></tr>
+    </table></div>
+  </div>
+
+  <p class="thesis">지분 자동계산은 교차지분 입력 → Direct/Group Share 계산 → Method 범위 매칭 순서이며, 결과는 제안값으로 사용자 확정을 거칩니다.</p>
+  <div class="flow">
+    <div class="st"><b>① 교차지분 매트릭스</b><span>PCTRL·POWN × 법인 / 피투자 법인(IntCo), Scope 없이(G_NONE) 입력</span></div><div class="ar">→</div>
+    <div class="st"><b>② 지분 계산</b><span>Direct Share는 입력값 그대로, Group Share는 계층 따라 곱셈</span></div><div class="ar">→</div>
+    <div class="st"><b>③ Method 매칭</b><span><code>0.20&lt;,&lt;=0.499</code> 형식의 구간과 비교</span></div><div class="ar">→</div>
+    <div class="st"><b>④ 확정</b><span>Generated 열의 제안값을 Current에 반영할지 선택</span></div>
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="tbl"><table style="min-width:0">
+      <tr><th>독일→영국 70%, 영국→프랑스 50%</th><th>Direct</th><th>Group</th></tr>
+      <tr><td>영국 POWN</td><td class="c">70%</td><td class="c">70%</td></tr>
+      <tr><td>프랑스 POWN</td><td class="c">50%</td><td class="c">35%</td></tr>
+    </table></div>
+    <div class="tbl"><table style="min-width:0">
+      <tr><th>시점</th><th>처분된 UK·JAPAN</th></tr>
+      <tr><td>2015.Jun</td><td>Full 100%</td></tr>
+      <tr><td>2015.Dec</td><td>Divested 0%, 계층에 잔존</td></tr>
+      <tr><td>2016.Dec</td><td>계층에서 제외</td></tr>
+    </table></div>
+  </div>
+  <p class="src">Source: p.43–45, 49–56</p>
+
+  <p class="thesis">Standard Monitor는 증분 연결을 지원하지만, 환율·지분·마스터 변경은 증분을 트리거하지 않아 수동 Reset 운영 규칙이 필요합니다.</p>
+  <div class="grid g2">
+    <div class="card"><h4>Standard · 증분 연결형</h4><div class="bd"><ul>
+      <li>법인 갱신이 그룹의 마지막 환산·연결보다 최신이면 증분 처리</li>
+      <li>법인 환산이 수행되면 연결은 무조건 증분 재실행</li>
+      <li>Reset 필요: Rate·Ownership 큐브 변경, 시뮬레이션 원천 변경, 마스터데이터 변경</li>
+      <li>전기 데이터 수정 시 이후 기간을 순차 Full 재연결</li></ul></div></div>
+    <div class="card"><h4>Embedded · 태스크 매트릭스형</h4><div class="bd"><ul>
+      <li>태스크(환산·계정계산·IC Booking·이월·Elim &amp; Adj) × 법인/그룹 셀을 선택해 실행</li>
+      <li>상태: To Be Executed → Running → Done / Failed, 무효 시 Not Applicable</li>
+      <li>Done·Failed를 Reset하면 Full 연결 필요</li></ul></div></div>
+  </div>
+
+  <div class="ins"><p class="lab">Insight · Ownership Manager는 GR에 동등 기능이 없는 대표 Gap입니다</p>
+  <div class="grid g3">
+    <div class="card"><h4>SAP Fact<small>문서·SAP 공식 근거</small></h4><div class="bd"><ul>
+      <li>Ownership 데이터는 Category·Time·Group 단위 저장, Copy·병합 제공 (p.42–43)</li>
+      <li>p.51은 PCTRL로, p.55는 POWN_SYS로 연결방법을 정한다고 서로 다르게 기술</li>
+      <li>Rate·Ownership 변경은 증분 처리를 트리거하지 않음 (p.21)</li></ul></div></div>
+    <div class="card out"><h4>Interpretation<small>컨설턴트 해석</small></h4><div class="bd"><ul>
+      <li>GR 2608의 Ownership-Driven 그룹구조 기능으로 일부 보완되나 범위는 별도 검증이 필요합니다(프로젝트 자료 기준).</li>
+      <li>“Generated vs Current” 구조는 시스템 제안과 사람의 확정을 분리한 내부통제 설계입니다.</li></ul></div></div>
+    <div class="card prop"><h4>Proposal<small>GR 프로젝트 적용 제안</small></h4><div class="bd"><ul>
+      <li>Ownership 이력 이관(POWN·PCTRL·METHOD × Category·Time·Group)을 독립 WBS로</li>
+      <li>간접지분 계산은 외부 계산 후 업로드 또는 Add-on 대안 비교</li>
+      <li>연결방법 결정에 PCTRL·POWN 중 무엇을 썼는지 고객 시스템에서 실측</li></ul></div></div>
+  </div></div>
+
+  <div class="quiz"><h3>확인 퀴즈</h3>
+    <div class="q" data-a="1"><p>Q1. 지주사→S1 70%, S1→S2 50%일 때 Group Share 방식의 S2 POWN은?</p><div class="opts"><button>50%</button><button>35%</button><button>70%</button></div><p class="fb" hidden>Group Share는 계층을 따라 곱합니다: 70% × 50% = 35% (p.50).</p></div>
+    <div class="q" data-a="0"><p>Q2. Standard Monitor에서 Ownership 큐브를 수정한 뒤 해야 할 일은?</p><div class="opts"><button>해당 범위를 Reset 후 재연결</button><button>증분 연결만 실행</button><button>아무 조치 불필요</button></div><p class="fb" hidden>Rate·Ownership 변경은 증분 처리를 트리거하지 않아 Reset이 필요합니다 (p.21).</p></div>
+  </div>
+</section>
+
+<!-- BPC05 -->
+<section class="mod" id="bpc05">
+  <p class="modno">BPC05 · p.24–40, 322–336, 368–378</p>
+  <h2>Journals &amp; Controls</h2>
+  <p class="kq">Key Question · 조정분개와 데이터 검증은 어떤 규칙으로 통제되는가?</p>
+
+  <p class="thesis">BPC Journal은 Append 방식 조정분개와 감사추적을 제공하지만, 템플릿 구조 변경 시 기존 전표와 감사추적이 삭제되는 위험이 있습니다.</p>
+  <div class="flow">
+    <div class="st"><b>New</b><span>작성</span></div><div class="ar">→</div>
+    <div class="st"><b>Saved</b><span>Journal ID 부여</span></div><div class="ar">→</div>
+    <div class="st"><b>Posted</b><span>검증·잠금·DB 가산(Append)</span></div><div class="ar">→</div>
+    <div class="st"><b>Unposted</b><span>역분개, ID 유지</span></div><div class="ar">→</div>
+    <div class="st"><b>Deleted</b><span>미게시분 삭제</span></div>
+  </div>
+  <div class="grid g3" style="margin-top:16px">
+    <div class="card"><h4>템플릿 구조</h4><div class="bd"><ul><li>Header 차원은 고정 페이지 키, 나머지는 Detail</li><li>Account·Flow는 항상 Detail</li><li>Balanced by Entity / Currency</li></ul></div></div>
+    <div class="card"><h4>고급 기능</h4><div class="bd"><ul><li>Multiple Headers → Journal Group</li><li>Reopen in Next Period (Reopen Rule)</li><li>Auto Reverse · BAdI UJJ_CALCULATED_AMOUNT</li></ul></div></div>
+    <div class="card"><h4>통제</h4><div class="bd"><ul><li>Admin·Create·Post·Unpost 태스크 프로필</li><li>EnableJRN으로 입력 가능 멤버 제한</li><li>Enforce Balanced / Allow Reopen</li></ul></div></div>
+  </div>
+
+  <p class="thesis">Controls는 법인별 Control Level(1~4)로 검증 강도를 차등화하고, Blocking 실패 시 Work Status 진행을 막는 데이터 품질 게이트입니다.</p>
+  <div class="tbl"><table>
+    <tr><th>통제 (유형·레벨)</th><th>Entity L1</th><th>Entity L2</th><th>Entity L3</th><th>Entity L4</th></tr>
+    <tr><td>A · Blocking · L1</td><td class="c">Error</td><td class="c">Error</td><td class="c">Error</td><td class="c">Error</td></tr>
+    <tr><td>B · Blocking · L2</td><td class="c"></td><td class="c">Error</td><td class="c">Error</td><td class="c">Error</td></tr>
+    <tr><td>C · Blocking · L3</td><td class="c"></td><td class="c"></td><td class="c">Error</td><td class="c">Error</td></tr>
+    <tr><td>E · Warning · L1</td><td class="c">Warning</td><td class="c">Warning</td><td class="c">Warning</td><td class="c">Warning</td></tr>
+  </table></div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><h4>상태 롤업</h4><div class="bd"><ul><li>Passed / Passed with warnings / Passed with dismissals / Failed / To be executed</li><li>자식 하나라도 Failed면 부모 Failed</li><li>Blocking 실패는 권한자가 Dismiss 가능, Reset Block으로 원복</li><li>레벨 미지정 법인은 Level 4로 간주</li></ul></div></div>
+    <div class="card"><h4>통제 속성</h4><div class="bd"><ul><li>Execution Level: Loaded(LC) · Translated · Consolidated</li><li>Tolerance: 차이 ≤ 허용치면 동일 간주</li><li>Breakdown 차원 최대 2개</li><li>Customized: BADI_UJCTRL_RUN_CONTROL</li></ul></div></div>
+  </div>
+  <p class="src">Source: p.24–40, 322–336, 368–375</p>
+
+  <div class="ins"><p class="lab">Insight · Validation–Controls–Journal 3중 통제를 GR에서 분리 설계합니다</p>
+  <div class="grid g3">
+    <div class="card"><h4>SAP Fact<small>문서·SAP 공식 근거</small></h4><div class="bd"><ul>
+      <li>Validation은 Write-back에서 모든 경로의 잘못된 교차점을 차단 (p.207)</li>
+      <li>Controls 실행 레벨은 Loaded·Translated·Consolidated (p.327)</li>
+      <li>Dismiss된 통제는 Reset dismissals가 꺼져 있으면 재실행 후에도 유지 (p.28)</li></ul></div></div>
+    <div class="card out"><h4>Interpretation<small>컨설턴트 해석</small></h4><div class="bd"><ul>
+      <li>Controls 3단계는 GR의 보고·환산 후·연결 후 데이터 검증 단계와 개념적으로 정렬됩니다.</li>
+      <li>GR에는 BPC식 Dismiss가 없어, 허용 예외는 경고 등급과 허용치 설계로 흡수해야 합니다.</li></ul></div></div>
+    <div class="card prop"><h4>Proposal<small>GR 프로젝트 적용 제안</small></h4><div class="bd"><ul>
+      <li>Control Level을 GR Validation Method의 법인 그룹별 할당 설계로 재해석</li>
+      <li>Dismiss 이력은 전환 전 System Report로 추출·보관</li>
+      <li>Journal Header/Detail과 DataSrc를 GR Document Type 설계 입력으로 사용</li></ul></div></div>
+  </div></div>
+
+  <div class="quiz"><h3>확인 퀴즈</h3>
+    <div class="q" data-a="2"><p>Q1. Control Level 2 법인에 실행되는 통제는?</p><div class="opts"><button>Level 2 통제만</button><button>Level 1~4 전체</button><button>Level 1과 2 통제</button></div><p class="fb" hidden>법인 레벨 이하의 통제가 실행됩니다 (p.27).</p></div>
+  </div>
+</section>
+
+<!-- BPC06 -->
+<section class="mod" id="bpc06">
+  <p class="modno">BPC06 · p.228–286</p>
+  <h2>Script Logic &amp; Member Formula</h2>
+  <p class="kq">Key Question · 커스텀 계산은 어떤 계층과 문법으로 구현되는가?</p>
+
+  <p class="thesis">계산 계층은 Member Formula(조회 시)–Script Logic(저장 후)–Business Rule(프로그램)–BAdI(ABAP) 4단이며, 자유도만큼 유지보수 부채가 쌓입니다.</p>
+  <div class="grid g4">
+    <div class="card"><h4>Member Formula</h4><div class="bd"><ul><li>MDX, 조회 시 계산</li><li>비율 등 집계 후 계산에만</li><li>Nested Formula는 HANA MDX 전용</li></ul></div></div>
+    <div class="card"><h4>Script Logic</h4><div class="bd"><ul><li>LGF → LGX 컴파일</li><li>Base 멤버만 계산</li><li>Default.lgf: 모든 Write-back 후</li></ul></div></div>
+    <div class="card"><h4>Business Rule</h4><div class="bd"><ul><li><code>*RUN_PROGRAM</code> 호출</li><li>CURR_CONVERSION, US_ELIM, COPYOPENING, ICDATA, ICBOOKING</li></ul></div></div>
+    <div class="card"><h4>BAdI (ABAP)</h4><div class="bd"><ul><li><code>*START_BADI</code></li><li>UJ_CUSTOM_LOGIC</li><li>UJR_WRITE_BACK · UJD_RETRACT</li></ul></div></div>
+  </div>
+
+  <p class="thesis">키워드는 범위지정–계산–구조화–실행호출 4군으로 나뉘며, 연결 표준 처리도 결국 *RUN_PROGRAM 호출로 귀결됩니다.</p>
+  <div class="tbl"><table>
+    <tr><th>분류</th><th>주요 키워드</th></tr>
+    <tr><td>범위지정</td><td class="mono">*XDIM_MEMBERSET · *XDIM_ADDMEMBERSET · *XDIM_FILTER · *XDIM_MAXMEMBERS · *XDIM_PACKAGEBY</td></tr>
+    <tr><td>계산</td><td class="mono">*WHEN / *IS / *REC / *ENDWHEN · *LOOKUP · *RUNALLOCATION · *FOR / *NEXT · *SELECT</td></tr>
+    <tr><td>구조화</td><td class="mono">*INCLUDE · *FUNCTION · *SUB · *SELECTCASE · *COMMIT · *DESTINATION_APP</td></tr>
+    <tr><td>실행호출</td><td class="mono">*RUN_PROGRAM · *START_BADI / *END_BADI · *CALL_CUSTOM_LOGIC</td></tr>
+  </table></div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card out"><h4>예시 · *REC (p.280–281)</h4><pre>*WHEN CATEGORY
+*IS ACTUAL
+*REC(FACTOR=1.1, TIME=TMVL(12,2006.APR))
+*ENDWHEN</pre></div>
+    <div class="card out"><h4>예시 · 환산 호출 (p.285)</h4><pre>*RUN_PROGRAM CURR_CONVERSION
+CATEGORY = %C_Category_SET%
+GROUP = %GROUPS_SET%
+TID_RA = %TIME_SET%
+OTHER = [ENTITY=%ENTITY_SET%]
+RATEENTITY = Global
+*ENDRUN_PROGRAM</pre></div>
+  </div>
+
+  <div class="ins"><p class="lab">Insight · LGF 전수를 “대체·재설계·확장·폐기”로 판정합니다</p>
+  <div class="grid g3">
+    <div class="card"><h4>SAP Fact<small>문서·SAP 공식 근거</small></h4><div class="bd"><ul>
+      <li>Script Logic은 Standard 전용, Base 멤버 계산만 가능 (p.228, 234)</li>
+      <li>시간종속 계층 Key Date는 스크립트에서 지정 불가 (p.385)</li>
+      <li>사용자 계산은 BADI_UJ_CUSTOM_LOGIC로 확장 (p.388)</li></ul></div></div>
+    <div class="card out"><h4>Interpretation<small>컨설턴트 해석</small></h4><div class="bd"><ul>
+      <li>고객 LGF 상당수는 *RUN_PROGRAM 래퍼일 가능성이 높아, 키워드 분포로 실제 커스텀 비중을 빠르게 추정할 수 있습니다.</li>
+      <li>GR의 커스텀 계산은 메서드 Customizing 또는 Clean Core 확장 영역으로 이동합니다.</li></ul></div></div>
+    <div class="card prop"><h4>Proposal<small>GR 프로젝트 적용 제안</small></h4><div class="bd"><ul>
+      <li>키워드 빈도 분석으로 파일별 커스텀 점수화</li>
+      <li>① 표준 대체 ② 메서드 재설계 ③ 확장 ④ 폐기로 분류해 공수 단가 적용</li>
+      <li>Default.lgf 로직은 별도 변경관리 항목으로</li></ul></div></div>
+  </div></div>
+
+  <div class="quiz"><h3>확인 퀴즈</h3>
+    <div class="q" data-a="1"><p>Q1. Member Formula를 쓰기에 적합한 경우는?</p><div class="opts"><button>부모 노드까지 합산되어야 하는 금액</button><button>집계 후에 계산하는 비율</button><button>연결분개 생성</button></div><p class="fb" hidden>Member Formula는 집계 후 계산이 필요한 비율 등에만 쓰고, 집계될 값은 Script로 저장합니다 (p.228).</p></div>
+  </div>
+</section>
+
+<!-- BPC07 -->
+<section class="mod" id="bpc07">
+  <p class="modno">BPC07 · p.12–15, 336–390</p>
+  <h2>거버넌스: BPF · Work Status · Audit</h2>
+  <p class="kq">Key Question · 결산 업무와 데이터 변경 권한은 어떻게 통제되는가?</p>
+
+  <p class="thesis">BPF는 Driving Dimension × 활동 단위로 결산 업무를 인스턴스화하고, Work Status와 연동해 활동 완료 시 데이터 잠금까지 자동화합니다.</p>
+  <div class="flow">
+    <div class="st"><b>템플릿 작성</b><span>Model·Identity 차원(Time 필수)·Activities</span></div><div class="ar">→</div>
+    <div class="st"><b>검증·배포</b><span>Deploy 후 수정 불가 → New Version</span></div><div class="ar">→</div>
+    <div class="st"><b>인스턴스</b><span>예: 2026.10 결산</span></div><div class="ar">→</div>
+    <div class="st"><b>수행·검토</b><span>Open → Submitted → Completed / Rejected</span></div><div class="ar">→</div>
+    <div class="st"><b>종료</b><span>Owner가 Finalize</span></div>
+  </div>
+  <div class="callout"><b class="lbl">규모 한도</b>환경당 템플릿 100개 · 템플릿당 활동 1,000개 · 프로세스당 활동 컨텍스트 100만 개 · 단계당 멤버 정의 6개 (p.338, 344–345)</div>
+
+  <p class="thesis">Work Status는 Owner 계층 기반 Bottom-up 규칙으로 누가, 어떤 입력 경로로 데이터를 바꿀 수 있는지를 통제합니다.</p>
+  <div class="tbl"><table>
+    <tr><th>Work State</th><th>DM</th><th>JRN</th><th>MAN</th><th>COMM</th><th>DOCS</th><th>Controlled by</th></tr>
+    <tr><td>Locks Not Set</td><td class="c">All</td><td class="c">All</td><td class="c">All</td><td class="c">All</td><td class="c">All</td><td class="c">Both</td></tr>
+    <tr><td>Started</td><td class="c">All</td><td class="c">All</td><td class="c">All</td><td class="c">All</td><td class="c">All</td><td class="c">Owner</td></tr>
+    <tr><td>Upload</td><td class="c">All</td><td class="c lv">Locked</td><td class="c lv">Locked</td><td class="c lv">Locked</td><td class="c lv">Locked</td><td class="c">Manager</td></tr>
+    <tr><td>Submit</td><td class="c lv">Locked</td><td class="c">Owner</td><td class="c">All</td><td class="c">All</td><td class="c">All</td><td class="c">Owner</td></tr>
+    <tr><td>Journal</td><td class="c lv">Locked</td><td class="c lv">Locked</td><td class="c lv">Locked</td><td class="c">All</td><td class="c">All</td><td class="c">Owner</td></tr>
+    <tr><td>Approve</td><td class="c lv">Locked</td><td class="c lv">Locked</td><td class="c lv">Locked</td><td class="c lv">Locked</td><td class="c lv">Locked</td><td class="c">Manager</td></tr>
+  </table></div>
+  <p class="src">원문 예시 (p.365). DM=Data Manager, JRN=Journal, MAN=수기입력, COMM=코멘트, DOCS=문서</p>
+  <details class="drill"><summary>적용 규칙 상세</summary><div><ul>
+    <li>Manager = 부모 멤버의 Owner. 최상위 멤버는 자기 Manager를 겸합니다.</li>
+    <li>Owner는 연속 상태로만 이동하며 Manager 상태를 건너뛸 수 없습니다. Manager는 순서와 무관하게 이동하고 On All Descendants로 하위에 일괄 적용합니다.</li>
+    <li>Bottom-up: 부모 상태는 자식 최저 상태를 넘을 수 없고, 부모가 Locked면 자식을 해제할 수 없습니다.</li>
+    <li>상태 순서 변경·삭제 시 모든 잠금이 삭제됩니다. Embedded는 잠금 차원 1~14개(기본 5).</li>
+    <li>“Journal Only” 패턴: Submitted 이후 Manager가 Journal Only로 바꾸면 입력 스케줄·DM은 막고 저널만 허용합니다. (p.374)</li></ul></div></details>
+  <details class="drill"><summary>Audit · 시간종속 계층 · 병렬처리 · BAdI</summary><div><ul>
+    <li>Data Auditing: Standard는 모델, Embedded는 InfoProvider 단위. 감사 대상에 EPM Add-in·DM·Script·Journal·Business Rule·Ownership·SAC 입력·FIM 포함</li>
+    <li>Activity Auditing(Standard): 보안·모델·차원·BPF 변경의 이전/신규값과 IP 기록</li>
+    <li>시간종속 계층: 보고서는 Key Date 선택 가능하지만 연결은 항상 현재일 계층을 사용합니다.</li>
+    <li>Parallel Execution: InfoProvider 적재·Elim &amp; Adj·DM 대상, MAX_SESSION_COUNT 기본 12</li>
+    <li>BAdI: UJ_BPF_SETUSER, UJR_WRITE_BACK, UJ_VALIDATION_RULE_LOGIC, UJD_ROUTINE, UJE_DYNAMIC_DAP, UJJ_CALCULATED_AMOUNT 등 (p.381–390)</li></ul></div></details>
+
+  <div class="ins"><p class="lab">Insight · BPF·Work Status에는 고객의 결산 RACI가 이미 코드화되어 있습니다</p>
+  <div class="grid g3">
+    <div class="card"><h4>SAP Fact<small>문서·SAP 공식 근거</small></h4><div class="bd"><ul>
+      <li>수행자·검토자는 차원 속성(Owner·Reviewer)으로 결정 (p.342–343)</li>
+      <li>입력 경로별로 잠금 수준을 다르게 설정 (p.361)</li>
+      <li>Activity Audit는 이전/신규값과 IP까지 기록 (p.383)</li></ul></div></div>
+    <div class="card out"><h4>Interpretation<small>컨설턴트 해석</small></h4><div class="bd"><ul>
+      <li>GR 표준은 모니터 태스크 상태 중심이며 BPF 수준의 활동 워크플로는 표준에 동등 기능이 없습니다.</li>
+      <li>단계별 입력경로 제한은 내부회계관리 통제의 산물로, GR 권한·기간 통제로 재구성해야 합니다.</li>
+      <li>워크플로 요구는 SAC Calendar 등 외부 도구와의 역할 분담으로 검토할 수 있습니다.</li></ul></div></div>
+    <div class="card prop"><h4>Proposal<small>GR 프로젝트 적용 제안</small></h4><div class="bd"><ul>
+      <li>BPF 템플릿 × 활동 × 수행/검토 속성 추출 → GR 결산 캘린더·권한 매트릭스 초안</li>
+      <li>Work State 정의표를 “통제 목적” 단위로 재기술</li>
+      <li>Audit 로그 보관 정책을 고객 감사인과 사전 합의</li></ul></div></div>
+  </div></div>
+
+  <div class="quiz"><h3>확인 퀴즈</h3>
+    <div class="q" data-a="0"><p>Q1. 자식 법인이 Submit 상태일 때 부모를 Approve로 설정하면?</p><div class="opts"><button>Bottom-up 규칙 위반으로 거부된다</button><button>자식도 자동으로 Approve된다</button><button>부모만 Approve로 바뀐다</button></div><p class="fb" hidden>부모 상태는 자식 최저 상태보다 높을 수 없습니다 (p.361).</p></div>
+  </div>
+</section>
+
+<!-- BPC08 -->
+<section class="mod" id="bpc08">
+  <p class="modno">BPC08 · p.94–124, 378–381</p>
+  <h2>리포팅 &amp; UI</h2>
+  <p class="kq">Key Question · 보고·조회 채널과 감사 증적은 어떻게 제공되는가?</p>
+
+  <p class="thesis">리포팅은 웹과 Excel(EPM Add-in·AO) 채널로 이원화되며, System Reports가 감사 증적의 표준 출구 역할을 합니다.</p>
+  <div class="grid g3">
+    <div class="card"><h4>Web 보고서·입력양식</h4><div class="bd"><ul><li>Standard: Define Data Grid</li><li>Embedded: BW 쿼리 기반, 기본 쿼리 “!”, 입력용 “!!I”</li><li>Planning Session·셀 잠금(Embedded)</li></ul></div></div>
+    <div class="card"><h4>Workspace·Dashboard (Standard)</h4><div class="bd"><ul><li>Library: Favorites·Public·Private·Teams</li><li>Dashboard 타일 · Crystal 템플릿</li><li>Context Defaults · Documents</li></ul></div></div>
+    <div class="card"><h4>Office·Drill-through</h4><div class="bd"><ul><li>EPM Add-in · Analysis for Office</li><li>Drill-through: URL 파라미터에 차원 속성·%CurrentUser% 매핑</li><li>예: FIM 스테이징 상세 조회</li></ul></div></div>
+  </div>
+  <div class="callout"><b class="lbl">System Reports</b>BPF(Instance·Activity·Operation) · Data Changes · Work Status · Comments(Std) · Admin Activity(Std) · Security(User·Team·Task·DAP, Std) (p.94–105)</div>
+
+  <div class="ins"><p class="lab">Insight · GR 전환의 가치는 원장 단위 추적성으로 설명합니다</p>
+  <div class="grid g3">
+    <div class="card"><h4>SAP Fact<small>문서·SAP 공식 근거</small></h4><div class="bd"><ul>
+      <li>Periodic 모델은 SAC Write-back으로 소비 가능, 반입 권고치 1.5GB·45만 건 미만 (p.5)</li>
+      <li>Drill-through는 URL 기반으로 외부 원천 상세 조회 (p.379–381)</li></ul></div></div>
+    <div class="card out"><h4>Interpretation<small>컨설턴트 해석</small></h4><div class="bd"><ul>
+      <li>BPC는 집계값을 저장해 원천 상세를 Drill-through·저널 리포트로 우회 조회합니다.</li>
+      <li>GR은 ACDOCU 라인아이템과 ACDOCA 원천 연계로 추적성이 구조적으로 확보됩니다.</li>
+      <li>EPM Add-in 보고서는 개인 파일로 흩어져 인벤토리 누락 위험이 큽니다.</li></ul></div></div>
+    <div class="card prop"><h4>Proposal<small>GR 프로젝트 적용 제안</small></h4><div class="bd"><ul>
+      <li>보고서 인벤토리에 사용자 로컬 EPM 파일까지 포함</li>
+      <li>“법정공시 / 경영보고 / 검증용”으로 분류, 검증용은 GR 표준 분석 앱으로 대체 제안</li>
+      <li>BPC→SAC 연계를 GR→SAC 구조로 재배선하는 로드맵 제시</li></ul></div></div>
+  </div></div>
+</section>
+
+<!-- BPC09 -->
+<section class="mod" id="bpc09">
+  <p class="modno">BPC09 · 종합</p>
+  <h2>BPC → Group Reporting 전환 매트릭스</h2>
+  <p class="kq">Key Question · 무엇이 대응되고, 무엇을 재설계해야 하며, 무엇부터 진단해야 하는가?</p>
+
+  <p class="thesis">대부분의 BPC 개념은 GR에 대응 개념이 있으나, 범위·지분·스크립트·워크플로 영역은 부분 대응 또는 부재로 재설계가 필요합니다.</p>
+  <div class="tbl"><table>
+    <tr><th>영역</th><th>BPC 10.1</th><th>GR 대응 (해석)</th><th>수준</th><th>전환 유의점</th></tr>
+    <tr><td>조직</td><td>Entity · Intercompany</td><td>Consolidation Unit · Partner Unit</td><td class="c">●</td><td>ELIM 엔터티는 GR에서 불필요</td></tr>
+    <tr><td>범위</td><td>Group · PARENT_GROUP</td><td>Consolidation Group 계층</td><td class="c">●</td><td>STORE_ENTITY 기술 엔터티 소멸</td></tr>
+    <tr><td>계정</td><td>Account · Flow</td><td>FS Item · Subitem</td><td class="c">●</td><td>VARSCP 범위변동 Flow 매핑</td></tr>
+    <tr><td>데이터 원천</td><td>Audit (I/M/A/L)</td><td>Posting Level · Document Type</td><td class="c">◐</td><td>고객 자유설계 → 의미 매핑</td></tr>
+    <tr><td>버전</td><td>Category · 시뮬레이션 속성</td><td>Consolidation Version</td><td class="c">◐</td><td>FX 시뮬레이션 재현 방식</td></tr>
+    <tr><td>환산</td><td>Rate 모델 · Translation 룰</td><td>환율 테이블 · Translation Method</td><td class="c">●</td><td>RATEENTITY 별도 환율표 확인</td></tr>
+    <tr><td>지분</td><td>Ownership 모델 · Manager</td><td>그룹구조(Ownership) · C/I 데이터</td><td class="c">◐</td><td>자동계산·제안값 확정 Gap</td></tr>
+    <tr><td>연결분개</td><td>Elim &amp; Adj · Multiplier</td><td>Reclassification · C/I Method</td><td class="c">◐</td><td>회계 의도 역설계 후 재구성</td></tr>
+    <tr><td>커스텀 로직</td><td>Script Logic · Member Formula</td><td>표준 대응 없음</td><td class="c">○</td><td>LGF 4분류 Triage</td></tr>
+    <tr><td>검증·조정</td><td>Controls · Validation · Journal</td><td>Validation · 그룹 전표</td><td class="c">◐</td><td>Dismiss·Reopen 대체 정책</td></tr>
+    <tr><td>실행</td><td>Consolidation Monitor</td><td>Data · Consolidation Monitor</td><td class="c">●</td><td>Reset 규칙 → 태스크 상태 관리</td></tr>
+    <tr><td>거버넌스</td><td>BPF · Work Status</td><td>표준 동등 기능 없음</td><td class="c">○</td><td>RACI·잠금 규칙 외부 설계</td></tr>
+  </table></div>
+  <p class="src">● 대응 / ◐ 부분 대응 / ○ 표준 부재 · 컨설턴트 해석이며 고객 버전별 재검증 필요</p>
+
+  <p class="thesis">핵심 Gap 3영역은 이관이 아닌 재설계 대상이므로 견적에서 별도 WBS로 분리합니다.</p>
+  <div class="grid g3">
+    <div class="card"><h4>Gap 1 · 지분 계산</h4><div class="bd"><ul><li>Ownership 이력 이관 WBS 독립</li><li>간접지분 계산 외부화 또는 Add-on 비교</li><li>제안·확정 2단 통제를 승인 절차로 재현</li></ul></div></div>
+    <div class="card"><h4>Gap 2 · 커스텀 로직</h4><div class="bd"><ul><li>LGF 키워드 분석으로 커스텀 점수화</li><li>대체·재설계·확장·폐기 공수 산정</li><li>Clean Core 확장 아키텍처 사전 합의</li></ul></div></div>
+    <div class="card"><h4>Gap 3 · 결산 워크플로</h4><div class="bd"><ul><li>BPF·Work State 정의표 추출</li><li>GR 결산 캘린더·권한 매트릭스 재설계</li><li>워크플로는 외부 도구와 역할 분담</li></ul></div></div>
+  </div>
+
+  <p class="thesis">BPC 고객 진단 체크리스트 10항목</p>
+  <p class="prog" id="prog">0 / 10 확인</p>
+  <ul class="check" id="checklist">
+    <li><input type="checkbox" id="ck1"><label for="ck1">구성 판별 (Standard / Embedded)<small>connType · 모델 유형 확인 · 신호: Standard + 다수 LGF (p.5, 169)</small></label></li>
+    <li><input type="checkbox" id="ck2"><label for="ck2">BPC 버전·SP와 유지보수 일정<small>SAP PAM 조회 · 신호: 2027년 내 종료 압박</small></label></li>
+    <li><input type="checkbox" id="ck3"><label for="ck3">Dimension × Property 인벤토리<small>속성값 분포 추출 · 신호: G·R 통합 차원(7.5 이관) (p.143–160)</small></label></li>
+    <li><input type="checkbox" id="ck4"><label for="ck4">DataSrc 체계 (I/M/A/L)<small>멤버별 속성 매핑 · 신호: 멤버 수·조정 레벨 다수 (p.193)</small></label></li>
+    <li><input type="checkbox" id="ck5"><label for="ck5">Business Rule 테이블 규모<small>룰 유형별 행 수 · 신호: Adj Level 다단, Type N/D/L/I 사용 (p.300–306)</small></label></li>
+    <li><input type="checkbox" id="ck6"><label for="ck6">Ownership 운영 방식<small>Group Share 사용·이력 기간 · 신호: 간접지분·기중 변동 빈번 (p.49–56)</small></label></li>
+    <li><input type="checkbox" id="ck7"><label for="ck7">Script Logic 커스텀 비중<small>LGF 키워드 빈도 분석 · 신호: *REC·*LOOKUP·*START_BADI 다수 (p.234–285)</small></label></li>
+    <li><input type="checkbox" id="ck8"><label for="ck8">Controls·Validation 규칙<small>통제 수·레벨 분포 · 신호: Customized 통제·Dismiss 빈번 (p.322–336)</small></label></li>
+    <li><input type="checkbox" id="ck9"><label for="ck9">BPF·Work Status 설계<small>템플릿·Work State 추출 · 신호: Journal Only 등 경로별 잠금 (p.336–374)</small></label></li>
+    <li><input type="checkbox" id="ck10"><label for="ck10">보고서·연계 인벤토리<small>Library·EPM 파일·SAC 연계 · 신호: SAC Write-back·Drill-through (p.5, 379)</small></label></li>
+  </ul>
+  <div class="callout"><b class="lbl">So What</b>체크포인트 3·4·6·7이 공수 편차의 대부분을 설명할 것으로 판단합니다. 사전 진단(Assessment) 패키지의 핵심 범위로 제안합니다.</div>
+</section>
+
+<!-- APPENDIX -->
+<section class="mod" id="appendix">
+  <p class="modno">APPENDIX</p>
+  <h2>문서 정합성 노트</h2>
+  <p class="kq">원문에는 서로 상충하거나 오기로 보이는 기술이 있어, 교육·설계에 인용할 때 고객 시스템에서 확인해야 합니다.</p>
+  <div class="tbl"><table>
+    <tr><th>항목</th><th>원문 기술 A</th><th>원문 기술 B</th><th>권고</th></tr>
+    <tr><td>EnvironmentShell 샘플 모델</td><td>4개: Planning·Rate·Consolidation·Ownership (p.129)</td><td>PLANNING·RATE만 제공 (p.201)</td><td>설치 버전에서 확인</td></tr>
+    <tr><td>연결방법 제안값 기준</td><td>PCTRL로 METHOD_SYS 결정 (p.51)</td><td>POWN_SYS를 구간과 비교 (p.55)</td><td>실제 계산 결과로 검증</td></tr>
+    <tr><td>PCON 의미</td><td>연결율 (p.50, 201)</td><td>“control percentage” (p.188)</td><td>PCON=연결율, PCTRL=지배율로 교육</td></tr>
+    <tr><td>OWN_YEAR / OWN_PERIOD</td><td>OWN_YEAR = “Period number” (p.151)</td><td>OWN_PERIOD = “Year offset” (p.151)</td><td>설명이 뒤바뀐 것으로 판단</td></tr>
+    <tr><td>Adjustment Type D</td><td>Standard에 포함 (p.302)</td><td>Embedded 목록에 없음 (p.317)</td><td>Embedded 고객 실측 확인</td></tr>
+    <tr><td>Ownership 계산 표기</td><td>Org_AccountOwn 설명에 “Microsoft platform” (p.47)</td><td>NW 문서 내 혼재</td><td>NW 기준 파라미터명 재확인</td></tr>
+  </table></div>
+</section>
+
+</div>
+</main>
+
+<footer><div class="wrap">ASPN BAC · PC파트 · BPC 10.1 NW for GR Consultants · 2026.10 · 원문 SAP Application Help BPC 10.1 NW v1.0 (2025-09-12) · 유지보수 일정: SAP Community Blog (2023-01-23)</div></footer>
+
+<script>
+(function(){
+  // quiz
+  document.querySelectorAll('.q').forEach(function(q){
+    var a = +q.dataset.a, btns = q.querySelectorAll('button'), fb = q.querySelector('.fb');
+    btns.forEach(function(b,i){ b.type='button'; b.addEventListener('click',function(){
+      btns.forEach(function(x){x.classList.remove('right','wrong')});
+      b.classList.add(i===a?'right':'wrong');
+      if(i!==a) btns[a].classList.add('right');
+      fb.hidden=false; fb.textContent=(i===a?'정답입니다. ':'오답입니다. ')+fb.textContent.replace(/^(정답입니다|오답입니다)\. /,'');
+    });});
+  });
+  // checklist (per-viewer memory)
+  var KEY='bpc101-check', boxes=document.querySelectorAll('#checklist input'), prog=document.getElementById('prog');
+  var saved={}; try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+  function upd(){var n=0;boxes.forEach(function(b){if(b.checked)n++});prog.textContent=n+' / '+boxes.length+' 확인';}
+  boxes.forEach(function(b){ if(saved[b.id]) b.checked=true; b.addEventListener('change',function(){saved[b.id]=b.checked;try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){};upd();}); });
+  upd();
+  // active tab
+  var links=[].slice.call(document.querySelectorAll('nav.tabs a')), secs=links.map(function(l){return document.querySelector(l.getAttribute('href'))});
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var i=secs.indexOf(e.target);links.forEach(function(l,j){l.classList.toggle('on',j===i)});var t=links[i];if(t&&t.scrollIntoView)t.parentNode.scrollLeft=t.offsetLeft-40;}})},{rootMargin:'-30% 0px -60% 0px'});
+    secs.forEach(function(s){if(s)io.observe(s)});
+  }
+})();
+</script>
+
+</body>
+</html>
